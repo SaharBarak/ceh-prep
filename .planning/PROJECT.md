@@ -35,14 +35,14 @@ exam simulator.
 
 #### Bug fixes (from .planning/codebase/CONCERNS.md)
 
-- [ ] Fix signup 500: `headers()` called inside `audit()` after mongo timeout — collect client meta once at start of action and pass to audit as parameters
-- [ ] Fix Mongoose duplicate index warnings in `user.ts` and `audit.ts`
-- [ ] Fix content tier gate: free users can currently read lessons for locked days (page-level gate missing, only action-level)
+- [x] ~~Fix signup 500~~ — **Validated in Phase 1** (ClientMeta capture-once refactor)
+- [x] ~~Fix Mongoose duplicate index warnings~~ — **Validated in Phase 1** (field-level shortcuts, dropped explicit `.index()` calls)
+- [x] ~~Fix content tier gate at page level~~ — **Validated in Phase 1** (page-level `redirect()` via `canAccessDay` single source of truth)
 
 #### Data plane
 
-- [ ] Integrate MongoDB Atlas free tier as the production database (Atlas SRV string in `app/.env`)
-- [ ] Document local dev path (docker compose OR mongodb-memory-server) so dev works without an external DB
+- [x] ~~Mongo Atlas connection tuning~~ — **Validated in Phase 1** (maxPoolSize 5, maxIdleTimeMS 30_000). Atlas SRV paste-in documented in `.env.example`.
+- [x] ~~Local dev Mongo path~~ — **Validated in Phase 1** (mongodb-memory-server default + docker-compose.yml alternate)
 
 #### Identity
 
@@ -146,5 +146,13 @@ gets a security review before shipping.
 | In-proc rate limit via `lru-cache` for v1 | No Redis dep until horizontal scale is needed; swap later | — Pending |
 | No AI tutor / Claude API in v1 | Adds cost, complexity, and a feature gate to reason about before core product is even validated | — Pending |
 
+## Current State
+
+**Phase 1: Stabilization — Complete** (2026-04-14, 6/6 plans, 9/9 STAB requirements validated, verification passed)
+
+The app boots clean: signup 500 dead, Mongoose warnings silenced, version pins neutralize CVE-2025-29927 + CVE-2025-23061, local dev works with zero setup via mongodb-memory-server, page-level tier gate is a hard wall, User schema extended with 8 additive identity/role/token fields. `lib/billing/`, `lib/guards/`, `lib/infra/` scaffolded so Phases 2-5 never fight the surface.
+
+**Next:** Phase 2 — Email Identity (Resend + Verify + Reset).
+
 ---
-*Last updated: 2026-04-13 after initialization*
+*Last updated: 2026-04-14 after Phase 1 completion*
