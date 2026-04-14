@@ -21,7 +21,7 @@
 
 - [x] **EMAIL-01**: Resend integration in `lib/infra/resend/` with React Email templates
 - [x] **EMAIL-02**: Email sender domain verified (DKIM/SPF/DMARC) and documented in deploy guide
-- [ ] **EMAIL-03**: Per-account rate limit on outbound mail (≤1/10min for reset requests) before hitting Resend
+- [x] **EMAIL-03**: Per-account rate limit on outbound mail (≤1/10min for reset requests) before hitting Resend
 - [x] **EMAIL-04**: `lib/auth/tokens.ts` — single-use token primitive: 32-byte base64url, SHA-256 hash at rest, TTL, `purpose` field prevents cross-flow replay
 - [x] **EMAIL-05**: Audit log written for every send attempt (success / failure) without logging token material
 
@@ -36,7 +36,7 @@
 
 - [ ] **RESET-01**: Forgot-password form — constant-time response regardless of email existence (defeat enumeration)
 - [ ] **RESET-02**: Reset email contains single-use token, 1h TTL
-- [ ] **RESET-03**: Reset form validates token against stored hash, rotates password, invalidates all active sessions for that user, invalidates all outstanding reset tokens
+- [x] **RESET-03**: Reset form validates token against stored hash, rotates password, invalidates all active sessions for that user, invalidates all outstanding reset tokens
 - [ ] **RESET-04**: Rate limited by IP AND by identifier (email) with uniform error responses
 
 ### Google OAuth 2.0
@@ -178,7 +178,7 @@ Populated by the roadmapper.
 | STAB-09 | Phase 1 | Complete |
 | EMAIL-01 | Phase 2 | Complete |
 | EMAIL-02 | Phase 2 | Complete |
-| EMAIL-03 | Phase 2 | Pending |
+| EMAIL-03 | Phase 2 | Complete |
 | EMAIL-04 | Phase 2 | Complete |
 | EMAIL-05 | Phase 2 | Complete |
 | VERIFY-01 | Phase 2 | Pending |
@@ -187,7 +187,7 @@ Populated by the roadmapper.
 | VERIFY-04 | Phase 2 | Pending |
 | RESET-01 | Phase 2 | Pending |
 | RESET-02 | Phase 2 | Pending |
-| RESET-03 | Phase 2 | Pending |
+| RESET-03 | Phase 2 | Complete |
 | RESET-04 | Phase 2 | Pending |
 | OAUTH-01 | Phase 3 | Pending |
 | OAUTH-02 | Phase 3 | Pending |

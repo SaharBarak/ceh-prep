@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 current_phase: 02 (email-identity) — EXECUTING
-current_plan: 3
+current_plan: 4
 status: unknown
-stopped_at: Completed 02-email-identity/02-03-PLAN.md — Resend client + 3 React Email templates
-last_updated: "2026-04-14T13:07:53.587Z"
+stopped_at: Completed 02-email-identity/02-04-PLAN.md — send.ts audited wrappers + sessionEpoch drift in requireSession
+last_updated: "2026-04-14T13:19:42.265Z"
 progress:
   total_phases: 5
   completed_phases: 1
   total_plans: 12
-  completed_plans: 9
+  completed_plans: 10
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-13)
 ## Current Position
 
 **Current Phase:** 02 (email-identity) — EXECUTING
-**Current Plan:** 3
+**Current Plan:** 4
 **Total Plans in Phase:** 6
 
 ## Performance Metrics
@@ -62,6 +62,7 @@ See: .planning/PROJECT.md (updated 2026-04-13)
 | Phase 02 P01 | 5 min | 3 tasks | 3 files |
 | Phase 02-email-identity P02 | 5 min | 2 tasks | 2 files |
 | Phase 02-email-identity P03 | 9min | 2 tasks | 6 files |
+| Phase 02-email-identity P04 | 4min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -107,6 +108,9 @@ Full decision log lives in PROJECT.md Key Decisions table. Most recent decisions
 - [Phase 02-email-identity]: Plan 02-02: VerifyEmailSchema is z.object({}) typed empty, not z.never() — enables uniform Schema.safeParse({}) call pattern in the resend-verification action consistent with signup/login, even though the action has no user-provided input (user derives from session)
 - [Phase 02-email-identity]: Plan 02-03 established lib/infra/resend/ as the first populated vendor boundary — single-file Resend SDK import, server-only guard, dev stub that returns fake id + logs [resend:dev] so local dev needs zero credentials; pattern mirrored later by lib/infra/google/ and lib/infra/paddle/
 - [Phase 02-email-identity]: React Email templates are authored with self-contained 'as const' styles literals (not a shared module) — each template is audit-in-isolation and defeats accidental CSS cross-pollination; system-ui fallback stack used because email clients (Gmail/Outlook/Apple Mail) don't load web fonts reliably
+- [Phase 02-email-identity]: Plan 02-04: send.ts inlines emailHash via node:crypto (sha256+slice(0,12)) instead of importing from tokens.ts — audit-in-isolation; the 12-char fingerprint width is part of the audit surface contract, not the token primitive surface
+- [Phase 02-email-identity]: Plan 02-04: requireSession return widened to {userId, email, epoch} and backward-compatible — destructuring an extra field is legal TS, so progress.ts and course/[day]/page.tsx callers typecheck unchanged; eliminates the need for downstream reset/email actions to re-read the session
+- [Phase 02-email-identity]: Plan 02-04: requireSession now does one Mongo findOne per protected request (narrow select +sessionEpoch + lean<T|null>()) — accepted cost per 02-CONTEXT Open Question #3; request-scoped memoization deferred to Phase 5 if metrics show it matters
 
 ### Non-negotiable guardrails (carry these into every plan)
 
@@ -131,6 +135,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-14T13:07:47.711Z
-Stopped at: Completed 02-email-identity/02-03-PLAN.md — Resend client + 3 React Email templates
+Last session: 2026-04-14T13:19:42.261Z
+Stopped at: Completed 02-email-identity/02-04-PLAN.md — send.ts audited wrappers + sessionEpoch drift in requireSession
 Resume file: None
