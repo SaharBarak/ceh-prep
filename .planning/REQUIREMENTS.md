@@ -9,7 +9,7 @@
 
 - [x] **STAB-01**: Signup POST completes without 500 — collect client meta once at action start, pass to audit as parameters instead of re-calling `headers()` after Mongo awaits
 - [x] **STAB-02**: Mongoose boots without duplicate-index warnings on `user.email` and `audit.at`
-- [ ] **STAB-03**: Tier gate enforced at course page render, not just at answer-save — free users are redirected to `/pricing` when they navigate to Day 4+
+- [x] **STAB-03**: Tier gate enforced at course page render, not just at answer-save — free users are redirected to `/pricing` when they navigate to Day 4+
 - [x] **STAB-04**: Next.js pinned to ≥15.2.3 (CVE-2025-29927 middleware-bypass fix)
 - [x] **STAB-05**: Mongoose pinned to ≥8.9.5 (CVE-2025-23061 `$or`-nested NoSQLi fix)
 - [x] **STAB-06**: Local dev works without a live Mongo connection — documented path via Docker Compose OR `mongodb-memory-server`
@@ -169,7 +169,7 @@ Populated by the roadmapper.
 |-------------|-------|--------|
 | STAB-01 | Phase 1 | Complete |
 | STAB-02 | Phase 1 | Complete |
-| STAB-03 | Phase 1 | Pending |
+| STAB-03 | Phase 1 | Complete |
 | STAB-04 | Phase 1 | Complete |
 | STAB-05 | Phase 1 | Complete |
 | STAB-06 | Phase 1 | Complete |

@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 current_plan: 6
 status: unknown
-stopped_at: Completed 01-06-PLAN.md
-last_updated: "2026-04-14T06:33:26.382Z"
+stopped_at: Completed 01-05-PLAN.md
+last_updated: "2026-04-14T06:42:38.372Z"
 progress:
   total_phases: 5
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 6
-  completed_plans: 5
+  completed_plans: 6
 ---
 
 # Project State
@@ -57,6 +57,7 @@ Total Plans in Phase: 6
 | Phase 01 P02 | 4 min | 2 tasks | 4 files |
 | Phase 01-stabilization P03 | 4 min | 3 tasks | 3 files |
 | Phase 01-stabilization P06 | 8 min | 4 tasks | 6 files |
+| Phase 01-stabilization P05 | 4 min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -86,6 +87,11 @@ Full decision log lives in PROJECT.md Key Decisions table. Most recent decisions
 - [Phase 01-stabilization]: MONGO_URI=memory:// is the .env.example default. Fresh-clone npm-run-dev requires zero infrastructure; the memory-server fallback from 01-02 handles the runtime side.
 - [Phase 01-stabilization]: docker-compose.yml commits zero credentials (not even placeholders). Local-dev-only file; production uses Atlas. Avoids the 'it's fine to commit fake secrets' precedent.
 - [Phase 01-stabilization]: check-no-eq.sh allowlist tuned not loosened: added ??, return {, : ident.field (value-position only), <tag to skip false positives in dto/session/content files. Negative test on contrived findOne({ email: x }) still trips exit 1.
+- [Phase 01-stabilization]: STAB-03 enforcement: page.tsx pattern is requireSession -> connectDB -> UserModel.findOne({_id:{$eq:session.userId}}).select('tier').lean() (fail-closed to 'free' on catch) -> canAccessDay gate -> redirect(/pricing?from=day-{n}) OUTSIDE the try/catch so NEXT_REDIRECT is never swallowed.
+- [Phase 01-stabilization]: Single source of truth, two enforcement points locked in: both course/[day]/page.tsx AND saveAnswer in progress.ts import canAccessDay from @/lib/billing/entitlements. Phase 4 can evolve the tier rule in ONE place and both gates pick it up with zero drift risk.
+- [Phase 01-stabilization]: generateStaticParams deleted from course/[day]/page.tsx — not overridden with force-dynamic. Prerendering a session-gated route was a latent leak bug; deleting the export is the honest fix, force-dynamic would have been papering over.
+- [Phase 01-stabilization]: Fail-closed tier resolution: on any Mongo error in the page gate, userTier stays 'free' in the catch and the page redirects to /pricing. Better to annoy a pro user on a transient blip than to leak a lesson body to a free user ever.
+- [Phase 01-stabilization]: isFreeDay retained in lib/content/ and still used in course/[day]/page.tsx for the cosmetic 'free tier' badge on days 1-3 lesson header. The badge is NOT a gate; canAccessDay is the gate. Phase 4 may consolidate UI hints into a separate lib/content/display.ts helper.
 
 ### Non-negotiable guardrails (carry these into every plan)
 
@@ -110,6 +116,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-14T06:33:26.377Z
-Stopped at: Completed 01-06-PLAN.md
+Last session: 2026-04-14T06:42:38.367Z
+Stopped at: Completed 01-05-PLAN.md
 Resume file: None
