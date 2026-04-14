@@ -7,7 +7,7 @@
 
 ### Stabilization (bug fixes landing before any new feature)
 
-- [ ] **STAB-01**: Signup POST completes without 500 — collect client meta once at action start, pass to audit as parameters instead of re-calling `headers()` after Mongo awaits
+- [x] **STAB-01**: Signup POST completes without 500 — collect client meta once at action start, pass to audit as parameters instead of re-calling `headers()` after Mongo awaits
 - [ ] **STAB-02**: Mongoose boots without duplicate-index warnings on `user.email` and `audit.at`
 - [ ] **STAB-03**: Tier gate enforced at course page render, not just at answer-save — free users are redirected to `/pricing` when they navigate to Day 4+
 - [ ] **STAB-04**: Next.js pinned to ≥15.2.3 (CVE-2025-29927 middleware-bypass fix)
@@ -167,7 +167,7 @@ Populated by the roadmapper.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| STAB-01 | Phase 1 | Pending |
+| STAB-01 | Phase 1 | Complete |
 | STAB-02 | Phase 1 | Pending |
 | STAB-03 | Phase 1 | Pending |
 | STAB-04 | Phase 1 | Pending |

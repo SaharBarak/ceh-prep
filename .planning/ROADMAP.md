@@ -45,7 +45,13 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. The dev server starts with zero Mongoose duplicate-index warnings in the console, and a fresh `npm install && npm run dev` works against either `mongodb-memory-server` or the documented Docker Compose path without any manual Mongo setup.
   4. `npm ls next` reports ≥15.2.3 and `npm ls mongoose` reports ≥8.9.5 — both CVE-patched versions pinned in `package.json` (CVE-2025-29927 and CVE-2025-23061 are neutralized).
   5. A developer can grep for `lib/infra/resend`, `lib/infra/paddle`, `lib/guards/require-tier`, and `lib/billing/entitlements` and find folder stubs with README placeholders, and the User schema exposes `emailVerifiedAt`, `googleSub`, `paddleCustomerId`, `role`, `emailVerifyTokenHash`, `passwordResetTokenHash` fields via TypeScript inference.
-**Plans**: TBD
+**Plans**: 6 plans
+- [ ] 01-01-PLAN.md — Refactor auth.ts to ClientMeta capture-once pattern (kills signup 500) [STAB-01]
+- [ ] 01-02-PLAN.md — Extend connectDB with mongodb-memory-server fallback + Atlas-tuned pool options [STAB-06, STAB-07]
+- [ ] 01-03-PLAN.md — Mongoose model cleanup (drop dup indexes) + User schema extension + DTO update [STAB-02, STAB-09]
+- [ ] 01-04-PLAN.md — lib/billing + lib/guards + lib/infra folder scaffolding + entitlements pure functions [STAB-08]
+- [ ] 01-05-PLAN.md — Page-level tier gate in course/[day]/page.tsx + saveAnswer action switches to canAccessDay [STAB-03]
+- [ ] 01-06-PLAN.md — Exact-pin next@15.2.3 + mongoose@8.9.5; .env.example + docker-compose.yml + check-no-eq.sh [STAB-04, STAB-05, STAB-06]
 
 ---
 
@@ -110,7 +116,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Stabilization | 0/TBD | Not started | - |
+| 1. Stabilization | 0/6 | Not started | - |
 | 2. Email Identity | 0/TBD | Not started | - |
 | 3. Google OAuth | 0/TBD | Not started | - |
 | 4. Paddle Billing + Tier Gate | 0/TBD | Not started | - |
