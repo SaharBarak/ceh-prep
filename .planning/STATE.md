@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_plan: 5
+current_plan: 6
 status: unknown
-stopped_at: Completed 01-03-PLAN.md
-last_updated: "2026-04-14T06:29:10.158Z"
+stopped_at: Completed 01-06-PLAN.md
+last_updated: "2026-04-14T06:33:26.382Z"
 progress:
   total_phases: 5
   completed_phases: 0
   total_plans: 6
-  completed_plans: 4
+  completed_plans: 5
 ---
 
 # Project State
@@ -25,7 +25,7 @@ See: .planning/PROJECT.md (updated 2026-04-13)
 ## Current Position
 
 Phase: 01 (stabilization) — EXECUTING
-Current Plan: 5
+Current Plan: 6
 Total Plans in Phase: 6
 
 ## Performance Metrics
@@ -56,6 +56,7 @@ Total Plans in Phase: 6
 | Phase 01 P04 | 4 min | 2 tasks | 7 files |
 | Phase 01 P02 | 4 min | 2 tasks | 4 files |
 | Phase 01-stabilization P03 | 4 min | 3 tasks | 3 files |
+| Phase 01-stabilization P06 | 8 min | 4 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -80,6 +81,11 @@ Full decision log lives in PROJECT.md Key Decisions table. Most recent decisions
 - [Phase 01-stabilization]: googleSub + paddleCustomerId use unique:true + sparse:true (field-level only) — Without sparse:true, MongoDB treats null as a value and the second null doc violates the unique constraint; sparse means 'only index docs where the field is set'
 - [Phase 01-stabilization]: All 4 token hash fields + their expiration timestamps use select:false — Defense in depth — even if a .lean() or default-projection query forgets to exclude them, Mongoose drops them; caller must explicitly .select(+emailVerifyTokenHash) to fetch
 - [Phase 01-stabilization]: tier default flip to "free" is a lockstep pair — BOTH userSchema.default AND toPublicUser fallback must use "free" — If only the schema flips, legacy docs missing tier would still appear Pro in the UI because the DTO fallback was ?? "pro"; the paywall would remain a no-op. Documented as a paired flip so Phase 5 deploy verifies both together.
+- [Phase 01-stabilization]: Exact-pin-only-on-CVE-deps policy locked: next@15.2.3 and mongoose@8.9.5 are the only no-caret pins; everything else stays caret. Prevents accidental minor drift past CVE-2025-29927 and CVE-2025-23061 floors.
+- [Phase 01-stabilization]: CVE-2025-66478 (next.js) deferred to Phase 5. Locked floor at 15.2.3 per 01-CONTEXT version-pin policy; mid-phase floor bump would break downstream 01-03/01-05 contracts and needs fresh CVE research.
+- [Phase 01-stabilization]: MONGO_URI=memory:// is the .env.example default. Fresh-clone npm-run-dev requires zero infrastructure; the memory-server fallback from 01-02 handles the runtime side.
+- [Phase 01-stabilization]: docker-compose.yml commits zero credentials (not even placeholders). Local-dev-only file; production uses Atlas. Avoids the 'it's fine to commit fake secrets' precedent.
+- [Phase 01-stabilization]: check-no-eq.sh allowlist tuned not loosened: added ??, return {, : ident.field (value-position only), <tag to skip false positives in dto/session/content files. Negative test on contrived findOne({ email: x }) still trips exit 1.
 
 ### Non-negotiable guardrails (carry these into every plan)
 
@@ -104,6 +110,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-14T06:29:10.155Z
-Stopped at: Completed 01-03-PLAN.md
+Last session: 2026-04-14T06:33:26.377Z
+Stopped at: Completed 01-06-PLAN.md
 Resume file: None
