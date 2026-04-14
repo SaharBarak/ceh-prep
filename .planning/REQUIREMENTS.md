@@ -240,8 +240,8 @@ Populated by the roadmapper.
 | DEPLOY-03 | Phase 5 | Pending |
 
 **Coverage:**
-- v1 requirements: 69 total
-- Mapped to phases: 69
+- v1 requirements: 71 total
+- Mapped to phases: 71
 - Unmapped: 0 ✓
 
 ---
