@@ -1,0 +1,47 @@
+import { z } from "zod";
+
+/**
+ * Env is validated at boot. App refuses to start on missing or weak secrets.
+ * Never reference process.env directly outside this file.
+ */
+const EnvSchema = z.object({
+  NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+  MONGO_URI: z
+    .string()
+    .min(1)
+    .default("memory://")
+    .refine(
+      (v) =>
+        v.startsWith("memory://") ||
+        v.startsWith("mongodb://") ||
+        v.startsWith("mongodb+srv://"),
+      { message: "MONGO_URI must be memory://, mongodb://, or mongodb+srv://" },
+    ),
+  SESSION_SECRET: z
+    .string()
+    .min(32, "SESSION_SECRET must be at least 32 characters")
+    .refine(
+      (s) => s !== "change-me-to-a-real-48-byte-random-string-before-running",
+      "SESSION_SECRET must be changed from the example value",
+    ),
+  SESSION_COOKIE_NAME: z.string().default("ceh_session"),
+  NEXT_PUBLIC_APP_URL: z.string().url().default("http://localhost:3000"),
+});
+
+export type Env = z.infer<typeof EnvSchema>;
+
+const parsed = EnvSchema.safeParse({
+  NODE_ENV: process.env.NODE_ENV,
+  MONGO_URI: process.env.MONGO_URI,
+  SESSION_SECRET: process.env.SESSION_SECRET,
+  SESSION_COOKIE_NAME: process.env.SESSION_COOKIE_NAME,
+  NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+});
+
+if (!parsed.success) {
+  // eslint-disable-next-line no-console
+  console.error("Invalid environment:", parsed.error.flatten().fieldErrors);
+  throw new Error("Environment validation failed");
+}
+
+export const env: Env = parsed.data;
