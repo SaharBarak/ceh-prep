@@ -145,6 +145,7 @@ gets a security review before shipping.
 | Middleware = headers only, auth re-verified at every data access | Defense-in-depth; CVE-2025-29927 taught everyone why | ✓ Good — already in place |
 | In-proc rate limit via `lru-cache` for v1 | No Redis dep until horizontal scale is needed; swap later | — Pending |
 | No AI tutor / Claude API in v1 | Adds cost, complexity, and a feature gate to reason about before core product is even validated | — Pending |
+| GA4 client + Prometheus server for analytics | User explicit consent 2026-04-14 overrides default CLAUDE.md no-third-party rule. GA4 for product funnel, Prometheus for SRE ops — different audiences, different tools. Folded into Phase 5. | — Pending |
 
 ## Current State
 
