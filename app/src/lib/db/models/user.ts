@@ -35,6 +35,9 @@ const userSchema = new Schema(
     // ── Password reset token (Phase 2) ─────────────────────
     passwordResetTokenHash: { type: String, default: null, select: false },
     passwordResetTokenExpiresAt: { type: Date, default: null, select: false },
+
+    // ── Session epoch (Phase 2 — bumped on password reset to invalidate stale sessions) ─
+    sessionEpoch: { type: Number, default: 0, select: false },
   },
   {
     versionKey: false,
