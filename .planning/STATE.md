@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 current_phase: 02 (email-identity) — EXECUTING
-current_plan: 4
+current_plan: 5
 status: unknown
-stopped_at: Completed 02-email-identity/02-04-PLAN.md — send.ts audited wrappers + sessionEpoch drift in requireSession
-last_updated: "2026-04-14T13:19:42.265Z"
+stopped_at: Completed 02-email-identity/02-05-PLAN.md — verify flow end-to-end (email.ts + signup wiring + /api/verify route + dashboard banner); extracted lib/actions/shared.ts for Next 15 use-server constraint
+last_updated: "2026-04-14T13:47:22.169Z"
 progress:
   total_phases: 5
   completed_phases: 1
   total_plans: 12
-  completed_plans: 10
+  completed_plans: 11
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-13)
 ## Current Position
 
 **Current Phase:** 02 (email-identity) — EXECUTING
-**Current Plan:** 4
+**Current Plan:** 5
 **Total Plans in Phase:** 6
 
 ## Performance Metrics
@@ -63,6 +63,7 @@ See: .planning/PROJECT.md (updated 2026-04-13)
 | Phase 02-email-identity P02 | 5 min | 2 tasks | 2 files |
 | Phase 02-email-identity P03 | 9min | 2 tasks | 6 files |
 | Phase 02-email-identity P04 | 4min | 2 tasks | 4 files |
+| Phase 02-email-identity P05 | 18min | 3 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -111,6 +112,10 @@ Full decision log lives in PROJECT.md Key Decisions table. Most recent decisions
 - [Phase 02-email-identity]: Plan 02-04: send.ts inlines emailHash via node:crypto (sha256+slice(0,12)) instead of importing from tokens.ts — audit-in-isolation; the 12-char fingerprint width is part of the audit surface contract, not the token primitive surface
 - [Phase 02-email-identity]: Plan 02-04: requireSession return widened to {userId, email, epoch} and backward-compatible — destructuring an extra field is legal TS, so progress.ts and course/[day]/page.tsx callers typecheck unchanged; eliminates the need for downstream reset/email actions to re-read the session
 - [Phase 02-email-identity]: Plan 02-04: requireSession now does one Mongo findOne per protected request (narrow select +sessionEpoch + lean<T|null>()) — accepted cost per 02-CONTEXT Open Question #3; request-scoped memoization deferred to Phase 5 if metrics show it matters
+- [Phase 02-email-identity]: Plan 02-05: Extracted lib/actions/shared.ts for non-action primitives (ClientMeta, ActionState, captureClientMeta, verifyOrigin, audit) to comply with Next 15 build-time constraint that every top-level export from a 'use server' file must be async. Phase 1's co-location in auth.ts was legal by coincidence but created cross-boundary hazards; rewired auth/email/reset/send/route-handler callers in one lockstep commit.
+- [Phase 02-email-identity]: Plan 02-05: resendVerificationEmail uses requireSession() NOT getSession() — enforces sessionEpoch drift check on every resend, destroying stale sessions left by concurrent password-reset on another device. Load-bearing RESET-03 contract; downstream callers must never regress to getSession.
+- [Phase 02-email-identity]: Plan 02-05: Inline server-action adapter pattern for form-action signature mismatch. React 19 <form action={fn}> expects (FormData) => void|Promise<void>; Phase 2 convention is (prev, formData) => ActionState. Bridge via one-line async function with 'use server' body directive that discards the ActionState return. Preserves progressive enhancement and keeps server components unpolluted by 'use client'.
+- [Phase 02-email-identity]: Plan 02-05: Signup tier default flip 'pro' -> 'free' — Phase 1 schema default was already 'free', but signup code was overriding to 'pro', silently bypassing the Phase 4 paywall for every new account. Latent security bug fixed as Rule 1 auto-fix.
 
 ### Non-negotiable guardrails (carry these into every plan)
 
@@ -135,6 +140,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-14T13:19:42.261Z
-Stopped at: Completed 02-email-identity/02-04-PLAN.md — send.ts audited wrappers + sessionEpoch drift in requireSession
+Last session: 2026-04-14T13:47:22.166Z
+Stopped at: Completed 02-email-identity/02-05-PLAN.md — verify flow end-to-end (email.ts + signup wiring + /api/verify route + dashboard banner); extracted lib/actions/shared.ts for Next 15 use-server constraint
 Resume file: None

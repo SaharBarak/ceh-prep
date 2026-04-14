@@ -27,10 +27,10 @@
 
 ### Email verification
 
-- [ ] **VERIFY-01**: User receives verification email on signup
-- [ ] **VERIFY-02**: Clicking the link marks `emailVerifiedAt`, consumes the token, invalidates other tokens with `purpose=verify` for that user
-- [ ] **VERIFY-03**: User can request a new verification email from Settings
-- [ ] **VERIFY-04**: Unverified users can use the free tier; paywall content still requires verification before subscription access (reduces account-takeover blast radius)
+- [x] **VERIFY-01**: User receives verification email on signup
+- [x] **VERIFY-02**: Clicking the link marks `emailVerifiedAt`, consumes the token, invalidates other tokens with `purpose=verify` for that user
+- [x] **VERIFY-03**: User can request a new verification email from Settings
+- [x] **VERIFY-04**: Unverified users can use the free tier; paywall content still requires verification before subscription access (reduces account-takeover blast radius)
 
 ### Password reset
 
@@ -181,10 +181,10 @@ Populated by the roadmapper.
 | EMAIL-03 | Phase 2 | Complete |
 | EMAIL-04 | Phase 2 | Complete |
 | EMAIL-05 | Phase 2 | Complete |
-| VERIFY-01 | Phase 2 | Pending |
-| VERIFY-02 | Phase 2 | Pending |
-| VERIFY-03 | Phase 2 | Pending |
-| VERIFY-04 | Phase 2 | Pending |
+| VERIFY-01 | Phase 2 | Complete |
+| VERIFY-02 | Phase 2 | Complete |
+| VERIFY-03 | Phase 2 | Complete |
+| VERIFY-04 | Phase 2 | Complete |
 | RESET-01 | Phase 2 | Pending |
 | RESET-02 | Phase 2 | Pending |
 | RESET-03 | Phase 2 | Complete |
