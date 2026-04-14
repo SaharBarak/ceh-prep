@@ -93,6 +93,15 @@
 - [ ] **PROD-08**: Every Mongo query in new code wraps user input in `$eq` — CI grep check enforces
 - [ ] **PROD-09**: No stack traces reach the client; all errors flow through a single error mapper that emits structured error codes
 
+### Analytics + observability
+
+- [ ] **ANALYTICS-01**: GA4 client-side tracking via `next/script` with CSP nonce; typed `trackEvent()` wrapper so every call site is discoverable via grep
+- [ ] **ANALYTICS-02**: GA4 event surface — page views, signup_started, signup_completed, verify_clicked, day_opened, question_answered, exam_started, exam_finished, paywall_viewed, checkout_clicked, upgrade_completed
+- [ ] **ANALYTICS-03**: GA4 respects `Do-Not-Track` header — detection helper refuses to initialize gtag when DNT is set
+- [ ] **ANALYTICS-04**: Prometheus server-side metrics via `prom-client` — `http_request_duration_seconds` histogram, `auth_attempts_total` counter (keyed by flow + outcome), `rate_limit_hits_total`, `mongo_query_duration_seconds`, `email_sends_total` counter
+- [ ] **ANALYTICS-05**: `/api/metrics` endpoint gated by a bearer-token env var (`METRICS_TOKEN`) — NOT public. Returns standard Prometheus exposition format. `runtime = "nodejs"`.
+- [ ] **ANALYTICS-06**: No tracking pixels in transactional emails. No GA4 on `/free/index.html` static tier. No GA4 calls in server actions (all gtag calls fire from client components).
+
 ### Tests + CI
 
 - [ ] **TEST-01**: Vitest unit tests — Result monad, `canAccessDay`, `decideLink`, token hashing, Zod schemas, DTO mappers
@@ -238,9 +247,15 @@ Populated by the roadmapper.
 | DEPLOY-01 | Phase 5 | Pending |
 | DEPLOY-02 | Phase 5 | Pending |
 | DEPLOY-03 | Phase 5 | Pending |
+| ANALYTICS-01 | Phase 5 | Pending |
+| ANALYTICS-02 | Phase 5 | Pending |
+| ANALYTICS-03 | Phase 5 | Pending |
+| ANALYTICS-04 | Phase 5 | Pending |
+| ANALYTICS-05 | Phase 5 | Pending |
+| ANALYTICS-06 | Phase 5 | Pending |
 
 **Coverage:**
-- v1 requirements: 71 total
+- v1 requirements: 77 total
 - Mapped to phases: 71
 - Unmapped: 0 ✓
 

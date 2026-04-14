@@ -100,7 +100,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 ### Phase 5: Production Hardening (Admin + CSP + Tests + Deploy)
 **Goal**: Ship the defenses a product for ethical hacking students needs: nonce-based CSP (with Paddle + Google + HIBP domains allowlisted — this allowlist can only be finalized NOW that Paddle is integrated and we know what it actually loads), Upstash Redis distributed rate limits, pino structured logging with redaction, audit admin dashboard, Vitest + Playwright test suite, GitHub Actions CI with npm audit + secret scan, and the deploy runbook that turns this into a production-ready system.
 **Depends on**: Phase 4 (CSP allowlist needs the Paddle integration to baseline in Report-Only mode; E2E tests need every user flow to exist before they can be covered)
-**Requirements**: ADMIN-01, ADMIN-02, ADMIN-03, ADMIN-04, ADMIN-05, PROD-01, PROD-02, PROD-03, PROD-04, PROD-05, PROD-06, PROD-07, PROD-08, PROD-09, TEST-01, TEST-02, TEST-03, TEST-04, TEST-05, TEST-06, TEST-07, DEPLOY-01, DEPLOY-02, DEPLOY-03
+**Requirements**: ADMIN-01, ADMIN-02, ADMIN-03, ADMIN-04, ADMIN-05, PROD-01, PROD-02, PROD-03, PROD-04, PROD-05, PROD-06, PROD-07, PROD-08, PROD-09, ANALYTICS-01, ANALYTICS-02, ANALYTICS-03, ANALYTICS-04, ANALYTICS-05, ANALYTICS-06, TEST-01, TEST-02, TEST-03, TEST-04, TEST-05, TEST-06, TEST-07, DEPLOY-01, DEPLOY-02, DEPLOY-03
 **Success Criteria** (what must be TRUE):
   1. A user loading any production page sees `Content-Security-Policy` (not `Report-Only`) in the response headers with `script-src 'nonce-{random}' 'strict-dynamic'` — no `'unsafe-inline'` — and every inline `<script>` in the rendered HTML carries the same nonce; the Paddle overlay, Google OAuth redirect, and HIBP password check all function without a single CSP violation in the browser console.
   2. A user (or attacker) hammering `/api/login` or `/api/reset` across distributed IPs hits rate limits that hold under load — verified by a multi-instance load test — because the limiter is now Upstash Redis sliding-window, not in-process LRU cache.
@@ -124,8 +124,8 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 ## Coverage
 
-- v1 requirements total: **71** (STAB 9 + EMAIL 5 + VERIFY 4 + RESET 4 + OAUTH 9 + TIER 5 + PADDLE 11 + ADMIN 5 + PROD 9 + TEST 7 + DEPLOY 3)
-- Mapped to phases: **71**
+- v1 requirements total: **77** (STAB 9 + EMAIL 5 + VERIFY 4 + RESET 4 + OAUTH 9 + TIER 5 + PADDLE 11 + ADMIN 5 + PROD 9 + ANALYTICS 6 + TEST 7 + DEPLOY 3)
+- Mapped to phases: **77**
 - Unmapped: **0** ✓
 - Duplicates: **0** ✓
 
