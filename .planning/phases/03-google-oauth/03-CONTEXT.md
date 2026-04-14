@@ -123,6 +123,7 @@ v2+). Paddle checkout integration (Phase 4). All analytics instrumentation
 - Whether to use `useFormStatus` on the button for a loading spinner (probably not — the nav is instant once clicked, and a spinner flash looks glitchy)
 - Whether the `__Host-` prefix works in all iron-session environments — if there's a conflict, fall back to `__Secure-` + explicit `path=/`
 - Exact copy for the OAuth error page strings — follow taste-skill voice from Phase 2
+- **`returnTo` validation implementation:** path-only regex allowlist (`/^\/(?:dashboard|course|exam|pricing|settings|verify-pending)(?:\/|$)/`) is equivalent in security outcome to URL constructor + origin check for path-only strings. Regex-only is simpler and MORE conservative (rejects any absolute/protocol-relative URL outright). Either approach is acceptable. Plan 03-02 uses regex-only.
 
 </decisions>
 
