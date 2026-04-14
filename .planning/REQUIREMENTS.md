@@ -19,8 +19,8 @@
 
 ### Email (Resend) — shared infrastructure
 
-- [ ] **EMAIL-01**: Resend integration in `lib/infra/resend/` with React Email templates
-- [ ] **EMAIL-02**: Email sender domain verified (DKIM/SPF/DMARC) and documented in deploy guide
+- [x] **EMAIL-01**: Resend integration in `lib/infra/resend/` with React Email templates
+- [x] **EMAIL-02**: Email sender domain verified (DKIM/SPF/DMARC) and documented in deploy guide
 - [ ] **EMAIL-03**: Per-account rate limit on outbound mail (≤1/10min for reset requests) before hitting Resend
 - [x] **EMAIL-04**: `lib/auth/tokens.ts` — single-use token primitive: 32-byte base64url, SHA-256 hash at rest, TTL, `purpose` field prevents cross-flow replay
 - [x] **EMAIL-05**: Audit log written for every send attempt (success / failure) without logging token material
@@ -176,8 +176,8 @@ Populated by the roadmapper.
 | STAB-07 | Phase 1 | Complete |
 | STAB-08 | Phase 1 | Complete |
 | STAB-09 | Phase 1 | Complete |
-| EMAIL-01 | Phase 2 | Pending |
-| EMAIL-02 | Phase 2 | Pending |
+| EMAIL-01 | Phase 2 | Complete |
+| EMAIL-02 | Phase 2 | Complete |
 | EMAIL-03 | Phase 2 | Pending |
 | EMAIL-04 | Phase 2 | Complete |
 | EMAIL-05 | Phase 2 | Complete |
