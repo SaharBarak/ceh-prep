@@ -148,11 +148,12 @@ gets a security review before shipping.
 
 ## Current State
 
-**Phase 1: Stabilization — Complete** (2026-04-14, 6/6 plans, 9/9 STAB requirements validated, verification passed)
+**Phase 1: Stabilization — Complete** (2026-04-14, 6/6 plans, 9/9 STAB validated)
+**Phase 2: Email Identity — Complete** (2026-04-14, 6/6 plans, 13/13 EMAIL+VERIFY+RESET validated)
 
-The app boots clean: signup 500 dead, Mongoose warnings silenced, version pins neutralize CVE-2025-29927 + CVE-2025-23061, local dev works with zero setup via mongodb-memory-server, page-level tier gate is a hard wall, User schema extended with 8 additive identity/role/token fields. `lib/billing/`, `lib/guards/`, `lib/infra/` scaffolded so Phases 2-5 never fight the surface.
+Users now own their email-bound identity. Signup issues a single-use verification token (32-byte base64url, SHA-256 at rest, 24h TTL) and sends a React Email template via Resend — dev stub logs locally, prod refuses localhost senders. `/api/verify` consumes the token and flips `emailVerifiedAt`. Dashboard shows a non-blocking banner for unverified users with a resend button. Password reset uses the same token primitive at 1h TTL. `requestPasswordReset` is structurally constant-time (single return, `hashPassword` pad on the miss path) to defeat enumeration; `confirmPasswordReset` atomically rotates the password and `$inc: { sessionEpoch: 1 }` to invalidate every active session across all devices. `requireSession()` re-fetches the user and destroys stale sessions on epoch drift. Vendor isolation: `resend` imported in exactly one file.
 
-**Next:** Phase 2 — Email Identity (Resend + Verify + Reset).
+**Next:** Phase 3 — Google OAuth 2.0 (auto-link strictly gated on `emailVerifiedAt !== null`, which only Phase 2 can set).
 
 ---
-*Last updated: 2026-04-14 after Phase 1 completion*
+*Last updated: 2026-04-14 after Phase 2 completion*
