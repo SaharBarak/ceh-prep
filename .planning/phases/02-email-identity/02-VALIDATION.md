@@ -55,7 +55,7 @@ Planner populates this once plans are written. Mapping from REQ-IDs to check com
 | VERIFY-02 | HTTP smoke | Replay same token → 307 to `/login?error=token_invalid` |
 | VERIFY-03 | Manual | Dashboard shows "Verify your email" banner to unverified users; resend button sends another email (within 3/hour limit) |
 | VERIFY-04 | Grep | `grep -rn "emailVerifiedAt" app/src/app/\(app\)/dashboard/` returns at least one match |
-| RESET-01 | Structural grep | `grep -c "^  return {" app/src/lib/actions/reset.ts` shows exactly one `return { ok: true }` in `requestPasswordReset` |
+| RESET-01 | Structural grep | `awk '/^export const requestPasswordReset/,/^};$/' app/src/lib/actions/reset.ts \| grep -cE '^\s*return \{\};$'` returns exactly `1` (single top-level return in the constant-time function) |
 | RESET-01 | Structural grep | `grep -q 'hashPassword."pad-for-uniform-timing' app/src/lib/actions/reset.ts` → 1 (uniform-time padding) |
 | RESET-01 | Manual | Timing smoke: `time curl -X POST .../forgot-password` with existent vs nonexistent email → diff < 50ms |
 | RESET-02 | Manual | `createToken("reset_password").expiresAt.getTime() - Date.now() ∈ [3_599_000, 3_601_000]` |

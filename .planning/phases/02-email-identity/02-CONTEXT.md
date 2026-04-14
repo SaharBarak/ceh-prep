@@ -75,7 +75,7 @@ audit admin view (Phase 5), TOTP MFA (deferred to v2), magic-link login
 - **Post-signup:** the signup action creates the verify token, enqueues the email, redirects to `/dashboard` (not `/verify-pending`). The dashboard shows a non-blocking banner "Verify your email — [resend]" for unverified users. This keeps signup-to-first-lesson fast.
 - **Verify link lands:** `/verify?token=...` is a route handler (GET) that consumes the token server-side, sets `emailVerifiedAt`, redirects to `/dashboard?verified=1`. The dashboard banner disappears.
 - **Unverified users can:** use free tier days 1-3. **Unverified users CANNOT:** subscribe (Phase 4 `/pricing` action will check `emailVerifiedAt`). This reduces account-takeover blast radius without blocking the free funnel.
-- **Resend verification button** on dashboard banner AND on settings (if/when settings exists — for Phase 2 we ship the dashboard path only).
+- **VERIFY-03 scope decision:** Resend-verification button ships on the **dashboard banner only in Phase 2**. A dedicated Settings page is **deferred** — when Settings lands (Phase 5 or v2), the same resend action is surfaced there too. For Phase 2 the dashboard banner is the canonical surface and satisfies VERIFY-03. Verifier MUST NOT treat the missing Settings page as a gap.
 
 ### Password reset UX
 - `/forgot-password` page — single email input. Constant-time response.
