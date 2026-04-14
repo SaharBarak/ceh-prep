@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_plan: 4
+current_plan: 5
 status: unknown
-stopped_at: Completed 01-02-PLAN.md
-last_updated: "2026-04-14T06:20:19.545Z"
+stopped_at: Completed 01-03-PLAN.md
+last_updated: "2026-04-14T06:29:10.158Z"
 progress:
   total_phases: 5
   completed_phases: 0
   total_plans: 6
-  completed_plans: 3
+  completed_plans: 4
 ---
 
 # Project State
@@ -25,7 +25,7 @@ See: .planning/PROJECT.md (updated 2026-04-13)
 ## Current Position
 
 Phase: 01 (stabilization) — EXECUTING
-Current Plan: 4
+Current Plan: 5
 Total Plans in Phase: 6
 
 ## Performance Metrics
@@ -55,6 +55,7 @@ Total Plans in Phase: 6
 | Phase 01-stabilization P01 | 4 min | 1 tasks | 2 files |
 | Phase 01 P04 | 4 min | 2 tasks | 7 files |
 | Phase 01 P02 | 4 min | 2 tasks | 4 files |
+| Phase 01-stabilization P03 | 4 min | 3 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -74,6 +75,11 @@ Full decision log lives in PROJECT.md Key Decisions table. Most recent decisions
 - [Phase 01]: Lazy-import pattern locked for dev-only packages: 'import type { X } from pkg' + 'const { X } = await import(pkg)' keeps the value out of the production bundle (Next.js code-splits dynamic imports, type imports are erased).
 - [Phase 01]: globalThis.__memoryMongo cache shape (instance, uri) is the Phase 5 Vitest harness contract — replicate in vitest.globalSetup.ts so tests get a single memory server per process without importing from lib/db/mongo.ts.
 - [Phase 01]: MONGO_URI default is memory:// (Zod .default) — new contributors clone and run without touching env vars. Atlas SRV strings are explicit overrides, not the happy path.
+- [Phase 01-stabilization]: Audit TTL via field-level expires:"90d" shortcut — single source of truth, obsoletes both field-level index:true and schema-level .index() call — Mongoose v8 SchemaDateOptions.expires IS the TTL index; any parallel definition triggers [MONGOOSE] Warning duplicate
+- [Phase 01-stabilization]: All 8 new User fields additive with default:null (or "user"/"free") — no migration script needed — Phase 1's goal is unblocking Phases 2-5 with zero data migrations; existing docs auto-work via Mongoose defaults at read time
+- [Phase 01-stabilization]: googleSub + paddleCustomerId use unique:true + sparse:true (field-level only) — Without sparse:true, MongoDB treats null as a value and the second null doc violates the unique constraint; sparse means 'only index docs where the field is set'
+- [Phase 01-stabilization]: All 4 token hash fields + their expiration timestamps use select:false — Defense in depth — even if a .lean() or default-projection query forgets to exclude them, Mongoose drops them; caller must explicitly .select(+emailVerifyTokenHash) to fetch
+- [Phase 01-stabilization]: tier default flip to "free" is a lockstep pair — BOTH userSchema.default AND toPublicUser fallback must use "free" — If only the schema flips, legacy docs missing tier would still appear Pro in the UI because the DTO fallback was ?? "pro"; the paywall would remain a no-op. Documented as a paired flip so Phase 5 deploy verifies both together.
 
 ### Non-negotiable guardrails (carry these into every plan)
 
@@ -98,6 +104,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-14T06:20:19.540Z
-Stopped at: Completed 01-02-PLAN.md
+Last session: 2026-04-14T06:29:10.155Z
+Stopped at: Completed 01-03-PLAN.md
 Resume file: None

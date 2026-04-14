@@ -39,9 +39,20 @@ fi
 # Excludes:              `key: {`, `key: "literal"`, `key: { $eq:`, `key: new ObjectId(`
 PATTERN='[[:space:]]*(_id|email|userId|googleSub|paddleCustomerId):[[:space:]]+[a-zA-Z_$][a-zA-Z0-9_$.]*[[:space:],}]'
 
-# Allowlisted lines (these contain a bare key but the value is a wrapped object,
-# a literal, or a scoped assignment that's not a Mongoose filter).
-ALLOWLIST='\$eq|\$in|new ObjectId|new mongoose|: \{|: "|: '\''|: `|: [0-9]|import |export |interface |type |= \{|=> \{'
+# Allowlisted lines (these contain a bare key but the value is NOT a raw
+# user-supplied identifier in a Mongoose filter position). The categories:
+#   $eq / $in / new ObjectId — explicit wrap or ObjectId construction
+#   : { / : " / : ' / : `   — object, string, or template literal value
+#   : [0-9]                  — numeric literal
+#   ??                       — nullish coalescing (construction pattern)
+#   import/export/interface/type — TS declarations, not runtime queries
+#   = { / => {               — object-literal assignment or arrow body
+#   return \{                — return-value construction (DTOs, session info)
+#   : ident\.[a-zA-Z]        — property access on the value side (doc.email);
+#                               scoped to value position so method calls like
+#                               `UserModel.findOne(...)` don't get swallowed
+#   <[a-zA-Z]                — HTML/JSX tag (content files)
+ALLOWLIST='\$eq|\$in|new ObjectId|new mongoose|: \{|: "|: '\''|: `|: [0-9]| \?\? |import |export |interface |type |= \{|=> \{|return \{|: [a-zA-Z_$][a-zA-Z0-9_$]*\.[a-zA-Z]|<[a-zA-Z]'
 
 HITS=0
 while IFS= read -r match; do
