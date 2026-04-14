@@ -28,7 +28,7 @@ every new surface gets a security review before it ships.
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [ ] **Phase 1: Stabilization** — Kill the signup 500, pin CVE-patched versions, scaffold shared folders, extend User schema for every downstream flow
-- [ ] **Phase 2: Email Identity (Resend + Verify + Reset)** — Users own their email-bound identity: verification on signup, constant-time password recovery
+- [x] **Phase 2: Email Identity (Resend + Verify + Reset)** — Users own their email-bound identity: verification on signup, constant-time password recovery
 - [ ] **Phase 3: Google OAuth** — Users can sign in with Google; auto-link gated on verified email; no open redirect, no token confusion
 - [ ] **Phase 4: Paddle Billing + Tier Gate** — Users can upgrade to Pro at $30/mo and unlock days 4-14 + exam simulator; tier is set only by verified webhooks
 - [ ] **Phase 5: Production Hardening (Admin + CSP + Tests + Deploy)** — Nonce-based CSP, pino structured logging, Redis rate limits, audit admin view, test suite, deploy runbook
@@ -117,7 +117,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Stabilization | 0/6 | Not started | - |
-| 2. Email Identity | 0/TBD | Not started | - |
+| 2. Email Identity | 6/6 | Complete | 2026-04-14 |
 | 3. Google OAuth | 0/TBD | Not started | - |
 | 4. Paddle Billing + Tier Gate | 0/TBD | Not started | - |
 | 5. Production Hardening | 0/TBD | Not started | - |

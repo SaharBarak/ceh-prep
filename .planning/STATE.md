@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 current_phase: 02 (email-identity) — EXECUTING
-current_plan: 5
+current_plan: 6
 status: unknown
-stopped_at: Completed 02-email-identity/02-05-PLAN.md — verify flow end-to-end (email.ts + signup wiring + /api/verify route + dashboard banner); extracted lib/actions/shared.ts for Next 15 use-server constraint
-last_updated: "2026-04-14T13:47:22.169Z"
+stopped_at: Completed 02-email-identity/02-06-PLAN.md — reset flow end-to-end (constant-time request + session-invalidating confirm + forgot/reset pages). Phase 2 complete; Phase 3 (Google OAuth) unblocked.
+last_updated: "2026-04-14T13:50:23.645Z"
 progress:
   total_phases: 5
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 12
-  completed_plans: 11
+  completed_plans: 12
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-13)
 ## Current Position
 
 **Current Phase:** 02 (email-identity) — EXECUTING
-**Current Plan:** 5
+**Current Plan:** 6
 **Total Plans in Phase:** 6
 
 ## Performance Metrics
@@ -64,6 +64,7 @@ See: .planning/PROJECT.md (updated 2026-04-13)
 | Phase 02-email-identity P03 | 9min | 2 tasks | 6 files |
 | Phase 02-email-identity P04 | 4min | 2 tasks | 4 files |
 | Phase 02-email-identity P05 | 18min | 3 tasks | 7 files |
+| Phase 02-email-identity P06 | 23min | 3 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -116,6 +117,9 @@ Full decision log lives in PROJECT.md Key Decisions table. Most recent decisions
 - [Phase 02-email-identity]: Plan 02-05: resendVerificationEmail uses requireSession() NOT getSession() — enforces sessionEpoch drift check on every resend, destroying stale sessions left by concurrent password-reset on another device. Load-bearing RESET-03 contract; downstream callers must never regress to getSession.
 - [Phase 02-email-identity]: Plan 02-05: Inline server-action adapter pattern for form-action signature mismatch. React 19 <form action={fn}> expects (FormData) => void|Promise<void>; Phase 2 convention is (prev, formData) => ActionState. Bridge via one-line async function with 'use server' body directive that discards the ActionState return. Preserves progressive enhancement and keeps server components unpolluted by 'use client'.
 - [Phase 02-email-identity]: Plan 02-05: Signup tier default flip 'pro' -> 'free' — Phase 1 schema default was already 'free', but signup code was overriding to 'pro', silently bypassing the Phase 4 paywall for every new account. Latent security bug fixed as Rule 1 auto-fix.
+- [Phase 02-email-identity]: Plan 02-06: requestPasswordReset structural invariants enforced by strict awk/grep in VALIDATION.md §RESET-01 — exactly ONE top-level return {} at body bottom (regex ^\s*return \{\};\$ count === 1), hashPassword pad burned on all four non-success branches (miss, rate-limit-ip, rate-limit-id, parse-fail). Comment moved above the return line so the strict regex matches.
+- [Phase 02-email-identity]: Plan 02-06: confirmPasswordReset uses getSession() (not requireSession()) before session.destroy() — users clicking a reset link may have no session on the device; requireSession would throw UNAUTHORIZED and block the reset. Single $inc sessionEpoch is the sole session-invalidation mechanism; other devices fail at the next requireSession drift check from 02-04.
+- [Phase 02-email-identity]: Plan 02-06: AMENDMENT to 02-02 decision — Next 15 enforces at BUILD time that every export from a "use server" file is an async function. tsc --noEmit doesn't catch this. lib/actions/shared.ts now holds ClientMeta/ActionErrorCode/ActionState/captureClientMeta/verifyOrigin/audit; lib/actions/auth.ts is server-actions-only. Parallel 02-05 executor converged on the identical refactor independently (commit 5db6c0c).
 
 ### Non-negotiable guardrails (carry these into every plan)
 
@@ -140,6 +144,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-14T13:47:22.166Z
-Stopped at: Completed 02-email-identity/02-05-PLAN.md — verify flow end-to-end (email.ts + signup wiring + /api/verify route + dashboard banner); extracted lib/actions/shared.ts for Next 15 use-server constraint
+Last session: 2026-04-14T13:50:23.641Z
+Stopped at: Completed 02-email-identity/02-06-PLAN.md — reset flow end-to-end (constant-time request + session-invalidating confirm + forgot/reset pages). Phase 2 complete; Phase 3 (Google OAuth) unblocked.
 Resume file: None

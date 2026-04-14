@@ -34,10 +34,10 @@
 
 ### Password reset
 
-- [ ] **RESET-01**: Forgot-password form — constant-time response regardless of email existence (defeat enumeration)
-- [ ] **RESET-02**: Reset email contains single-use token, 1h TTL
+- [x] **RESET-01**: Forgot-password form — constant-time response regardless of email existence (defeat enumeration)
+- [x] **RESET-02**: Reset email contains single-use token, 1h TTL
 - [x] **RESET-03**: Reset form validates token against stored hash, rotates password, invalidates all active sessions for that user, invalidates all outstanding reset tokens
-- [ ] **RESET-04**: Rate limited by IP AND by identifier (email) with uniform error responses
+- [x] **RESET-04**: Rate limited by IP AND by identifier (email) with uniform error responses
 
 ### Google OAuth 2.0
 
@@ -185,10 +185,10 @@ Populated by the roadmapper.
 | VERIFY-02 | Phase 2 | Complete |
 | VERIFY-03 | Phase 2 | Complete |
 | VERIFY-04 | Phase 2 | Complete |
-| RESET-01 | Phase 2 | Pending |
-| RESET-02 | Phase 2 | Pending |
+| RESET-01 | Phase 2 | Complete |
+| RESET-02 | Phase 2 | Complete |
 | RESET-03 | Phase 2 | Complete |
-| RESET-04 | Phase 2 | Pending |
+| RESET-04 | Phase 2 | Complete |
 | OAUTH-01 | Phase 3 | Pending |
 | OAUTH-02 | Phase 3 | Pending |
 | OAUTH-03 | Phase 3 | Pending |
