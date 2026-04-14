@@ -12,8 +12,8 @@
 - [ ] **STAB-03**: Tier gate enforced at course page render, not just at answer-save — free users are redirected to `/pricing` when they navigate to Day 4+
 - [ ] **STAB-04**: Next.js pinned to ≥15.2.3 (CVE-2025-29927 middleware-bypass fix)
 - [ ] **STAB-05**: Mongoose pinned to ≥8.9.5 (CVE-2025-23061 `$or`-nested NoSQLi fix)
-- [ ] **STAB-06**: Local dev works without a live Mongo connection — documented path via Docker Compose OR `mongodb-memory-server`
-- [ ] **STAB-07**: MongoDB Atlas M0 free tier wired in production with connection pool tuned for Vercel (maxPoolSize 5, maxIdleTimeMS 30000)
+- [x] **STAB-06**: Local dev works without a live Mongo connection — documented path via Docker Compose OR `mongodb-memory-server`
+- [x] **STAB-07**: MongoDB Atlas M0 free tier wired in production with connection pool tuned for Vercel (maxPoolSize 5, maxIdleTimeMS 30000)
 - [x] **STAB-08**: `lib/infra/`, `lib/guards/`, `lib/billing/` folder scaffolding created with README stubs so subsequent phases never fight shared surfaces
 - [ ] **STAB-09**: User schema extended with `emailVerifiedAt`, `googleSub`, `paddleCustomerId`, `role`, `emailVerifyTokenHash`, `passwordResetTokenHash` fields
 
@@ -172,8 +172,8 @@ Populated by the roadmapper.
 | STAB-03 | Phase 1 | Pending |
 | STAB-04 | Phase 1 | Pending |
 | STAB-05 | Phase 1 | Pending |
-| STAB-06 | Phase 1 | Pending |
-| STAB-07 | Phase 1 | Pending |
+| STAB-06 | Phase 1 | Complete |
+| STAB-07 | Phase 1 | Complete |
 | STAB-08 | Phase 1 | Complete |
 | STAB-09 | Phase 1 | Pending |
 | EMAIL-01 | Phase 2 | Pending |

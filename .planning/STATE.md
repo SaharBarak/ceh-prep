@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_plan: 3
+current_plan: 4
 status: unknown
-stopped_at: Completed 01-04-PLAN.md
-last_updated: "2026-04-14T06:11:56.846Z"
+stopped_at: Completed 01-02-PLAN.md
+last_updated: "2026-04-14T06:20:19.545Z"
 progress:
   total_phases: 5
   completed_phases: 0
   total_plans: 6
-  completed_plans: 2
+  completed_plans: 3
 ---
 
 # Project State
@@ -25,7 +25,7 @@ See: .planning/PROJECT.md (updated 2026-04-13)
 ## Current Position
 
 Phase: 01 (stabilization) — EXECUTING
-Current Plan: 3
+Current Plan: 4
 Total Plans in Phase: 6
 
 ## Performance Metrics
@@ -54,6 +54,7 @@ Total Plans in Phase: 6
 *Updated after each plan completion*
 | Phase 01-stabilization P01 | 4 min | 1 tasks | 2 files |
 | Phase 01 P04 | 4 min | 2 tasks | 7 files |
+| Phase 01 P02 | 4 min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -69,6 +70,10 @@ Full decision log lives in PROJECT.md Key Decisions table. Most recent decisions
 - [Phase 01]: FREE_DAY_LIMIT typed as '3 as const' literal (not number-widening) so Phase 4 exhaustive switches over day numbers can use it as a literal discriminator — Preserves literal type for downstream pattern-matching
 - [Phase 01]: canAccessExam stubbed in Phase 1 as 'tier === pro' so Phase 4 imports the same module without churn at the call site when the fuller TIER-04 rule lands — Eliminates a future seam migration; one extra one-line stub now saves a refactor later
 - [Phase 01]: canAccessDay enforces a defensive integer-and-range check (day must be 1..14, integer) — out-of-range days return false even for pro tier — Catches the class of 'loose validation in caller' bugs cheaply with one Number.isInteger + range check
+- [Phase 01]: Pass dbName explicitly to server.getUri('ceh-prep') — the no-arg form drops the db segment and mongoose falls back to 'test'. Caught via runtime smoke test on top of research Pattern 3 as written.
+- [Phase 01]: Lazy-import pattern locked for dev-only packages: 'import type { X } from pkg' + 'const { X } = await import(pkg)' keeps the value out of the production bundle (Next.js code-splits dynamic imports, type imports are erased).
+- [Phase 01]: globalThis.__memoryMongo cache shape (instance, uri) is the Phase 5 Vitest harness contract — replicate in vitest.globalSetup.ts so tests get a single memory server per process without importing from lib/db/mongo.ts.
+- [Phase 01]: MONGO_URI default is memory:// (Zod .default) — new contributors clone and run without touching env vars. Atlas SRV strings are explicit overrides, not the happy path.
 
 ### Non-negotiable guardrails (carry these into every plan)
 
@@ -88,11 +93,11 @@ None yet.
 
 ### Blockers/Concerns
 
-- [Phase 1] Local dev currently broken — `npm run dev` 500s on every auth route until STAB-06 (`mongodb-memory-server` or Docker Compose path) lands. This will resolve itself in Phase 1's first plan.
+- [Phase 1] ~~Local dev currently broken — `npm run dev` 500s on every auth route until STAB-06 (`mongodb-memory-server` or Docker Compose path) lands.~~ RESOLVED in 01-02 (mongodb-memory-server fallback + Atlas-tuned pool). Remaining doc side (docker-compose.yml, .env.example, README) lands in 01-06.
 - [Cross-phase] Requirements footer reported 69 v1 reqs — correct count is 71. ROADMAP.md coverage section documents this; REQUIREMENTS.md footer will be corrected alongside.
 
 ## Session Continuity
 
-Last session: 2026-04-14T06:11:56.843Z
-Stopped at: Completed 01-04-PLAN.md
+Last session: 2026-04-14T06:20:19.540Z
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None
