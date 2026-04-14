@@ -5,7 +5,7 @@ import { UserModel } from "@/lib/db/models/user";
 import { hashToken, isExpired } from "@/lib/auth/tokens";
 import { sendWelcomeEmail } from "@/lib/infra/resend";
 import { env } from "@/lib/env";
-import { audit, type ClientMeta } from "@/lib/actions/auth";
+import { audit, type ClientMeta } from "@/lib/actions/shared";
 
 /**
  * React Email + Mongoose + Resend all require Node APIs — Edge runtime

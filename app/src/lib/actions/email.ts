@@ -6,7 +6,7 @@ import {
   verifyOrigin,
   audit,
   type ActionState,
-} from "@/lib/actions/auth";
+} from "@/lib/actions/shared";
 import { connectDB } from "@/lib/db/mongo";
 import { UserModel } from "@/lib/db/models/user";
 import { requireSession } from "@/lib/auth/session";

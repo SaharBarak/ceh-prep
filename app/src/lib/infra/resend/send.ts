@@ -5,7 +5,7 @@ import { getMailClient } from "./client";
 import { VerifyEmail } from "./templates/VerifyEmail";
 import { ResetPassword } from "./templates/ResetPassword";
 import { Welcome } from "./templates/Welcome";
-import { audit, type ClientMeta } from "@/lib/actions/auth";
+import { audit, type ClientMeta } from "@/lib/actions/shared";
 
 export type SendKind = "verify" | "reset" | "welcome";
 

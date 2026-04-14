@@ -1,11 +1,9 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { headers } from "next/headers";
 import zxcvbn from "zxcvbn";
 import { connectDB } from "@/lib/db/mongo";
 import { UserModel } from "@/lib/db/models/user";
-import { AuditModel } from "@/lib/db/models/audit";
 import { hashPassword, verifyPassword } from "@/lib/auth/password";
 import { isPasswordPwned } from "@/lib/auth/hibp";
 import { getSession } from "@/lib/auth/session";
@@ -14,100 +12,24 @@ import { SignupSchema, LoginSchema } from "@/lib/validation/schemas";
 import { createToken } from "@/lib/auth/tokens";
 import { sendVerifyEmail } from "@/lib/infra/resend";
 import { env } from "@/lib/env";
-
-export type ActionErrorCode =
-  | "invalid_input"
-  | "weak_password"
-  | "pwned_password"
-  | "email_taken"
-  | "invalid_credentials"
-  | "rate_limited"
-  | "forbidden_origin"
-  | "locked"
-  | "server_error"
-  | "email_send_failed"
-  | "token_invalid"
-  | "token_expired"
-  | "already_verified";
-
-export type ActionState = { error?: ActionErrorCode };
+import {
+  captureClientMeta,
+  verifyOrigin,
+  audit,
+  type ActionState,
+} from "@/lib/actions/shared";
 
 /**
- * Request-scoped client metadata captured once at the entry point of every
- * server action, BEFORE any `await` that could tear down the Next.js
- * AsyncLocalStorage request scope (notably `connectDB()` against a slow or
- * unreachable Mongo host). Downstream helpers (`audit`, `rateLimit`,
- * `verifyOrigin`) receive this object explicitly and never re-enter the
- * request headers API themselves — that's the whole point of the pattern.
+ * Server actions for the password-first auth flow.
+ *
+ * Shared primitives (`ClientMeta`, `ActionErrorCode`, `ActionState`,
+ * `captureClientMeta`, `verifyOrigin`, `audit`) live in `@/lib/actions/shared`
+ * because Next 15 enforces at build time that every export from a
+ * `"use server"` file is an async function — types and non-action helpers
+ * cannot be co-located here. Consumers (`email.ts`, `reset.ts`, route
+ * handlers, client forms importing `ActionState`) import from the shared
+ * module directly.
  */
-export type ClientMeta = {
-  readonly ip: string;
-  readonly ua: string;
-  readonly origin: string;
-};
-
-/* ─────────────────────────────
-   Security helpers
-   ───────────────────────────── */
-
-/**
- * Read the request headers exactly once, synchronously at action entry, and
- * freeze the values into a plain object. This is the ONLY function in this
- * module that touches `next/headers`. Every other helper takes a `ClientMeta`
- * parameter so the async tail of an action never re-enters AsyncLocalStorage.
- */
-export const captureClientMeta = async (): Promise<ClientMeta> => {
-  const h = await headers();
-  return {
-    ip:
-      h.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-      h.get("x-real-ip") ??
-      "unknown",
-    ua: h.get("user-agent")?.slice(0, 256) ?? "unknown",
-    origin: h.get("origin") ?? "",
-  };
-};
-
-/**
- * Reject requests whose Origin header doesn't match our app URL. Works in
- * concert with SameSite=Strict cookies to kill CSRF for server actions.
- */
-export const verifyOrigin = (origin: string): boolean => {
-  if (!origin) return false;
-  try {
-    const appUrl = new URL(env.NEXT_PUBLIC_APP_URL);
-    const reqUrl = new URL(origin);
-    return appUrl.host === reqUrl.host;
-  } catch {
-    return false;
-  }
-};
-
-/**
- * Pure audit sink. Takes the pre-captured `ClientMeta` as its first argument
- * and never touches the Next.js request headers API. Must never throw —
- * audit failures are swallowed so they can't cascade into the auth flow.
- */
-export const audit = async (
-  meta: ClientMeta,
-  event: string,
-  outcome: "ok" | "deny" | "error",
-  payload: Record<string, unknown>,
-  userId?: string,
-): Promise<void> => {
-  try {
-    await AuditModel.create({
-      event,
-      outcome,
-      ip: meta.ip,
-      ua: meta.ua,
-      meta: payload,
-      userId: userId ?? null,
-    });
-  } catch {
-    // Audit failures must never break the auth flow
-  }
-};
 
 /* ─────────────────────────────
    Signup
