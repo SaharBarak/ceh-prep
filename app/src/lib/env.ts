@@ -26,6 +26,18 @@ const EnvSchema = z.object({
     ),
   SESSION_COOKIE_NAME: z.string().default("ceh_session"),
   NEXT_PUBLIC_APP_URL: z.string().url().default("http://localhost:3000"),
+  // ── Resend (Phase 2) ───────────────────────────────────
+  // API key is optional in dev (stubbed console log path) but required in prod.
+  // FROM address default uses localhost; the refinement blocks that default
+  // from ever shipping to production.
+  RESEND_API_KEY: z.string().optional(),
+  RESEND_FROM_ADDRESS: z
+    .string()
+    .default("CEH Sprint <no-reply@localhost>")
+    .refine(
+      (v) => process.env.NODE_ENV !== "production" || !v.includes("localhost"),
+      "RESEND_FROM_ADDRESS must be a real verified sender in production",
+    ),
 });
 
 export type Env = z.infer<typeof EnvSchema>;
@@ -36,6 +48,8 @@ const parsed = EnvSchema.safeParse({
   SESSION_SECRET: process.env.SESSION_SECRET,
   SESSION_COOKIE_NAME: process.env.SESSION_COOKIE_NAME,
   NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+  RESEND_API_KEY: process.env.RESEND_API_KEY,
+  RESEND_FROM_ADDRESS: process.env.RESEND_FROM_ADDRESS,
 });
 
 if (!parsed.success) {
