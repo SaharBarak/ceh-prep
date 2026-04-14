@@ -11,6 +11,8 @@ import { isPasswordPwned } from "@/lib/auth/hibp";
 import { getSession } from "@/lib/auth/session";
 import { rateLimit } from "@/lib/auth/rate-limit";
 import { SignupSchema, LoginSchema } from "@/lib/validation/schemas";
+import { createToken } from "@/lib/auth/tokens";
+import { sendVerifyEmail } from "@/lib/infra/resend";
 import { env } from "@/lib/env";
 
 export type ActionErrorCode =
@@ -165,7 +167,7 @@ export const signup = async (
       email,
       passwordHash,
       displayName: displayName ?? "",
-      tier: "pro",
+      tier: "free",
       lastLoginAt: new Date(),
     });
 
@@ -173,7 +175,29 @@ export const signup = async (
     session.userId = doc._id.toString();
     session.email = doc.email;
     session.createdAt = Date.now();
+    session.epoch = 0;
     await session.save();
+
+    // Phase 2: issue email-verify token, persist hash, send link.
+    // Failures never block signup — sendVerifyEmail never throws (Plan 02-04
+    // contract), so on `{ok:false}` the user still lands on /dashboard with
+    // the unverified banner and can click "resend" from there.
+    const verifyToken = createToken("verify_email");
+    await UserModel.updateOne(
+      { _id: { $eq: doc._id } },
+      {
+        $set: {
+          emailVerifyTokenHash: verifyToken.hash,
+          emailVerifyTokenExpiresAt: verifyToken.expiresAt,
+        },
+      },
+    );
+    await sendVerifyEmail({
+      to: doc.email,
+      link: `${env.NEXT_PUBLIC_APP_URL}/api/verify?token=${verifyToken.plaintext}`,
+      meta,
+      userId: doc._id.toString(),
+    });
 
     await audit(meta, "signup", "ok", { email }, doc._id.toString());
   } catch (e) {
@@ -219,8 +243,15 @@ export const login = async (
     await connectDB();
 
     const user = await UserModel.findOne({ email: { $eq: email } })
-      .select("+passwordHash +failedLoginCount +lockedUntil")
-      .lean();
+      .select("+passwordHash +failedLoginCount +lockedUntil +sessionEpoch")
+      .lean<{
+        _id: { toString(): string };
+        email: string;
+        passwordHash: string;
+        failedLoginCount?: number;
+        lockedUntil?: Date | null;
+        sessionEpoch?: number;
+      } | null>();
 
     // Uniform timing: always run verify even when user missing, against a
     // throwaway hash, so an observer can't tell if the email exists.
@@ -248,6 +279,7 @@ export const login = async (
     session.userId = user._id.toString();
     session.email = user.email;
     session.createdAt = Date.now();
+    session.epoch = user.sessionEpoch ?? 0;
     await session.save();
 
     await audit(meta, "login", "ok", { email }, user._id.toString());
