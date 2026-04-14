@@ -22,7 +22,11 @@ export type ActionErrorCode =
   | "rate_limited"
   | "forbidden_origin"
   | "locked"
-  | "server_error";
+  | "server_error"
+  | "email_send_failed"
+  | "token_invalid"
+  | "token_expired"
+  | "already_verified";
 
 export type ActionState = { error?: ActionErrorCode };
 
@@ -50,7 +54,7 @@ export type ClientMeta = {
  * module that touches `next/headers`. Every other helper takes a `ClientMeta`
  * parameter so the async tail of an action never re-enters AsyncLocalStorage.
  */
-const captureClientMeta = async (): Promise<ClientMeta> => {
+export const captureClientMeta = async (): Promise<ClientMeta> => {
   const h = await headers();
   return {
     ip:
@@ -66,7 +70,7 @@ const captureClientMeta = async (): Promise<ClientMeta> => {
  * Reject requests whose Origin header doesn't match our app URL. Works in
  * concert with SameSite=Strict cookies to kill CSRF for server actions.
  */
-const verifyOrigin = (origin: string): boolean => {
+export const verifyOrigin = (origin: string): boolean => {
   if (!origin) return false;
   try {
     const appUrl = new URL(env.NEXT_PUBLIC_APP_URL);
@@ -82,7 +86,7 @@ const verifyOrigin = (origin: string): boolean => {
  * and never touches the Next.js request headers API. Must never throw —
  * audit failures are swallowed so they can't cascade into the auth flow.
  */
-const audit = async (
+export const audit = async (
   meta: ClientMeta,
   event: string,
   outcome: "ok" | "deny" | "error",
