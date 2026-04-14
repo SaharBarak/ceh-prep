@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_plan: 2
+current_plan: 3
 status: unknown
-stopped_at: Completed 01-stabilization-01-PLAN.md
-last_updated: "2026-04-14T06:10:17.275Z"
+stopped_at: Completed 01-04-PLAN.md
+last_updated: "2026-04-14T06:11:56.846Z"
 progress:
   total_phases: 5
   completed_phases: 0
   total_plans: 6
-  completed_plans: 1
+  completed_plans: 2
 ---
 
 # Project State
@@ -25,7 +25,7 @@ See: .planning/PROJECT.md (updated 2026-04-13)
 ## Current Position
 
 Phase: 01 (stabilization) — EXECUTING
-Current Plan: 2
+Current Plan: 3
 Total Plans in Phase: 6
 
 ## Performance Metrics
@@ -53,6 +53,7 @@ Total Plans in Phase: 6
 
 *Updated after each plan completion*
 | Phase 01-stabilization P01 | 4 min | 1 tasks | 2 files |
+| Phase 01 P04 | 4 min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -65,6 +66,9 @@ Full decision log lives in PROJECT.md Key Decisions table. Most recent decisions
 - **Phase 4 before Phase 5 CSP**: Paddle domains can only be allowlisted after the overlay is integrated and Report-Only-baselined
 - **Phase 2 before Phase 3**: OAuth `decideLink` auto-link gate literally reads `emailVerifiedAt`, which Phase 2 is the only thing that can set
 - [Phase 01-stabilization]: ClientMeta capture-once pattern locked for Phase 1-5 auth surface — Reading next/headers across Mongoose await boundaries in Next.js 15 is unsafe (AsyncLocalStorage scope tear-down). audit() now takes meta as first positional arg so missed call sites fail at compile time. ClientMeta type exported so Phase 2-5 reuse the same shape.
+- [Phase 01]: FREE_DAY_LIMIT typed as '3 as const' literal (not number-widening) so Phase 4 exhaustive switches over day numbers can use it as a literal discriminator — Preserves literal type for downstream pattern-matching
+- [Phase 01]: canAccessExam stubbed in Phase 1 as 'tier === pro' so Phase 4 imports the same module without churn at the call site when the fuller TIER-04 rule lands — Eliminates a future seam migration; one extra one-line stub now saves a refactor later
+- [Phase 01]: canAccessDay enforces a defensive integer-and-range check (day must be 1..14, integer) — out-of-range days return false even for pro tier — Catches the class of 'loose validation in caller' bugs cheaply with one Number.isInteger + range check
 
 ### Non-negotiable guardrails (carry these into every plan)
 
@@ -89,6 +93,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-14T06:10:17.271Z
-Stopped at: Completed 01-stabilization-01-PLAN.md
+Last session: 2026-04-14T06:11:56.843Z
+Stopped at: Completed 01-04-PLAN.md
 Resume file: None
