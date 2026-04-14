@@ -2,15 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_plan: 6
+current_phase: 02 (email-identity) — EXECUTING
+current_plan: 3
 status: unknown
-stopped_at: Phase 2 context gathered
-last_updated: "2026-04-14T08:28:28.590Z"
+stopped_at: "Completed 02-02-PLAN.md (Phase 2: exports + schemas)"
+last_updated: "2026-04-14T13:04:28.544Z"
 progress:
   total_phases: 5
   completed_phases: 1
-  total_plans: 6
-  completed_plans: 6
+  total_plans: 12
+  completed_plans: 8
 ---
 
 # Project State
@@ -20,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-13)
 
 **Core value:** A student goes from zero to passing the CEH v13 exam in fourteen 30-minute sessions, synced across devices — free for the first 3 days, then $30/mo for the full curriculum and exam simulator.
-**Current focus:** Phase 01 — stabilization
+**Current focus:** Phase 02 — email-identity
 
 ## Current Position
 
-Phase: 01 (stabilization) — EXECUTING
-Current Plan: 6
-Total Plans in Phase: 6
+**Current Phase:** 02 (email-identity) — EXECUTING
+**Current Plan:** 3
+**Total Plans in Phase:** 6
 
 ## Performance Metrics
 
@@ -58,6 +59,8 @@ Total Plans in Phase: 6
 | Phase 01-stabilization P03 | 4 min | 3 tasks | 3 files |
 | Phase 01-stabilization P06 | 8 min | 4 tasks | 6 files |
 | Phase 01-stabilization P05 | 4 min | 2 tasks | 2 files |
+| Phase 02 P01 | 5 min | 3 tasks | 3 files |
+| Phase 02-email-identity P02 | 5 min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -92,6 +95,15 @@ Full decision log lives in PROJECT.md Key Decisions table. Most recent decisions
 - [Phase 01-stabilization]: generateStaticParams deleted from course/[day]/page.tsx — not overridden with force-dynamic. Prerendering a session-gated route was a latent leak bug; deleting the export is the honest fix, force-dynamic would have been papering over.
 - [Phase 01-stabilization]: Fail-closed tier resolution: on any Mongo error in the page gate, userTier stays 'free' in the catch and the page redirects to /pricing. Better to annoy a pro user on a transient blip than to leak a lesson body to a free user ever.
 - [Phase 01-stabilization]: isFreeDay retained in lib/content/ and still used in course/[day]/page.tsx for the cosmetic 'free tier' badge on days 1-3 lesson header. The badge is NOT a gate; canAccessDay is the gate. Phase 4 may consolidate UI hints into a separate lib/content/display.ts helper.
+- [Phase 02]: Phase 2 token primitive: node:crypto randomBytes(32) + base64url (43 chars, 256 bits) + SHA-256 hex (64 chars). No userland deps. SHA-256 not Argon2 — single-use short-lived tokens don't need memory-hard hashing (PITFALLS.md #9).
+- [Phase 02]: Token TTLs: verify_email=24h (NIST SP 800-63B), reset_password=1h (OWASP). TTL table typed Readonly<Record<TokenPurpose, number>> so exhaustive switches over purposes are compiler-enforced downstream.
+- [Phase 02]: isExpired runs AFTER hash match, is pure and null-safe (null/undefined = expired). Defeats timing oracles that would otherwise distinguish 'hash not found' from 'hash found but expired' (PITFALLS.md #10).
+- [Phase 02-email-identity]: Plan 02-02: Exported captureClientMeta/verifyOrigin/audit from auth.ts as public imports for Phase 2 downstream — Next.js 15 'use server' files support server-to-server named exports for non-action helpers; no client leakage risk because captureClientMeta crashes outside request scope anyway
+- [Phase 02]: RESEND_API_KEY optional in dev (stub console-log path); RESEND_FROM_ADDRESS default 'CEH Sprint <no-reply@localhost>' with production refinement that rejects the literal 'localhost'. Dev default becomes a load-bearing safety belt — prod boot fails loudly if the env var isn't overridden.
+- [Phase 02]: sessionEpoch as integer counter (default:0, select:false), not sessionRevokedAt timestamp. Integer compare is immune to clock skew across app instances; $inc is atomic; backfill is implicit because undefined ?? 0 === 0. No migration script needed.
+- [Phase 02-email-identity]: Plan 02-02: Front-loaded all 4 new ActionErrorCode variants (email_send_failed, token_invalid, token_expired, already_verified) in 02-02 instead of incrementally in 02-04/05/06 — prevents three separate touches of auth.ts across the parallel Phase 2 wave, eliminating lost-update merge friction
+- [Phase 02-email-identity]: Plan 02-02: ConfirmResetSchema token field is z.string().min(32).max(64) not length(43) — forward-compat with future token entropy changes in lib/auth/tokens.ts without breaking downstream validation; obvious garbage still rejected by the min bound
+- [Phase 02-email-identity]: Plan 02-02: VerifyEmailSchema is z.object({}) typed empty, not z.never() — enables uniform Schema.safeParse({}) call pattern in the resend-verification action consistent with signup/login, even though the action has no user-provided input (user derives from session)
 
 ### Non-negotiable guardrails (carry these into every plan)
 
@@ -116,6 +128,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-14T08:28:28.587Z
-Stopped at: Phase 2 context gathered
-Resume file: .planning/phases/02-email-identity/02-CONTEXT.md
+Last session: 2026-04-14T13:04:28.540Z
+Stopped at: Completed 02-02-PLAN.md (Phase 2: exports + schemas)
+Resume file: None
