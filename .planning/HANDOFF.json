@@ -1,139 +1,50 @@
 {
   "version": "1.0",
-  "timestamp": "2026-04-14T17:27:33.808Z",
-  "phase": "4",
-  "phase_name": "Paddle Billing + Tier Gate",
-  "phase_dir": ".planning/phases/04-paddle-billing",
+  "timestamp": "2026-05-20T15:18:36.218Z",
+  "phase": "12",
+  "phase_name": "Testing + LLM Quality Review",
+  "phase_dir": ".planning/phases/12-testing-and-llm-quality-review",
   "plan": null,
   "task": null,
-  "total_tasks": null,
+  "total_tasks": 6,
   "status": "paused",
   "completed_tasks": [
-    {
-      "id": 1,
-      "name": "Initialize /gsd:plan-phase 4 (next unplanned phase detected)",
-      "status": "done"
-    },
-    {
-      "id": 2,
-      "name": "Create phase directory .planning/phases/04-paddle-billing",
-      "status": "done"
-    },
-    {
-      "id": 3,
-      "name": "Detect missing CONTEXT.md and prompt user",
-      "status": "done"
-    },
-    {
-      "id": 4,
-      "name": "Start Next.js dev server (bg id bc7zhvsm1 at http://localhost:3000)",
-      "status": "done"
-    },
-    {
-      "id": 5,
-      "name": "Start MongoDB via docker compose up -d mongo (ceh-prep-mongo, healthy)",
-      "status": "done"
-    },
-    {
-      "id": 6,
-      "name": "Create dev-only seed helper app/scripts/dev-session.mjs (argon2 + iron-session)",
-      "status": "done"
-    },
-    {
-      "id": 7,
-      "name": "Seed verified pro/admin user sahar@dev.local and verify /dashboard renders 200",
-      "status": "done"
-    }
+    {"id": "phase-6", "name": "Curriculum content module + paused-phase scaffolding", "status": "done", "commit": "832d1f5"},
+    {"id": "phase-7", "name": "Reader toolbar + progress strip + mark-complete", "status": "done", "commit": "022c541"},
+    {"id": "phase-8", "name": "WebVM iframe lab panel + postMessage", "status": "done", "commit": "31a4a85"},
+    {"id": "phase-9", "name": "Premium bonus library + landing redesign by octo agent", "status": "done", "commit": "ce4985a"},
+    {"id": "signup", "name": "/signup page + signup-form client", "status": "done", "commit": "a157450"},
+    {"id": "pricing", "name": "/pricing rewrite to match $30/mo Pro reality", "status": "done", "commit": "6f1cddf"},
+    {"id": "roadmap-10-11", "name": "Roadmap phases 10+11 added (email engagement)", "status": "done", "commit": "59f2633"},
+    {"id": "phase-10", "name": "Drip email MVP: EmailDispatch + Drip.tsx + /api/cron/drip + /api/unsubscribe", "status": "done", "commit": "135b113"},
+    {"id": "phase-10-gaps", "name": "Phase 10 gaps closed: signup timezone + requireSession lastActiveAt", "status": "done", "commit": "43e0e75"},
+    {"id": "roadmap-12", "name": "Phase 12 added scope-gated", "status": "done", "commit": "4c934c3"},
+    {"id": "phase-12-scope", "name": "Phase 12 scope locked from user Q&A", "status": "done", "commit": "309e01e"}
   ],
   "remaining_tasks": [
-    {
-      "id": 8,
-      "name": "Run /gsd:discuss-phase 4 in a fresh top-level session to capture Paddle billing/tier decisions",
-      "status": "not_started"
-    },
-    {
-      "id": 9,
-      "name": "Re-run /gsd:plan-phase 4 (research -> plan -> verify loop)",
-      "status": "not_started"
-    },
-    {
-      "id": 10,
-      "name": "Commit seed helper + phase 4 dir after resume",
-      "status": "not_started"
-    }
+    {"id": 1, "name": "Write app/scripts/qa/personas.json (5 ICPs: Sarah/Marcus/Alex/Priya/Dave)", "status": "not_started"},
+    {"id": 2, "name": "npm i -D playwright @anthropic-ai/sdk + npx playwright install chromium (~250 MB)", "status": "not_started"},
+    {"id": 3, "name": "Write app/scripts/qa/icp-funnel-sim.ts — landing-only MVP with budget cap + prompt caching + chain-of-critique", "status": "not_started"},
+    {"id": 4, "name": "Add npm run qa:icp script + README in app/scripts/qa/", "status": "not_started"},
+    {"id": 5, "name": "Expand harness surface — signup -> curriculum -> lab -> exam (follow-up phases)", "status": "not_started"},
+    {"id": 6, "name": "Track A: Vitest + Playwright + MSW + supertest deterministic suite", "status": "deferred_until_track_b_proven"}
   ],
-  "blockers": [
-    {
-      "description": "Phase 4 has no CONTEXT.md; plan-phase cannot nest AskUserQuestion into /gsd:discuss-phase (upstream bug #1009).",
-      "type": "human_action",
-      "workaround": "Run /gsd:discuss-phase 4 as a top-level command, then /gsd:plan-phase 4."
-    }
-  ],
+  "blockers": [],
   "human_actions_pending": [
-    {
-      "action": "/clear then run /gsd:discuss-phase 4 to capture Paddle/tier design decisions",
-      "context": "Paddle integrations lock irreversible choices (price IDs, webhook secret, trial-end behavior, tax/VAT, cancel/pause UX, grace periods). Planner quality depends on CONTEXT.md being present before spawn.",
-      "blocking": true
-    },
-    {
-      "action": "Decide whether app/scripts/dev-session.mjs should be committed or kept local",
-      "context": "Dev-only helper that upserts a verified pro/admin user and prints an iron-session cookie. Reads .env, uses installed argon2+iron-session. Not gated on NODE_ENV — add a guard if committing.",
-      "blocking": false
-    }
+    {"action": "Provide ANTHROPIC_API_KEY env var before running the QA harness", "context": "scripts/qa/icp-funnel-sim.ts reads process.env.ANTHROPIC_API_KEY directly; not part of Next.js env validation", "blocking": false},
+    {"action": "Accept ~250 MB Chromium download during deps install", "context": "npx playwright install chromium downloads the browser binary; user should be warned before running", "blocking": false}
   ],
   "decisions": [
-    {
-      "decision": "Phase 4 is the next unplanned phase (phase 3 already has 4 plans + context/research/validation)",
-      "rationale": "ls .planning/phases/03-google-oauth/ shows 4 PLAN.md files; roadmap marks phase 2 as [x], phases 1,3,4,5 as [ ]; memory note says phase 3 is 'ready' (planned, not executed).",
-      "phase": "4"
-    },
-    {
-      "decision": "User chose 'Run discuss-phase first (Recommended)' over 'Continue without context'",
-      "rationale": "Explicit user answer in AskUserQuestion during plan-phase step 4.",
-      "phase": "4"
-    },
-    {
-      "decision": "Use docker compose up -d mongo (documented dev path) instead of switching MONGO_URI to memory://",
-      "rationale": "User said 'run it whatever, open the local db'. docker-compose.yml is the documented persistence path; memory mode requires a dev-server restart and loses data on reload.",
-      "phase": "env"
-    },
-    {
-      "decision": "Seed a pro/admin verified user via iron-session cookie forging instead of curling Next server actions",
-      "rationale": "Next server actions require the runtime-hashed Next-Action header which is not stable across builds. Direct iron-session seal + mongo upsert is deterministic, uses existing packages, and takes one file.",
-      "phase": "env"
-    }
+    {"decision": "Phase 12 split into Track A (deterministic) + Track B (ICP simulation); Track B first", "rationale": "User's detailed answers made Track B the headline; Track A defers until B proves valuable", "phase": "12"},
+    {"decision": "Test stack with mocking: Vitest + Playwright + MSW + supertest", "rationale": "User chose 'with mocking' over leaner Vitest+Playwright only", "phase": "12"},
+    {"decision": "Sonnet for per-step ICP vision pass; Haiku for chain-of-critique synthesis", "rationale": "Vision needs Sonnet; re-reading notes is cheap, Haiku is sufficient", "phase": "12"},
+    {"decision": "Advisory only — never blocks merges", "rationale": "User explicit choice; safer for v1, humans own merge call", "phase": "12"},
+    {"decision": "Chain-of-critique: 3 passes (notes / re-read for missed observations / aggregate)", "rationale": "User chose chain over single-pass to catch second-order issues", "phase": "12"},
+    {"decision": "Whole-repo nightly cron (03:00 UTC), not per-PR", "rationale": "User picked nightly for whole-funnel coverage", "phase": "12"},
+    {"decision": "MVP shape: landing-page-only first; expand surface phase-by-phase", "rationale": "Avoid building wrong abstraction before knowing what good critique looks like", "phase": "12"},
+    {"decision": "Budget cap CLAUDE_QA_MAX_USD default $2/run", "rationale": "Prevents runaway loops; ~$30/mo at 3 personas nightly is acceptable", "phase": "12"}
   ],
-  "uncommitted_files": [
-    ".planning/phases/04-paddle-billing/ (empty directory created by plan-phase init)",
-    "app/scripts/dev-session.mjs (new dev-only seed helper)"
-  ],
-  "background_processes": [
-    {
-      "id": "bc7zhvsm1",
-      "command": "npm run dev (next dev)",
-      "cwd": "/Users/saharbarak/ceh-prep/app",
-      "url": "http://localhost:3000",
-      "output_file": "/private/tmp/claude-501/-Users-saharbarak/ea5c5bfb-23b8-4498-b637-355fc150247f/tasks/bc7zhvsm1.output",
-      "status": "running"
-    },
-    {
-      "id": "ceh-prep-mongo",
-      "command": "docker compose up -d mongo",
-      "cwd": "/Users/saharbarak/ceh-prep/app",
-      "port": 27017,
-      "image": "mongo:7",
-      "status": "healthy"
-    }
-  ],
-  "dev_credentials": {
-    "email": "sahar@dev.local",
-    "password": "Correct horse battery staple 9!",
-    "tier": "pro",
-    "role": "admin",
-    "email_verified": true,
-    "userId": "69de746a25fb402a7c1ab1db",
-    "regenerate_with": "node scripts/dev-session.mjs sahar@dev.local (from app/ cwd)"
-  },
-  "next_action": "/clear, then run /gsd:discuss-phase 4 to capture Paddle billing decisions. After it writes 04-CONTEXT.md, re-run /gsd:plan-phase 4 to spawn researcher -> planner -> checker.",
-  "context_notes": "User invoked /gsd:plan-phase with no args from /Users/saharbarak (no .planning). Confirmed target is /Users/saharbarak/ceh-prep per auto-memory. Plan-phase detected phase 4 as next unplanned, created directory, then paused at the CONTEXT.md gate because nesting AskUserQuestion into /gsd:discuss-phase is broken (issue #1009). In parallel the user asked to run the app and demo the logged-in dashboard, which required bringing docker mongo up and seeding a user directly (no pre-existing dev account despite the user's recollection). Dashboard renders correctly for the seeded pro/admin account (confirmed via curl + cookie). All phase 4 planning state is preserved in this handoff and HANDOFF.json."
+  "uncommitted_files": [],
+  "next_action": "Open new session. Read .planning/HANDOFF.json + .planning/phases/12-testing-and-llm-quality-review/.continue-here.md. Begin task #1: write app/scripts/qa/personas.json with 5 ICPs (full backstories in .continue-here.md).",
+  "context_notes": "12 commits ahead of upstream main; working tree clean. App builds green (npm run build, 14 routes including /api/cron/drip + /api/unsubscribe). Phase 10 drip is shippable end-to-end pending real RESEND_API_KEY in prod. Phase 12 MVP path: (1) personas, (2) install deps + Chromium ~250 MB, (3) ~200-line MVP harness with Playwright + Anthropic SDK + prompt caching for the per-persona context, (4) one screenshot per scroll position + Claude vision critique + markdown report at .planning/qa-reports/YYYY-MM-DD-landing.md. Context window hit 78% so user requested fresh session to continue. Invoke claude-api skill before writing SDK code to pull in current prompt caching best practices."
 }
