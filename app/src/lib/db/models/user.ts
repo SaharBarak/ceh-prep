@@ -38,6 +38,10 @@ const userSchema = new Schema(
 
     // ── Session epoch (Phase 2 — bumped on password reset to invalidate stale sessions) ─
     sessionEpoch: { type: Number, default: 0, select: false },
+
+    // ── Per-user lesson + lab completion (Phase 7 + Phase 8) ─
+    completedDays: { type: [Number], default: [] },
+    completedDrills: { type: [String], default: [] },
   },
   {
     versionKey: false,
