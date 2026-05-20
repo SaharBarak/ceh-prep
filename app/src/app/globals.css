@@ -1,0 +1,113 @@
+/* Tailwind v4 entry + font imports.
+   All @import rules must appear before any other rules (CSS spec). */
+@import "tailwindcss";
+@import url("https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,500,400&f[]=satoshi@500,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap");
+
+@theme {
+  /* Color tokens — desaturated lime accent on zinc-950 base.
+     No pure black (#000) and no AI purple/blue per the taste guide. */
+  --color-bg:           #0a0a0c;
+  --color-surface:      #111114;
+  --color-line:         #1d1d22;
+  --color-line-strong:  #2c2c33;
+  --color-ink:          #f4f4f5;
+  --color-ink-dim:      #a1a1aa;
+  --color-ink-faint:    #52525b;
+  --color-accent:       #bef264;   /* lime-300, desaturated */
+
+  /* Font stacks */
+  --font-display: "Cabinet Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body:    "Satoshi", ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+/* Global resets */
+html, body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-feature-settings: "ss01", "ss02";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+/* Subtle grain overlay — applied to body::before. Cheap visual texture. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  z-index: 100;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+}
+
+/* Display heading utility */
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+/* Mono tag — small uppercase metric label */
+.mono-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
+}
+
+/* Buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-accent);
+  color: var(--color-bg);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  border-radius: 999px;
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), filter 200ms;
+}
+.btn-primary:hover { filter: brightness(1.08); transform: translateY(-1px); }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-line);
+  color: var(--color-ink-dim);
+  border-radius: 999px;
+  font-size: 14px;
+  transition: border-color 200ms, color 200ms;
+}
+.btn-ghost:hover { border-color: var(--color-line-strong); color: var(--color-ink); }
+
+/* Lesson prose — applied to dangerouslySetInnerHTML'd lesson HTML */
+.prose-lesson p { margin: 0 0 1rem; }
+.prose-lesson p + p { margin-top: 1rem; }
+.prose-lesson strong { color: var(--color-ink); }
+.prose-lesson em { font-style: italic; color: var(--color-ink-dim); }
+.prose-lesson ul, .prose-lesson ol { margin: 1rem 0 1.25rem 1.25rem; }
+.prose-lesson ul { list-style: disc; }
+.prose-lesson ol { list-style: decimal; }
+.prose-lesson li { margin: 0.25rem 0; }
+.prose-lesson code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  padding: 0.1em 0.35em;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 4px;
+  color: var(--color-accent);
+}

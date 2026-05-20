@@ -25,9 +25,6 @@ export const sessionOptions: SessionOptions = {
 
 export const getSession = async () => {
   const cookieStore = await cookies();
-  // iron-session v8's CookieStore type lags Next 15's ReadonlyRequestCookies;
-  // runtime shapes are compatible. Single narrow suppression contained here.
-  // @ts-expect-error -- iron-session <> next/headers type drift
   return getIronSession<SessionData>(cookieStore, sessionOptions);
 };
 
