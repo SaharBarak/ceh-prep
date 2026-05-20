@@ -38,6 +38,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 9: Premium Content Library + Landing Lift** — Render `docs/content/*.md` as `/bonus` (Pro-gated), surface curated content samples on the landing page, and rework hero copy to sell on outcomes from real lesson value
 - [ ] **Phase 10: Email Drip — Curriculum Sequence** — Resend Audiences scaffolding + 14-day onboarding drip: one curriculum-tied email per day starting one day after signup, with free→Pro upsell injected at Day 4
 - [ ] **Phase 11: Email Broadcast + Re-engagement** — Fire-on-publish bonus-library digest broadcast, plus 7-day / 21-day re-engagement nudges for inactive users; shares Phase 10's Audience + suppression list
+- [ ] **Phase 12: Testing + LLM Quality Review** — Test suite (Vitest unit + Playwright E2E) wired into CI, plus an LLM-driven content + code review loop that critiques quiz questions, lesson copy, and PR diffs before merge
 
 ## Phase Details
 
@@ -199,6 +200,30 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 ---
 
+### Phase 12: Testing + LLM Quality Review
+**Goal**: The product gains two backstops at once. A **deterministic test suite** (Vitest unit + Playwright E2E) running in GitHub Actions on every PR — covering the auth → drip → curriculum → lab → bonus funnel and the security invariants (`$eq`-wrap, tier gate at both layers, NoSQLi negative tests, rate-limit truth-tables). And an **LLM-driven review loop** that critiques two surfaces no test suite catches: (a) quiz questions + lesson copy for CEH v13 accuracy + pedagogical clarity, and (b) PR diffs for the project's house-style rules (DDD layering, `$eq` discipline, server-action shape, no Claude-co-author tags, no AI-purple gradients).
+
+Scope is intentionally open — the success criteria below carry **placeholders** until the user picks a variant from the open questions in this phase's CONTEXT.md.
+
+**Depends on**: Phase 4 (E2E covers the full paywall funnel which needs Paddle wired); softer dep on Phase 5 (CI workflow file)
+**Requirements**: TEST-* + LLMQA-* (to be enumerated during planning, scope-gated)
+**Success Criteria** (what must be TRUE — PLACEHOLDER, narrows after scope Q&A):
+  1. `npm run test` runs the Vitest unit suite locally in <30 s and the Playwright E2E suite headlessly in <2 min; both run in GitHub Actions on every PR and merge-to-main is gated on green.
+  2. The E2E suite covers at least: landing → signup → verify-email → login → /course/1 → quiz-answer → mark-complete → /bonus → /pricing → upgrade-stub. Each step asserts not just navigation but a single backend invariant (Mongo doc shape, audit row, session epoch).
+  3. NoSQLi negative tests: for every server action that takes user input, a Vitest case fires a `$ne`/`$regex` injection payload at the parameter and asserts the action returns `error: "invalid_input"` (or that the `$eq`-wrap neutralized it). The grep-rule (no missing-`$eq` queries) runs in CI.
+  4. The **LLM Quality Review** runs against every changed `app/src/lib/content/days.ts` quiz question on PR open, returns a JSON critique (factual_accuracy / clarity / domain_fit / suggested_improvement), and posts a PR review comment if any field falls below a threshold. Same loop runs on `docs/content/*.md` items to flag stale GitHub repo references + outdated CVE counts.
+  5. The **LLM PR Diff Review** posts an automated review on every PR enforcing the house-style rules: every Mongo query wraps user input in `$eq`, every protected layout re-verifies session, every "use server" file's top-level exports are async, no Claude/Anthropic co-author tags in commit messages, no banned fonts/colors in CSS deltas. Disagreements with the LLM are surfaced as suggestions, not blockers — final merge is human.
+**Plans**: TBD (run `/gsd:plan-phase 12` once scope questions are answered)
+
+**Open scope questions before planning:**
+- Test stack: just Vitest + Playwright, or also include MSW for action mocking + supertest for route handlers? Adding mocking layers doubles maintenance.
+- LLM provider for the review loop: Claude API direct (we control the prompt, we eat the cost), or GitHub Copilot Workspace / Actions LLM (free but opaque)? Direct gives us better control.
+- Quality review trigger: only on changed files in a PR (cheap, focused), or whole-repo nightly (expensive but catches drift)? Per-PR is the default; nightly is opt-in.
+- Quiz question critique: blocking (PR can't merge if critique fails) or advisory (comment only, human decides)? Advisory is safer for v1.
+- Self-review: should the LLM also critique the LLM's previous critiques (chain-of-critique), or strictly one-pass? One-pass is simpler; chain-of-critique is what we did manually with `octo:droids:octo-frontend-developer` on the landing.
+
+---
+
 ## Progress
 
 **Execution Order:**
@@ -220,6 +245,7 @@ Three parallel tracks share the milestone:
 | 9. Premium Content Library + Landing Lift | 0/TBD | Not started | - |
 | 10. Email Drip — Curriculum Sequence | 0/TBD | Not started | - |
 | 11. Email Broadcast + Re-engagement | 0/TBD | Not started | - |
+| 12. Testing + LLM Quality Review | 0/TBD | Scope-gated | - |
 
 ## Coverage
 
@@ -239,9 +265,15 @@ Note: The REQUIREMENTS.md traceability footer previously listed "69 total" — t
 - Counts TBD until `/gsd:plan-phase 10..11` enumerates them
 - Compliance line items (CAN-SPAM / GDPR / one-click unsubscribe) folded into BLAST + REENG
 
+**QA + review track** (Phase 12):
+- New requirement families: TEST-*, LLMQA-*
+- Scope deliberately open until 5 questions in §"Open scope questions" are answered
+- Cross-track dep: Phase 12 → Phase 4 (E2E needs the paywall funnel) + soft dep on Phase 5 (CI workflow)
+
 ---
 *Roadmap created: 2026-04-13*
 *Phases 6-9 added: 2026-05-19 (content + lab + landing track)*
 *Phases 10-11 added: 2026-05-20 (email engagement track)*
-*Granularity: 11 phases — 5 v1 + 4 content/lab/landing + 2 email*
+*Phase 12 added: 2026-05-20 (QA + review track — scope-gated)*
+*Granularity: 12 phases — 5 v1 + 4 content/lab/landing + 2 email + 1 QA*
 *Parallelization: enabled*

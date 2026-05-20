@@ -8,7 +8,7 @@ status: unknown
 stopped_at: Phase 3 context gathered
 last_updated: "2026-04-14T15:46:21.032Z"
 progress:
-  total_phases: 11
+  total_phases: 12
   completed_phases: 2
   total_plans: 12
   completed_plans: 12
@@ -141,6 +141,7 @@ Full decision log lives in PROJECT.md Key Decisions table. Most recent decisions
 - 2026-05-19: Added Phase 9 (Premium Content Library + Landing Lift) — render `docs/content/*.md` as `/bonus`, rework hero copy with real content samples
 - 2026-05-20: Added Phase 10 (Email Drip — Curriculum Sequence) — Resend Audiences + 14-day onboarding drip; Day 4 free→Pro upsell
 - 2026-05-20: Added Phase 11 (Email Broadcast + Re-engagement) — fire-on-publish bonus digest + 7/21-day re-engagement nudges
+- 2026-05-20: Added Phase 12 (Testing + LLM Quality Review) — Vitest + Playwright + GitHub Actions CI, plus LLM-driven critique of quiz/lesson content + PR diffs. Scope gated on 5 open questions in ROADMAP.md Phase 12 entry.
 
 ### Pending Todos
 
