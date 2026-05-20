@@ -1,10 +1,24 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { signup } from "@/lib/actions/auth";
 import type { ActionState } from "@/lib/actions/shared";
 
 const initial: ActionState = {};
+
+/**
+ * Read the browser's IANA timezone identifier (e.g. "Europe/Berlin") once
+ * on mount, then carry it in a hidden form field at submit. The server
+ * action revalidates against Intl.DateTimeFormat — we never trust this
+ * value beyond a hint for Phase 10's drip schedule.
+ */
+const resolveTimezone = (): string => {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone ?? "UTC";
+  } catch {
+    return "UTC";
+  }
+};
 
 const ERROR_COPY: Record<string, string> = {
   invalid_input: "Check email format and password length (≥10).",
@@ -21,11 +35,19 @@ export const SignupForm = () => {
     signup,
     initial,
   );
+  const [tz, setTz] = useState("UTC");
+
+  // Hydrate timezone client-side. Hidden field below carries it on submit
+  // so Phase 10's drip fires at ~09:00 local instead of naive UTC.
+  useEffect(() => {
+    setTz(resolveTimezone());
+  }, []);
 
   const errorMessage = state.error ? (ERROR_COPY[state.error] ?? state.error) : null;
 
   return (
     <form action={formAction} className="space-y-5">
+      <input type="hidden" name="timezone" value={tz} />
       <label className="block">
         <span className="mono-tag mb-2 block">Name (optional)</span>
         <input

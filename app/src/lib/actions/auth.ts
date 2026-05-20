@@ -61,6 +61,13 @@ export const signup = async (
 
   const { email, password, displayName } = parsed.data;
 
+  // Best-effort client-side timezone capture. Validated against IANA's
+  // tz database via Intl.DateTimeFormat — Phase 10's drip uses this to
+  // fire at 09:00 local. Falls back to UTC if missing or malformed; we
+  // never trust raw form input to land in a Mongo doc unvalidated.
+  const tzRaw = formData.get("timezone");
+  const tz = typeof tzRaw === "string" ? sanitizeTimezone(tzRaw) : "UTC";
+
   // Strength gate — zxcvbn score 0–4, we require >=3
   const strength = zxcvbn(password);
   if (strength.score < 3) {
@@ -91,6 +98,7 @@ export const signup = async (
       displayName: displayName ?? "",
       tier: "free",
       lastLoginAt: new Date(),
+      timezone: tz,
     });
 
     const session = await getSession();
@@ -228,4 +236,24 @@ export const logout = async (): Promise<void> => {
     await audit(meta, "logout", "ok", {}, userId);
   }
   redirect("/");
+};
+
+/**
+ * Whitelist user-supplied timezone strings against the IANA database via
+ * Intl.DateTimeFormat. Returns the input if valid, "UTC" otherwise.
+ *
+ * Why server-side: even though the signup form picks the timezone via
+ * the browser's Intl API, a malicious POST can submit anything. Never
+ * persist a raw user-supplied identifier without validating it — the
+ * downstream drip cron passes this to `new Intl.DateTimeFormat({timeZone})`
+ * which throws RangeError on garbage, which would crash the cron run.
+ */
+const sanitizeTimezone = (tz: string): string => {
+  if (tz.length > 64 || !/^[A-Za-z][A-Za-z0-9_/+\-]+$/.test(tz)) return "UTC";
+  try {
+    new Intl.DateTimeFormat("en-US", { timeZone: tz });
+    return tz;
+  } catch {
+    return "UTC";
+  }
 };

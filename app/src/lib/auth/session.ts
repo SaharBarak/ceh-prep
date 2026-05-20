@@ -54,7 +54,16 @@ export const requireSession = async (): Promise<{
   }
 
   await connectDB();
-  const user = await UserModel.findOne({ _id: { $eq: session.userId } })
+  // Combined fetch + lastActiveAt touch in one round trip. Phase 11's
+  // re-engagement triggers ((now - lastActiveAt) > 7d / 21d) need this
+  // field to be fresh on every authenticated request. The Mongo-side
+  // $set is cheap and removes the read-modify-write race that two
+  // separate queries would create.
+  const user = await UserModel.findOneAndUpdate(
+    { _id: { $eq: session.userId } },
+    { $set: { lastActiveAt: new Date() } },
+    { new: false, projection: { sessionEpoch: 1 } },
+  )
     .select("+sessionEpoch")
     .lean<{ sessionEpoch?: number } | null>();
 
