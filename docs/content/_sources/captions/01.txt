@@ -1,0 +1,31 @@
+TITLE: Video by kerem.tech
+UPLOADER: 54638301196
+UPLOADER_URL: 
+TIMESTAMP: 1775562718
+DURATION: 8.08
+---DESCRIPTION---
+Claude is an AI assistant built by Anthropic. For cybersecurity engineers, it works like a second brain that knows every syntax, every framework, and every config format you deal with daily.
+
+Instead of reading documentation for Sigma, YARA, Kubernetes, or GitHub Actions every time you need to write a rule or config, you describe what you want in plain English and Claude generates production-ready output.
+
+Just go to claude.ai and start prompting.
+
+Here are 7 prompts every cybersecurity engineer should save:
+Sigma Rule Generation: Sigma is a generic detection rule format that works across any SIEM. Describe the attack, get a deployable rule.
+
+YARA Rule Writing: YARA is a pattern-matching tool for identifying malware. Define your indicators, get a scanning rule.
+CIS Hardening Guide: CIS Benchmarks are the industry-standard security baselines for OS and cloud hardening. Pick your OS, get exact commands.
+
+IR Runbook: A runbook is a step-by-step incident response procedure. Name the scenario, get containment to recovery in minutes.
+
+K8s NetworkPolicy: NetworkPolicies control pod-to-pod traffic in Kubernetes clusters. Describe the segmentation, get a zero-trust YAML.
+
+CI/CD Security Pipeline: Security pipelines automate SAST, container scanning, and secret detection in your build process. List your tools, get a working workflow.
+
+Adversary Simulation Plan: Adversary simulation replicates real threat actor TTPs mapped to MITRE ATT&CK. Pick a threat group, get a full exercise plan.
+
+No sensitive data needed in any prompt. No logs, no source code, no infrastructure details. You describe the intent, Claude handles the syntax.
+
+Save this for your next shift.
+
+#cybersecurity #claude #ai #blueteam #infosec

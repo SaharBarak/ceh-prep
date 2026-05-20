@@ -1,0 +1,204 @@
+--- scene_01.jpg ---
+--- scene_02.jpg ---
+10:01 PM
++
+my.net
+nter Exploit-DB Google Hacking DB
+on attack, querying the database type and version on
+LAB Notsolved 4
+se retrieve the strings: 'Oracle Database 11g Express Edition Release 11.2.0.2.0 -
+PL/SQL Release 11.2.0.2.0 - Production, CORE 11.2.0.2.0 Production, TNS for
+.2.0.2.0 - Production, NLSRTL Version 11.2.0.2.0 - Production’
+Home
+IKE TO
+SHOP oa
+festyle Tech gifts
+ate of the art, home office. ZZZZZZ Bed is a revolutionary space-saving concept for those of you struggling to fit
+bout its useful integration in your existing room, it's also about the convenience it offers in your work and leisure
+vorking day and it's time for a well-earned nap. You will be able to save time by moving your work to one side, as
+natural flow of the day. When you've had your power nap, and are ready to get back to it everything is there
+balance like the ZZZZZZ bed can. Sleep in comfort when you need to, whatever time of day it is. Wake up and
+your Office will always be at your fingertips. Call us today for a free quote and to discuss any of our innovative
+out
+st one beer? Say goodbye to long queues at the bar thanks to this handy belt. This beer belt is fully adjustable up
+ccording to how much beer you're drinking. With its camouflage design, it's easy to sneak beer into gigs, parties
+ver or just someone who hates paying for drinks at the bar! Simply strap it on and load it up with your favourite
+Ss sturdy design, you'll Op be able to boast about having a six pack. Buy this adjustable belt today and never
+= {5 MU
+--- time_01.jpg ---
+9:53 PM CO 4% 43%
+3. ™ Google Hacking DB SS
+IN FREE CTF GET KALI BLOG DOCUMENTATION vy COMMUNITY ~ COURSES DEVELOPERS v
+Packages and Binaries:
+hexstrike-ai
+AI-Powered MCP Cybersecurity Automation Platform
+This package contains an HexStrike AI MCP v6.0 which features a multi-agent architecture with auton
+agents, intelligent decision-making, and vulnerability intelligence.
+Installed size: 2.75 MB
+How to install: judo apt install hexstrike-ai
+Dependencies:
+S hexstrike_mcp
+root@keali:~# hexstrike_mcp -h
+usage: hexstrike_mcp.py [-h] [--server SERVER] [--timeout TIMEOUT] [--de
+Run the HexStrike AI MCP Client
+options:
+-h, --help show this help message and exit
+--server SERVER HexStrike AI API server URL (default:
+http://127.0.0.1:8888)
+--timeout TIMEOUT Request timeout in seconds (default: 300)
+--debug Enable debug logging
+--- time_02.jpg ---
+9:54 PM
+ee New Folder
+Paste
+Select All
+Arrange Icons
+Arrange By... >
+Show Desktop in Files
+Background...
+Desktop Icons Settings \
+Display Settings
+\
+KALI
+SHBewus:
+--- time_03.jpg ---
+rioSe
+--- time_04.jpg ---
+9:54 PM
+Fe
+@
+sudo apt install hexstrike-
+> sudo apt install hexstrike-ai
+[sudo] password for kali:
+The following packages were automatically installed and are no Longe
+Libicu76 libipc-run-perl libsvtavlenc2 libunibreak6 post
+libio-pty-perl libsimdutf31 libteamdctlO  lLibzxing3 pyth
+Use ‘sudo apt autoremove' to remove them.
+Installing:
+hexstrike-ai
+Summary:
+Upgrading: 0, Installing: 1, Removing: 0, Not Upgrading: 36
+Download size: 0 B / 2,025 kB
+Space needed: 2,892 kB / 53.2 GB available
+Selecting previously unselected package hexstrike-ai.
+(Reading database... 507611 files and directories currently installed.
+Preparing to unpack ../hexstrike-ai_0.0~git20260306 .8333779-Okalil al
+Unpacking hexstrike-ai (0.0~git20260306.8333779-0kalil)...
+Setting up hexstrike-ai (0.0~git20260306 .8333779-Okalil)...
+Processing triggers for kali-menu (2026.2.2)..
+Progress: [ 80%]fI
+eee
+--- time_05.jpg ---
+Places
+@y Search with Google or enter address
+--- time_06.jpg ---
+Places
+ike-ai| Kali LinuxTc x | ©) GitHub-Ox4m4/hexstrik x +
+a O B github.com/0x4m4/hexstrike-ai
+narks... © OffSec Kali Linux KaliTools » KaliDocs ¥KaliForums «& KaliNetHunter ® Exploit-DB ™ Gooc
+{) README 4 MiT license
+# 3. Install Python dependencies
+pip3 install -r requirements.txt
+Installation and Setting Up Guide for various Al Clients:
+Installation & Demo Video
+Watch the full installation and setup walkthrough here: YouTube - HexStrike A
+Supported Al Clients for Running & Integration
+You can install and run HexStrike Al MCPs with varidtis Al clients, including:
+e 5ire (Latest version v0.14.0 not supported for now)
+e VS Code Copilot
+¢ Roo Code
+e Cursor
+e Claude Desktop
+e Any MCP-compatible agent
+Refer to the video above for step-by-step instructions and integration example:
+Install Security Tools
+Core Tools (Essential):
+# Network & Reconnaissance
+--- time_07.jpg ---
+9:54 PM
+1 or Cursor
+sktop_config.json :
+i/hexstrike_mcp.py",
+Bt
+ke AI v6.0 - Advanced Cybersecurity Automation Platform",
+-ode/settings.json :
+--- time_08.jpg ---
+SUB ew mm:
+--- time_09.jpg ---
+ee & & &|
+--- time_10.jpg ---
+Q
+Home
+Recent
+Starred
+Network
+Trash
+Documents
+Music
+Pictures
+Videos
+Downloads
+9:55 PM
+Claude
+Local MCP servers
+Add and manage MCP servers that you're working on.
+Files = < ti Home / .config / Claude : Ca &yv
+= tS
+—=
+— L a L “J td)
+ant-did claude_desktop_co config.json Cookies
+nfig.json
+} (S Ie
+Cookies-journal cowork-enabled- DIPS DIPS-wal
+cli-ops.json
+extensions- fcache git-worktrees.json Local State
+blocklist.json
+t=)
+[tl]
+| a
+“claude_desktop_config.json” selected (162 b'
+|
+CHE °&h Be
+--- time_11.jpg ---
+ral
+punt
+cy
+g
+abilitie
+vector
+de Ca
+top app
+oral
+nsions
+Sloper
+9:55 PM
+Claude
+€ Settings
+Local MCP servers
+Add and manage MCP servers that you're working on.
+(8 Open v claude_desktop_config.json
+ON OOF WN PB
+~/.config/Claude
+Configure MCP
+--- time_12.jpg ---
+9:55 PM
+Claude
+€ Settings
+sral Local MCP servers
+Add and manage MCP servers that you're working on.
+punt S Open v . eee
+cy 1 {
+- 2  "“mcpServers": {
+3 "hexstrike-ai": {
+abilitie 4 "command": "“python3",
+rector a aces ; q =
+6 --server",
+deCa 7 "http: //localhost:8888"
+8 1,
+topapp 9 "description": "HexStrike AI v6.0 - Advanced Cyb
+sral Automation Platform",
+a) "timeout": 300,
+nsions 44 "disabled": false
+sloper 12 }
+13 }
+14 }

@@ -1,0 +1,43 @@
+TITLE: Video by kerem.tech
+UPLOADER: 54638301196
+UPLOADER_URL: 
+TIMESTAMP: 1777634726
+DURATION: 8.545
+---DESCRIPTION---
+Companies want you to hack them. Here's where.
+
+Not theory, not CTFs. Real platforms paying real money to ethical hackers
+who find real bugs.
+
+HackerOne — The largest and most established platform in the industry. Over
+$300M paid out since 2012. Hosts programs from Uber, Spotify, GitHub, Slack
+and the U.S. Department of Defense. Top hunters earn $250K+ per single bug.
+
+Bugcrowd — Founded the same year as HackerOne. Used by OpenAI, Atlassian,
+Mastercard and T-Mobile for bug bounties and managed pentests. Strong
+enterprise integration with Jira and ServiceNow.
+
+Intigriti — Europe's leading platform, based in Belgium. Backed by Microsoft,
+Intel, Red Bull, Nestle and Ubisoft. Best entry point for European hunters
+and known for the most hacker friendly UX in the industry.
+
+Synack — Invite-only with around 1,500 vetted Synack Red Team members across
+80+ countries. Hybrid hourly plus bounty model. Targets enterprise and
+government clients including the IRS, Allianz and Navy Federal Credit Union.
+
+YesWeHack — French platform with strong presence in Europe and Asia. Hosts
+programs from OVHcloud, Doctolib, Tencent and ZTE. GDPR compliant
+infrastructure and the platform of choice for many EU public sector programs.
+
+Immunefi — The dominant Web3 platform, paying out the largest bounties in
+cybersecurity history. Awarded a $10M payout for the Wormhole bug, the
+highest ever paid. Trusted by Chainlink, Arbitrum, MakerDAO and most top
+DeFi protocols.
+
+HackenProof — Web3 bounty platform from the Hacken security group. $22M+
+paid to hackers, 70K+ researchers. Hosts programs for Gate.io, NEAR,
+MetaMask, Aptos and Polygon. More accessible alternative to Immunefi.
+
+Save this. Share with the friend who thinks hacking doesn't pay.
+
+#cybersecurity #bugbounty #ethicalhacking #infosec #securityresearch

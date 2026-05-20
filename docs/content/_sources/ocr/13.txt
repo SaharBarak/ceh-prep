@@ -1,0 +1,1139 @@
+--- time_01.jpg ---
+nzu/hackingtool Public
+de
+© Issues 59 1) Pull requests
+FP master -  2Branches ©
+@ Zanzu Restructure for v2.0.0 with new tools, features, and Ul updates (#590) om
+®& github
+B images
+tools:
+dockerignore
+.gitignore
+Dockerfile
+LICENSE
+README.md
+README_template.md
+config.py
+constants.py
+core.py
+docker-compose ym!
+generate_readme.py
+hackingtool. py
+install.py
+install.sh
+os_detect.py
+requirements.txt
+DODD BO BDC oO BB oB\oD VD VBioito
+update.sh
+8B
+README ‘I? MIT license
+csv TOOL
+2 © Actions [Fj Projects © Security and quality [~ Insights
+2 Tags
+Q Gotofile
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features,
+Restructure for v2.0.0 with new tools, features,
+Restructure for v2.0.0 with new tools, features,
+and Ul upd...
+and Ul upd...
+and Ul upd...
+{Fix}#install & Update Script fixed, added gitignore
+Restructure for v2.0.0 with new tools, features,
+Initial commit
+Restructure for v2.0.0 with new tools, features,
+Restructure for v2.0.0 with new tools, features,
+Restructure for v2.0.0 with new tools, features,
+Restructure for v2.0.0 with new tools, features,
+Restructure for v2.0.0 with new tools, features,
+Restructure for v2.0.0 with new tools, features,
+Feat/rich UI menu lovely (#567)
+Restructure for v2.0.0 with new tools, features,
+Restructure for v2.0.0 with new tools, features,
+Restructure for v2.0.0 with new tools, features,
+Restructure for v2.0.0 with new tools, features,
+Restructure for v2.0.0 with new tools, features,
+Restructure for v2.0.0 with new tools, features,
+hackingtoos 92.
+HACKING
+and Ul upd...
+and Ul upd...
+and UI upd...
+and Ul upd...
+and Ul upd...
+and Ul upd...
+and Ul upd...
+and Ul upd...
+and Ul upd...
+and UI upd...
+and UI upd...
+and Ul upd...
+and Ul upd...
+ne repo
+All-in-One Hacking Tool for Security Researchers & Pentesters
+What's New in v2.0.0
+Feature
+Python 3.10+
+OS-aware menus
+185+ tools
+Search
+Tag filter
+Recommend
+Install status
+Install all
+Smart update
+Open folder
+Docker
+One-liner install
+Breeargroaratiivr
+3 new categories
+Quick Commands
+Description
+All Python 2 code removed, modern syntax throughout
+Linux-only tools hidden automatically on macOS
+35 new modern tools added across 6 categories
+Type / to search all tools by name, description, or keyword
+Type t to filter by 19 tags — osint, web, c2, cloud, mobil
+Type r —"Iwant to scan a network" > shows relevant tools
+/ shown next to every tool — know what's ready
+Option 97 in any category — batch install at once
+Each tool has Update — auto-detects git pull / pip upgrade / go install
+Jump into any tool's directory for manual inspection
+Builds locally — no unverified external images
+curl -sSL
+Active Directory, Cloud Security, Mobile Security
+++-/install.sh | sudo bash — zero manual steps
+© Sponsor —£\ Notifications
+O1a5ibb - last month © 385 Commits
+last month
+last month
+last month
+last month
+3 years ago
+last month
+6 years ago
+last month
+last month.
+last month
+last month
+last month
+last month
+6 months ago
+fast month
+fast month
+last month
+last month,
+last month
+last month
+'Y Fork 67k © Star |
+About
+ALL IN ONE Hacking Tool For
+Hackers
+linux hacking —_ steganography
+xss-detection hacker —_xss-attacks
+ctt-tools —_password-attack
+ddos-attack-tool _allinonehackingtool
+web-attack —_wireless-attack
+besthackingtoo!
+Readme
+MIT license
+Activity
+59.4k stars
+1.3k watching
+<On F388
+6.7k forks
+Report repository
+Sponsor this project
+© buymeacoffee.com/hardikzinzu
+Contributors 36
++22 contributors
+Languages
+© Python 95.9%
+Dockerfile 0.7%
+© Shell 4.0%
+--- time_02.jpg ---
+nzu/hackingtool Public
+de
+© Issues 59
+FP master ~
+dockerignore
+.gitignore
+Dockerfile
+LICENSE
+README.md
+README_template.md
+config.py
+constants.py
+core.py
+docker-compose ym!
+generate_readme.py
+D\OloO|Ol|a\|D|clol\o|o|o|ol|c|\o|o|o|\co/8\F\F|@
+hackingtool.py Restructure for v2.0.0 with new tools, features, and UI upd...
+install.py Restructure for v2.0.0 with new tools, features, and UI upd...
+install.sh Restructure for v2.0.0 with new tools, features, and UI upd...
+os_detect.py Restructure for v2.0.0 with new tools, features, and Ui upd...
+requirements.txt Restructure for v2.0.0 with new tools, features, and UI upd...
+update.sh Restructure for v2.0.0 with new tools, features, and UI upd...
+© README = “8 MiT license
+bundles 185
+HACKING
+csv TOOL i
+All-in-One Hacking Too! for Security Researchers & Pentesters
+_ to careconres, [asss-voous | [ESIEASa [AT etaie (Wane pAnney IWAeaR
+ERT [cucce covornes | REY
+What's New in v2.0.0
+Feature Description
+2 Python 3.10+ All Python 2 code removed, modern syntax throughout
+(1 OS-aware menus _Linux-only tools hidden automatically on macOS
+© 185+ tools 35 new modern tools added across 6 categories
+®@ Search Type / to search all tools by name, description, or keyword
+@ Tag filter Type t to filter by 19 tags — osint, web, 2, cloud, mobil
+@ =~ Recommend Type r —"I want to scan a network" > shows relevant tools
+install status /® shown next to every tool — know what's ready
+4 Install all Option 97 in any category — batch install at once
+® smart update Each tool has Update — auto-detects git pull / pip upgrade / go install
+B Open folder Jump into any tool's directory for manual inspection
+@ Docker Builds locally — no unverified external images
+4 One-linerinstall curl ~sSL_.../install.sh | sudo bash —zero manual steps
+I 3newcategories Active Directory, Cloud Security, Mobile Security
+Quick Commands
+1 Pullrequests 2
+P 2Branches © 2 Tags
+Z4nzu Restructure for v2.0.0 with new tools, features, and UI updates (#590) ==
+© Actions [F Projects © Security andquality [~ Insights
+Q Gotofile
+O1a51bb - last month
+Restructure for v2.0.0 with new tools, features, and Ul ups
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+{Fix}#install & Update Script fixed, added gitignore
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Initial commit
+Restructure for v2.0.0 with new tools, features, and UI ups
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Feat/rich UI menu lovely (#567)
+© sponsor {Notifications
+‘© 335 Commits
+last month.
+last month
+last month
+fast month
+3 years ago
+fast month
+6 years ago
+last month
+last month
+last month.
+last month
+last month
+last month
+6 months ago
+last month
+last month,
+last month,
+last month
+last month
+last month
+Y Fork 67k —xY Star
+About
+ALL IN ONE Hacking Tool For
+Hackers
+linux hacking steganography
+xss-detection hacker —_xss-attacks
+ctt-tools —_password-attack
+ddos-attack-toot _allinonehackingtool
+web-attack  wireless-attack
+besthackingtool
+@ Readme
+MIT license
+A Activity
+wr 59.4k stars
+@ 13k watching
+Y 6.7k forks
+Report repository
+Sponsor this project
+1 buymeacoffee.comjhardikzinzu
+Contributors 36
+0162686
+PT Oa Pp
+o¢€
++22 contributors
+Languages
+© Python 95.3% @ Shell 4.0%
+Dockerfile 0.7%
+pentest
+--- time_03.jpg ---
+nzu/hackingtool Public © Sponsor  £\ Notifications YY Fork 6.7k wy Star &
+de © Issues 59 [1] Pullrequests 2 © Actions {f] Projects © Security and quality [~ Insights
+PB master ~ FP 2Branches © 2 Tags Q Gotofile | © code - About
+ALL IN ONE Hacking Tool For
+@ Zanzu Restructure for v2.0.0 with new tools, features, and Ul updates (#590) =v O1a5tbb- last month 335 Commits Hackers
+faxcinontht linux hacking —_ steganography
+xss-detection hacker —_xss-attacks
+@& github Restructure for v2.0.0 with new tools, features, and UI up
+Be images Restructure for v2.0.0 with new tools, features, and UI upd... last month ae >
+B tools Restructure for v2.0.0 with new tools, features, and UI upd... last month Soe Ce) (eenonaeckontion
+web-attack _wireless-attack
+© .dockerignore Restructure for v2.0.0 with new tools, features, and Ul upd... last month
+besthackingtoo!
+1 gitignore {FIx}#install & Update Script fixed, added gitignore 3 years ago
+@ Readme
+(3 Dockerfile Restructure for v2.0.0 with new tools, features, and UI upd... last month 3B Mit license
+Av Activity
+(© UcENsE Initial commit 6 years ago
+vr 59.4k stars
+() README.md Restructure for v2.0.0 with new tools, features, and UI up last month. © 13k watching
+(3. README_template.md Restructure for v2.0.0 with new tools, features, and Ul upd... last month 6.7K forks
+Report repository
+C config.py Restructure for v2.0.0 with new tools, features, and UI upd... last month
+1 constants.py Restructure for v2.0.0 with new tools, features, and UI upd... last month Sponsor this project
+© core.py Restructure for v2.0.0 with new tools, features, and UI upd... last month © buymeacoffee.com/hardikzinzu
+(3 docker-compose.ymI Restructure for v2.0.0 with new tools, features, and UI upd... last month
+Contributors 36
+(5 generate_readme.py Feat/rich UI menu lovely (#567) 6 months ago
+0416686
+D) hackingtool.py Restructure for v2.0.0 with new tools, features, and Ul upd... last month *F
+1 O-aD
+© instalt.py Restructure for v2.0.0 with new tools, features, and UI upd... last month a >
+C install.sh Restructure for v2.0.0 with new tools, features, and UI upd... last month £ ¢
++22 contributors
+D os_detect.py Restructure for v2.0.0 with new tools, features, and Ul upd... last month, ——
+1 requirements.txt Restructure for v2.0.0 with new tools, features, and UI upd... last month Languages
+1 update.sh Restructure for v2.0.0 with new tools, features, and UI upd... last month =
+© Python 95.3% @ Shell 4.0%
+Dockerfile 0.7%
+README = "5 MIT license
+workflow one workflow
+HACKING
+-One Hacking Tool for Security Researchers & Pentesters
+(eee) ion 08) A | Rs 7 RG cr
+| tecareconses [fassiroots | ERS) [DiSane eee ie Mano eaEOn
+EAR [cviecconnvos| EIN
+What's New in v2.0.0
+Feature Description
+2 Python 3.10+ All Python 2 code removed, modern syntax throughout
+[1 0S-aware menus _Linux-only tools hidden automatically on macOS
+© 185+ tools 35 new modern tools added across 6 categories
+® Search Type / to search all tools by name, description, or keyword
+@ Tag filter Type t to filter by 19 tags — osint, web, 2, cloud, mobil
+@ =~ Recommend Type r —"I want to scan a network" > shows relevant tools
+@ install status /® shown next to every tool — know what's ready
+4 Install all Option 97 in any category — batch install at once
+® smart update Each tool has Update — auto-detects git pull / pip upgrade / go install
+BS Open folder Jump into any tool's directory for manual inspection
+@ Docker Builds locally — no unverified external images
+# — One-liner install curl -sSL .../install.sh | sudo bash — zero manual steps
+IM 3newcategories Active Directory, Cloud Security, Mobile Security
+Quick Commands
+--- time_04.jpg ---
+zu / hackingtool Public © Sponsor {\ Notifications © Y Fork 6.7k YW Star 5
+le © Issues 59 [ Pullrequests 2 © Actions [Fj Projects © Securityandquality |~ Insights
+P master ~ ¥ 2Branches © 2 Tags Q Gotofile © code > | About
+ALL IN ONE Hacking Tool For
+@ Zanzu Restructure for v2.0.0 with new tools, features, and Ul updates (#590) = Ota5tbb last month ® 335 Commits Hackers
+steganography
+Be github Restructure for v2.0.0 with new tools, features, and UI upd... last month Hex) “Teck
+xss-detection hacker —_xss-attacks
+B® images Restructure for v2.0.0 with new tools, features, and UI upd.. last month tte
+ddos-attack-tool allinonehackingtoo!
+BS tools Restructure for v2.0.0 with new tools, features, and Ul upd.. last month
+web-attack wireless-attack
+(3 dockerignore Restructure for v2.0.0 with new tools, features, and UI upd.. last month
+besthackingtool
+DB gitignore [FIX}#install & Update Script fixed, added gitignore Byears ago
+@ Readme
+© Dockerfile Restructure for v2.0.0 with new tools, features, and UI upd... last month 3B MIT license
+A” Activity
+D ucense Initial commit 6 years ago
+YY 59.4k stars
+(3) README.md Restructure for v2.0.0 with new tools, features, and UI upd... last month © 13k watching
+(3) README_template.md Restructure for v2.0.0 with new tools, features, and UI upd... last month Y G.7kctorks
+Report repository
+D contig.py Restructure for v2.0.0 with new tools, features, and UI upd... last month
+D constants.py Restructure for v2.0.0 with new tools, features, and UI upd... last month ‘Sponsor this project
+© core.py Restructure for v2.0.0 with new tools, features, and UI upd... last month © buymeacoffee.com/hardikzinzu
+© docker-compose.ym! Restructure for v2.0.0 with new tools, features, and UI upd... last month
+Contributors 36
+© generate_readme.py Feat/rich UI menu lovely (#567) 6 months ago
+© hackingtool.py Restructure for v2.0.0 with new tools, features, and Ul upd... last month t°) g @ 9 @
+Se
+®' O30
+© installpy Restructure for v2.0.0 with new tools, features, and UI upd... last month du 2
+© instal.sh Restructure for v2.0.0 with new tools, features, and UI upd... last month = ?
++22 contributors
+D os_detect.py Restructure for v2.0.0 with new tools, features, and UI upd.. last month a
+(3 requirements.txt Restructure for v2.0.0 with new tools, features, and UI upd.. last month Languages
+© update.sh Restructure for v2.0.0 with new tools, features, and UI upd.. last month —
+© Python 95.3%  @ Shell 4.0%
+Dockerfile 0.7%
+@ README = MIT license
+Security testers often
+Backingtool —
+What's New in v2.0.0
+Feature Description
+2& Python 3.10+ All Python 2 code removed, modern syntax throughout
+( OS-aware menus _Linux-only tools hidden automatically on macOS
+© 185+ tools 35 new modern tools added across 6 categories
+@ Search Type / to search all tools by name, description, or keyword
+@ tagfilter Type t to filter by 19 tags — osint, web, c2, cloud, mobile...
+@ =~ Recommend Type r —"Iwant to scan a network" > shows relevant tools
+@ install status / shown next to every tool — know what's ready
+4 Install all Option 97 in any category — batch install at once
+© smart update Each tool has Update — auto-detects git pull / pip upgrade / go install
+@ Open folder Jump into any tool's directory for manual inspection
+@ Docker Builds locally — no unverified external images
+# ~~ One-liner install curl -sSL .../install.sh | sudo bash —zero manual steps
+™ 3newcategories Active Directory, Cloud Security, Mobile Security
+Quick Commands
+--- time_05.jpg ---
+ackingtool Pubic
+) Issues 59
+* master ~
+BD Z4nzu Restructure for v2.0.0 with new tools, features, and Ul updates (#590) ==
+= github
+Mm images
+BH tools
+9) .dockerignore
+) gitignore
+*) Dockerfile
+3) LICENSE
+“) README.md
+“| README_template.md
+") config.py
+*) constants.py
+) core.py
+) docker-composeym!
+“\ generate_readme.py
+3} hackingtool.py
+>) install.py
+) install.sh
+") os_detect.py
+) requirements.txt
+>) update.sh
+T] README = 41 MIT license
+1) Pullrequests 2
+P 2Branches © 2 Tags
+All-in-One Hacking Tool for Security Researchers & Pentesters
+© Actions fF] Projects © Securityand quality |~” Insights
+Q Goto file
+Restructure for v2.0.0 with new tools, features, and Ul upd...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features, and Ul upd...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+{Fix]#install & Update Script fixed, added gitignore
+Restructure for v2.0.0 with new tools, features, and U! upd...
+Initial commit
+Restructure for v2.0.0 with new tools, features, and Ul upd...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features, and U! upd...
+Restructure for v2.0.0 with new tools, features, and Ul upd...
+Restructure for v2.0.0 with new tools, features, and Ui upd...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Feat/rich Ul menu lovely (#567)
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features, and Ul upd...
+Restructure for v2.0.0 with new tools, features, and Ul upd...
+Restructure for v2.0.0 with new tools, features, and Ul upd...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+© Sponsor — 1 Notifications
+O1a5tbb “last month © 335 Commits
+last month
+Jast month
+last month
+last month
+3 years ago
+jast month
+6 years ago
+Jast month
+last month
+Jast month
+last month
+last month
+last month
+6 months ago
+last month
+fast month
+last month
+last month
+last month
+fast month
+‘Y Fork 67k
+a
+ALL IN ONE Hacking Tool For
+Hackers
+linux hacking steganography
+xss-detection hacker —_xss-attacks
+etl-tools password-attack
+ddos-attack-tool__allinonehackingtoo!
+web-attack —_wireless-attack
+besthackingtoo!
+Readme
+MIT license
+Activity
+59.4k stars
+1.3k watching
+<0 788
+6.7k forks
+Report repository
+Sponsor this project
+© buymeacoffee.com/hardikzinzu
+Contributors 36
+01640686
+se
+2 contributors
+Languages
+© Python 953% © Shell 4.0%
+Dockerfile 0.
+pdating and switching
+hackingtool — v2.0.0
+HACKING
+Ss TOOL rl
+_ aecatecomes | sas+ roots |/SsirAgs||| tamu | wats | pannor | wacos |
+[ERENT] | cvrcx conmanos | [URSERETEEE
+What's New in v2.0.0
+Feature
+Python 3.10+
+OS-aware menus
+185+ tools
+Search
+Tag filter
+Recommend
+Install status
+Install all
+Smart update
+Open folder
+Docker
+One-liner install
+3 new categories
+Bre weer. eararatie
+Description
+All Python 2 code removed, modern syntax throughout
+Linux-only tools hidden automatically on macOS
+35 new modern tools added across 6 categories
+Type / to search all tools by name, description, or keyword
+Type t to filter by 19 tags — osint, web, c2, cloud, mobile...
+Type r —"I want to scan a network" > shows relevant tools
+| shown next to every tool — know what's ready
+Option 97 in any category — batch install at once
+Each tool has Update — auto-detects git pull / pip upgrade / go install
+Jump into any tool's directory for manual inspection
+Builds locally — no unverified external images
+curl -sSL .../install.sh | sudo bash — zero manual steps
+Active Directory, Cloud Security, Mobile Security
+wy Star 59.4
+--- time_06.jpg ---
+tool
+Public
+59 ]') Pullrequests 2
+~  P 2Branches D 27Tags
+Restructure for v2.0.0 with new tools, features, and Ul updates (#590) =
+ore
+file
+SE
+AE.md
+AE_template.md
+Py
+nts.py
+-compose.ymi
+te_readme.py
+gtool.py
+© Actions {Fj Projects © Security and quality (~” Insights
+Q Gotofile
+O1a51bb « last month
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+[FIX]#install & Update Script fixed, added gitignore
+Restructure for v2.0.0 with new tools, features, and U! upd...
+Initial commit
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features, and UI up
+Restructure for v2.0.0 with new tools, features, and UI upd.
+Restructure for v2.0.0 with new tools, features, and Ul upd...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Feat/rich UI menu lovely (#567)
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features, and Ul ups
+Restructure for v2.0.0 with new tools, features, and UI up
+Restructure for v2.0.0 with new tools, features, and UI upd...
+© Sponsor  { Notifications Fork 6.7k ‘wy Star 59.4k
+em
+ALL IN ONE Hacking Tool For
+© 335 Commits Hackers
+last month Hen “inating, etepeneirany
+xss-detection hacker —_xss-attacks
+last month a
+lastmonth ddos-attack-tool_allinonehackingtoo!
+web-attack —_wireless-attack
+last month
+besthackingtool
+3 years ago
+1 Readme
+last month SB MiT license
+4 Activity
+6 years ago
+yy 59.4k stars
+fast month © 1.3k watching
+fast month Y 67k forks
+Report repository
+fast month
+last month Sponsor this project
+last month WF  duymeacoftee.comjhardikzinzu
+last month
+Contributors 36
+6 months ago
+jast month Ud J] te) @
+-
+2¢
+last month ~*~
++22 contributors
+jast month ——————
+last month Languages
+last month
+© Python 95.3% © Shell 4.0%
+. owe. Detween separate tools
+(ise [ER] @ Preton 3H) ERB] stars AM] orks 67k) | esues BSTBBRA] last commie A
+t's New in v2.0.0
+Feature
+Python 3.10+
+OS-aware menus
+185+ tools
+Search
+Tag filter
+Recommend
+Install status
+Install all
+Smart update
+Open folder
+Docker
+One-liner install
+3 new categories
+Description
+All Python 2 code removed, modern syntax throughout
+Linux-only tools hidden automatically on macOS.
+35 new modern tools added across 6 categories
+Type / to search all tools by name, description, or keyword
+Type t to filter by 19 tags — osint, web, c2, cloud, mobile...
+Type r —"I want to scan a network" > shows relevant tools
+/* shown next to every tool — know what's ready
+Option 97 in any category — batch install at once
+Each tool has Update — auto-detects git pull / pip upgrade / go install
+Jump into any tool's directory for manual inspection
+Builds locally — no unverified external images
+curl -sSL .../install.sh | sudo bash —zero manual steps
+Active Directory, Cloud Security, Mobile Security
+--- time_07.jpg ---
+ublic
+} Pullrequests 2 © Actions [fj Projects © Securityand quality | insights
+© Sponsor {\ Notifications YF Fork 6.7k WY Star 59.4k
+ 2Branches © 2 Tags Q Gotofile © Code ~ | About
+ALL IN ONE Hacking Tool For
+ure for v2.0.0 with new tools, features, and Ul updates (#590) = Olabibb fast month <) 336 Commits Hackers
+finux hacking steganography
+Restructure for v2.0.0 with new tools, features, and UI upd... ast month
+xss-detection’ hacker —_xss-attacks
+Restructure for v2.0.0 with new tools, features, and UI upd... last month ae
+Restructure for v2.0.0 with new tools, features, and UI upd... fast month Sle LeMeK eens
+web-attack —_wireless-attack
+Restructure for v2.0.0 with new tools, features, and UI upd... last month
+besthackingtool
+(FixX}#install & Update Script fixed, added gitignore 3 years ago
+© Readme
+Restructure for v2.0.0 with new tools, features, and UI upd... last month sf MIT license
+Ae Activity
+Initial commit 6 years ago
+¥ 59.4k stars
+Restructure for v2.0.0 with new tools, features, and UI upd... last month © 13k watching
+Restructure for v2.0.0 with new tools, features, and UI upd... last month 6.7k forks
+Report repository
+Restructure for v2.0.0 with new tools, features, and UI upd... last month
+Restructure for v2.0.0 with new tools, features, and U! upd... last month Sponsor this project
+Restructure for v2.0.0 with new tools, features, and Ul up last month © buymeacotfee.com/hardikzinzu
+eyml Restructure for v2.0.0 with new tools, features, and UI upd... last month
+Contributors 36
+1e.py Feat/rich Ul menu lovely (#567) 6 months ago
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features, and Ul up
+Restructure for v2.0.0 with new tools, features, and UI upd...
+‘ Restructure for v2.0.0 with new tools, features, and UI upd...
+last month
+fast month
+last month
++22 contributors
+last month =
+fast month Languages
+- ? ————
+Restructure for ee oe oe ‘ast im
+a se u in Kae ete
+Mockerfile 0.7%
+MIT license
+eee hackingtool — v2.0.0 |
+HACKING
+es TOOL 4
+All-in-One Hacking Tool for Security Researchers & Pentesters
+w in v2.0.0
+Feature Description
+on 3.10+ All Python 2 code removed, modern syntax throughout
+ware menus —_Linux-only tools hidden automatically on macOS
+-tools 35 new modern tools added across 6 categories
+ch Type / to search all tools by name, description, or keyword
+iter Type t to filter by 19 tags — osint, web, c2, cloud, mobile...
+mmend Type r —"I want to scan a network" > shows relevant tools
+ll status /% shown next to every tool — know what's ready
+Il all Option 97 in any category — batch install at once
++t update Each tool has Update — auto-detects git pull / pip upgrade / go install
+| folder Jump into any tool's directory for manual inspection
+er Builds locally — no unverified external images
+--- time_08.jpg ---
+ull requests 2
+ranches © 2 Tags
+of v2.0.0 with new tools, features, and UI updates (#590) =
+© Actions [Fj Projects © Security and quality | Insights
+Q Gotofite
+Ola5Ibb-last month D335 Commits
+Restructure for v2.0.0 with new tools, features, and UI upd... last month
+Restructure for v2.0.0 with new toois, features, and Ui upd... last month
+Restructure for v2.0.0 with new tools, features, and UI upd... last month
+Restructure for v2.0.0 with new tools, features, and UI upd... last month
+(FIX}#install & Update Script fixed, added gitignore 3 years ago
+Restructure for v2.0.0 with new tools, features, and UI upd... last month
+Initial commit 6 years ago
+Restructure for v2.0.0 with new tools, features, and Ul upd... last month
+id Restructure for v2.0.0 with new tools, features, and UI upd... Jast month
+Restructure for v2.0.0 with new tools, features, and UI upd... last month
+Restructure for v2.0.0 with new tools, features, and UI upd. last month
+Restructure for v2.0.0 with new tools, features, and UI upd. fast month
+| Restructure for v2.0.0 with new tools, features, and UI upd. last month
+Feat/rich UI menu lovely (#567) 6 months ago
+Restructure for v2.0.0 with new tools, features, and Ui upd.. last month
+Restructure for v2.0.0 with new tools, features, and UI upd... Jast month
+Restructure for v2.0.0 with new tools, features, and UI upd... last month
+Restructure for v2.0.0 with new tools, features, and Ul upd... last month
+Restructure for v2.0.0 with new tools, features, and UI upd... fast month
+=
+Restructure for v2.0.0 with new a | n t eG rfa Cc e
+license =
+eee hackingtoo! — aan
+or
+All-in-One Hacking Tool for Security Researchers & Pentesters
+HACKING
+TOOL r
+Rii-in-One Security
+n v2.0.0
+atus
+date
+der
+Description
+All Python 2 code removed, modern syntax throughout
+Linux-only tools hidden automatically on macOS
+35 new modern tools added across 6 categories
+Type / to search all tools by name, description, or keyword
+Type t to filter by 19 tags — osint, web, c2, cloud, mobile.
+Type r — "I want to scan a network" > shows relevant tools
+/® shown next to every tool — know what's ready
+Option 97 in any category — batch install at once
+Each tool has Update — auto-detects git pull / pip upgrade / go install
+Jump into any tool's directory for manual inspection
+Notifications Fork 67k Star 59.4k
+About
+ALL IN ONE Hacking Tool For
+Hackers
+linux hacking steganography
+xss-detection hacker ‘xss-attacks:
+ctf-tools: password-attack
+ddos-attack-tool _aillinonehackingtool
+wab-attack — wireless-attack
+besthackingtool
+1 Readme
+8 Mit license
+~ Activity
+ty 59.4k stars
+® 1.3k watching
+%8 6.7k forks
+Report repository
+Sponsor this project
+uw buymeacoffee.com/hardikzinzu
+Contributors 36
+0166080
+1OraD
+2¢
++22 contributors
+Languages
+© Python 95.2% © Shell 4.0%
+Dockerfile 0.7%
+--- time_09.jpg ---
+Pomaster ~  2Branches © 2 Tags Q Gototile © Code + About
+ALL IN ONE Hacking Tool For
+@ Zanzu Rostructure tor v2.0.0 with new tools, features, and Ul updates (#590) = O}w5%Db -Inst monn €©) 335 Commits Hackers
+fe github Restructure tor v2.0.0 with new tools, features, and UL upd. last month Tok inekion! iteseepenert
+xe-dotection hacker’ xsm-attacks
+BS images Restructure for v2.0.0 with new tools, features, and Ut upd... Jast month aac
+& tools Restructure for v2.0.0 with new tools, features, and U! upd... jast month Odow-etteck-togk = anonahackingtoo!,
+Web-attick — Wirdlass-attacke
+(Q) dockerignore Restructure for v2.0.0 with nal tools, features, and UI upd... fast month
+benthackingtoo!
+() .gitignore [Fix}sinstall & Update Script fixed, added gitignore S years ago
+{Readme
+[5 Dockertite Restructure for v2.0.0 with new tools, features, and Ut upd... fast month ® MT license
+A Activity
+() License initial commit 6 years ago ss
+fy 59.4k stars
+() README.md Restructure for v2.0.0 with new tools, features, and Ul upd... Jast month © 13k watching
+[) README_template.md Restructure for v2.0.0 with new tools, features, and Ul last month 2 Saetorts
+Report repository
+©) config.py Restructure for v2.0.0 with new tools, features, and UI upd... fast month
+Q constants.py Restructure for v2.0.0 with new tools, features, and Ul upd... last month Sponsor this project
+1D core.py Restructure for v2.0.0 with new tools, features, and Ul upd... fast month © buymescotfes.comihardixzinza
+{5 docker-compose.yml Restructure for v2.0.0 with new tools, features, and UI upd. fast month
+{5 generate_readme.py Featirich Ui menu lovely (#567) 6 months ago
+()_ hackingtool. py Restructure for v2.0.0 with naw tools, features, and Ut upd... Kast month
+© install.py Restructure for v2.0.0 with new tools, features, and U! upd... Jast month
+© instalt.sh Restructure for v2.0.0 with new tools, features, and Ul upd... fast month
+© os_detect.py Restructure for v2.0.0 with new tools, features, and Ul upd... last month
+1D) requirements.txt Restructure for v2.0.0 with naw tools, features, and Ul upd... last month Languages
+(5 update.sh Restructure for v2.0.0 with new tools, features, and Ui upd... fast month
+® Python 95.3% © Shell 0%
+Dockerfile 0.7%
+README = MIT license =
+HACKING
+sv TOOL
+penetration.testing
+“teense AED) Pvtnon SA) ANNAN stars A) cores 67H) aves SOBA! ast come
+_ ae-careconses [ insdivaeiy | [EAH] [Geol aAniI vaenen nwaeea)
+corer connavos | [GRRRTSON)
+What's New in v2.0.0
+Feature Description
+2. Python 3.10+ All Python 2 code removed, modern syntax throughout
+(2 (OS-awaremenus _Linux-only tools hidden automatically on macOS
+@ 185+ tools 35 new modern tools added across 6 categories
+@ Search Type / to search all tools by name, description, or keyword
+@ Tag filter Type t to filter by 19 tags — osint, web, ¢2, cloud, mobile.
+@ =~ Recommend Type r —“I want to scan a network" > shows relevant tools
+Y install status [® shown next to every tool — know what's ready
+% — Install all Option 97 in any category — batch install at once
+© smart update Each tool has Update — auto-detects git pull / pip upgrade / go install
+B Open folder Jump into any tool's directory for manual inspection
+@ Docker Builds locally — no unverified external images
+4? One-linerinstall curl -sSL .../install.sh | sudo bash —zero manual steps
+(M 3newcategories Active Directory, Cloud Security, Mobile Security
+Quick Commands
+Command Action. Works in
+/query ‘Search —find tools instantly by keyword Main menu
+t Tags — filter by osint, scanner, c2, cloud, mobile... Main menu
+r Recommend — "| want to do X" > matching tools = Main menu
+? Help — quick reference card Everywhere
+q Quit — exit from any depth Everywhere
+7 Install All — batch install all tools in category Category
+--- time_10.jpg ---
+@ Zanzw Restructure for v2.0.0 with new tovis, features, and Ut undates (W590) =,
+& githud
+B® images
+BS wols
+() dockerignore
+(5 gitignore
+1 Dockerfile
+() LICENSE
+(1) README.md
+(3) README_template.md
+1 contig.py
+BR
+constants.py
+core.py
+docker-compose.yml
+generate_readme.py
+hackingtool.py
+GOO GBD
+Install py
+install.sh
+Ln
+os_detect.py
+1) requirements.txt
+Restructure for v2.0.0 with new tools, features, and Ul upd...
+Restructure for v2.0.0 with now tools, features, and Ul upd...
+Restructure for v2.0.0 with new tools, features, and Ul upd...
+Restructure for v2.0.0 with new toois, features, and Ul upd...
+(FIXT#install & Update Script fixed, added gitignore
+Restructiira tor ¥2.0.0 with new tools, features, and Ut upd.
+Initial commit
+Restructure for ¥2.010 with new tools, features, and UI upd...
+Restructure fot v2.0.0 with new tools, features, and-Ul up:
+Restructure for ¥2,0.0 with new tools, features, and Ul upd...
+Restructure Tor v2.0.0 wilh new tools, features, and Ul up
+Restructure tor v2.0.0 with new tools, features, and Ul upd.
+Restructure for v2.0.0 with new tools, features; and Ul upd...
+Featirich (i menu lovely (06671
+Restructure for ¥2,0.0 with new tools, features, and Ul upd...
+Restructuré for v2.0.0 with new tools, features, and Ul up
+Restructure for ¥2.0.0 with rvew tools, features, and UI upd...
+Restructure for v2,0.0 with new tools, features, and Ul upd...
+Restructure for v2.0.0 With new tools, features, and Ul upd...
+1 update.sh Restructure for v2.0.0 with new tools, features, and Ul upd.
+CO README «MT license
+TOOL PI
+All-in-O™ Hacking Tool for Security,  ssearchers & Pentesters
+-=launcherenot
+What's New in v2.0.0
+Feature Description
+& = Python 3.10+ All Python 2 code removed, modern syntax throughout
+(2 (OS-awaremenus _Linux-only tools hidden automatically on macOS
+© 185+ tools 35 new modern tools added across 6 categories
+® Search Type / to search all tools by name, description, or keyword
+@  Tagfilter Type t to filter by 19 tags —osint, web, ¢2, cloud, mobil
+@ =~ Recommend Type r —"iwant to scan a network" > shows relevant tools
+WF install status /® shown next to every tool — know what's ready
+% — Install all Option 97 in any category — batch install at once
+smart update Each tool has Update — auto-detects git pull / pip upgrade / go install
+B® Open folder Jump into any tool's directory for manual inspection
+@ Docker Builds locally — no unverified external images
+ — One-liner install curl -sSL .../install.sh | sudo bash — zero manual steps.
+(= =Snewcategories Active Directory, Cloud Security, Mobile Security
+Quick Commands
+Command Action Works in
+Jquery Search —find tools instantly by keyword Main menu
+t Tags — filter by osint, scanner, c2, cloud, mobile... Main menu
+r Recommend — "I want to do X" > matching tools © Main menu
+? Help — quick reference card Everywhere
+q ‘Quit — exit from any depth Everywhere
+97 Install All — batch install all tools in category Category
+99 Back — return to previous menu Everywhere
+DiwStbb last month $35 Commits
+last month
+last month
+last month
+fast month
+3 years ago
+fast month
+6 years ago
+last month:
+last month
+last month
+last month
+last month
+last month
+6 months ago
+ast month
+last month
+last month
+last month
+last month,
+last month
+Hackers.
+linux hacking — stegamogranty
+mmo-dotection hacker xsy-attacks
+cff-teole — password-attack
+Ainarahckington!
+wob-sttack — wuwiess-uttuck
+Buathuckingtoal
+iMdlossattece-ticl
+TH Readme
+a8 MIT Hcense
+Ar Activity
+4y 89.4k stars
+© 13k watching
+Y 6.7K forks,
+Report repositary
+Sponsor this project
++22 contributors:
+Languages
+@ Python 85.3%
+Dockertile 0.7%
+© Shell 40%
+--- time_11.jpg ---
+BS images Restructure tor v2.0.0 with new tools; features, and Ul und. fast month a
+B® tools Restructure for v2.0.0 with new tools, features, and Ul und... tast month deies = ainindiectngined
+Web-atiack — wirniess-attack:
+1) dockerignore Restructure for v2.0.0 with new tools, features, and UI upd. last month
+bestharkingtool
+ gitignore {FIX} install #& Update Script fixed, added gitignore Syears ago
+i Readme
+C) Dockerfite Restriicture for v2.0.0 with new tools, features, and UI upd... last month a MiT license
+Ae Activin
+2) License Initial commit 6 years ago s
+Yr 594k stars
+[1 README.md Restructure or v2.0.0 with rdw tools, features, and Ut upd... last manth © 13kwatching
+(3) README_template.md Restructure far v2.0.0 with new toots, features, and Ul und. last month FS Eek tae
+Report repository
+1) config.py Restructire tor v2.0.0 with new tools; teatures, and Ul upd... last month,
+© constants.py Restructure for ¥2.0.0 wittt new tools, features, and Ul upd... last month ‘Sponsor this project
+© core.py Restructure for v2.0.0 with new tools, features, and Ul upd... jast month  buymescotten.comihardikzinay
+[) docker-composeym! Restructure for v2.0.0 with new tools, features, and Ul upd. last month,
+Contributors 36
+(5) generate_readme.py Feat/rich Ul menu tovely (#5671 6 months ago
+O167686
+1} hackingtool.py Restructure tor v2.0.0 with new tools, features, and U) upd... fast month
+1 O-s@
+) instat.py Restructure for v2.0.0 with new tools, features, and UW! upd. last month if
+1 instaii.sh Restructure for v2.0.0 with new tools, features, and U! upd... last month z bs
+fa £22 contributors
+1 os_detect.py Restructure for v2.0.0 with new tools, features, and UI upd... last month —
+{5 requirements.txt Restructure for v2.0.0 with new tools, features, and UI upd... fast. month
+[ update.sh Restrictune for v2.0.0 with new tools, features, and U} upd... haat’ month
+SD README #2 MIT license =
+HACKING |
+cs TOOL a |
+All-in-One Hacking Tool for Security Researchers & Pentesters
+ed
+gives*you"categorized
+What's New in v2.0.0
+Feature Description
+2% Python 3,10+ All Python 2 code removed, modern syntax throughout
+(3 0S-awaremenus _Linux-only tools hidden automatically on macOS
+© 185+ tools 35 new modern tools added across 6 categories
+® Search ‘Type / to search all tools by name, description, or keyword
+@ Tag filter Type t to filter by 19 tags —osint, web, c2, cloud, mobile...
+@ Recommend Type r —"Iwant to scan a network" > shows relevant tools
+install status /® shown next to every tool — know what's ready
+ — Install all Option 97’ in any category — batch install at once
+® Smart update Each tool has Update — auto-detects git pull / pip upgrade / go install
+BW Open folder Jump into any tool's directory for manual inspection
+& Docker Builds locally — no unverified external images
+~~ One-liner install curl -sSL .../install.sh | sudo bash — zero manual steps
+Mi 3newcategories Active Directory, Cloud Security, Mobile Security
+Quick Commands
+Command Action Works in
+yJquery Search —find tools instantly by keyword Main menu
+t Tags — filter by osint, scanner, c2, cloud, mobile... Main menu
+r Recommend — "I want to do X" > matching tools = Main menu
+z Help—quick reference card Everywhere
+q Quit — exit from any depth Everywhere
+97 Install All — batch install all tools in category Category
+99 Back — return to previous menu Everywhere
+Tool Cateacories
+--- time_12.jpg ---
+1 .dockerignore
+© gitignore
+© Dockerfile
+() License
+() README.md
+() README_template.md
+0) config.py
+D) constants.py
+1) core.py
+[) docker-compase ym!
+() generate_readme.py
+© hackingtool.py
+©) instail.py:
+() installsh
+D) os_detect.py
+(5 requiremants.txt
+Restructure for v2.0.0 with new tools, features, and Ul upd...
+(Fix]#install & Update Script fixed, added gitignore
+Restractura tor v2.0.0 with new toois, features, and Lil upd...
+‘initial ‘coment
+Restructure for v2.0.0 with new tools, (catures, and Ut upd...
+Restructure for ¥2.0.0 with new tools, features, and UI und...
+Restructure for v2.0.0 with new tools, features, and Ui und...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with new tools, features, and Ul upd...
+Restructure for v2.0.0 with new tools, Features, and UI upd.
+Feat/rict Ul menu lovely (#867)
+Restructure for v2.0.0 with new tools, features, and 1) upd...
+Restructure for ¥2:0.0 with new tools, features, and Wi upd...
+Restructure for ¥2:0.0 with new tools, features, and UI upd...
+Restructure for v2.0.0 with
+tools, features,
+Ubupd...
+Restructure for v2.0.0 with new tools, natures, and UI upd...
+Restructure for v2.0.0 with new tools, features, and UI upd...
+HACKING
+cs ~=TOOL r
+-One Hacking Tool for Security Researchers & Pentesters
+aaa [sey eeseses|
+wireless testing
+(3 update.sh
+Cl) README =" MIT license
+| eee
+|
+Al
+What's New in v2.0.0
+Feature
+2 Python 3.10+
+(2 OS-aware menus
+© 185+tools
+® Search
+@  tagfilter
+@ Recommend
+@ install status
+4 — Install all
+®@ ss Smart update
+@ Open folder
+Docker
+3? — One-liner install
+§8 3 newccategories
+Quick Commands
+Command
+/query
+t
+ie
+?
+a
+o7
+99
+Tool Categories
+# Category
+Description
+All Python 2 code removed, modern syntax throughout
+Linux-only tools hidden automatically on macOS
+35 new modern tools added across 6 categories
+Type / to search all tools by name, description, or keyword
+Type t to filter by 19 tags — osint, web, c2, cloud, mobile...
+Type r —"lwant to scan a network" > shows relevant tools
+‘}X shown next to every tool — know what's ready
+Option 97 in any category — batch install at once
+Each tool has Update — auto-detects git pull / pip upgrade / go install
+Jump into any tool's directory for manual inspection
+Builds locally — no unverified external images
+curl -sSL .../install.sh | sudo bash — zero manual steps
+Active Directory, Cloud Security, Mobile Security
+Action Works in
+Search —find tools instantly by keyword Main menu
+Tags —filter by osint, scanner, c2, cloud, mobile... Main menu
+Recommend —"! want to do X" > matching tools. Main menu
+Help — quick reference card Everywhere
+Quit — exit from any depth Everywhere
+Install All— batch install all tools in category Category
+Back — return to previous menu Everywhere
+Tools # Category Tools
+last momh
+3 years ago
+last manth
+6 years ago
+last month
+fast month
+fast month
+fast month
+fast month
+fast month
+6 months ago
+last month
+fast month
+fast month
+fast month
+fast month
+Jat month,
+(I Readme
+4 MIT ficense
+Ap Activity
+Yr 59.4k stars
+© 13k watching
+Y 6.7 forks
+Report repository
+Sponsor this project
+WF _ Buymencoftee.comyhardikzinzy
+Contributors 36
+016468
+1@r tp
+£¢
++22 commitutors
+© Shell 5.0%

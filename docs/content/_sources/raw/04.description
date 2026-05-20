@@ -1,0 +1,21 @@
+SQL injection has been in OWASP's top risks for over 20 years. SQLMap is still the tool that automates almost every step of exploiting it.
+
+Point it at a vulnerable URL and it figures out the DBMS, the injection type, and the backend version for you. From there it is a few flags to the data.
+
+What it does in one workflow:
+
+-> Detect vulnerable parameters with a single command
+-> Enumerate every database, table, and column
+-> Dump real rows from specific columns, not entire tables
+-> Replay full POST requests with cookies and headers intact
+-> Crank level and risk to surface hidden injection points
+-> Bypass WAFs with tamper scripts
+-> Escalate a DB bug into an OS shell on the host
+
+If you work in web pentesting, bug bounty, or appsec, these commands come up in almost every engagement.
+
+Only use SQLMap on targets you own or have explicit permission to test.
+
+Save this for the next time you hit a parameter that looks suspicious.
+
+#sqlmap #sqlinjection #pentesting #bugbounty #cybersecurity

@@ -1,0 +1,108 @@
+--- scene_01.jpg ---
+MK claude
+® vou
+Write a Sigma rule to detect PsExec lateral movement using Windows Security Event IDs
+4648 and 5145
+MK claude
+‘sigma. ym copy
+title: PsExec Lateral Movement
+status: experimental
+logsource:
+product: windows
+service: security
+detection:
+selection_logon:
+EventID: 4648
+TargetServerName|contains: '\\'
+selection_share:
+EventID: 5145
+ShareName: '\\*\IPC$*
+RelativeTargetName| contains:
+- PSEXESVC
+condition: selection_logon or
+selection_share
+level: high
+Reply to Clauite oo
+Why use this
+Stop reading Sigma syntax docs. Describe the attack behavior you want to
+detect and get a production-ready rule you can paste directly into your
+SIEM.
+Adapt it
+Replace ‘PsExec’ with any lateral movement technique: DCSync,
+Pass-the-Hash, Kerberoasting, WMI execution, Golden Ticket...
+@kerem.tech eccceces
+--- time_01.jpg ---
+ta See
+--- time_02.jpg ---
+A
+he
+ik et
+ny \
+F ae
+hs, w nCiaucel ERompts fon
+--- time_03.jpg ---
+CIS Hardening Guide
+MK claude
+Generate a CIS Level 2 hardening guide for Ubuntu 22.04 with exact commands for SSH,
+kernel params, filesystem, and audit rules
+SK claude
+hardening. sh copy
+# SSH Hardening
+sed -i 's/#PermitRootLogin yes/
+PermitRootLogin no/'
+/etc/ssh/sshd_config
+echo 'MaxAuthTries 3' >>
+/etc/ssh/sshd_config
+# Kernel Parameters
+sysctl -w net.ipv4.conf.all
+.accept_redirects=0
+sysctl -w kernel
+.randomize_va_space=2
+# Audit Rules
+auditctl -w /etc/passwd
+-p wa -k identity
+auditctl -w /etc/shadow
+-p wa -k identity
+Reply to Claude. @
+Why use this
+New server setup means hours of reading CIS benchmarks and translating
+controls into commands. Get copy-paste ready hardening scripts instantly.
+Adapt it
+Change the OS to RHEL, Amazon Linux, Windows Server, or adjust the
+CIS level from Level 2 to Level 1 for less restrictive environments.
+@kerem.tech
+--- time_04.jpg ---
+CI/CD Security Pipeline
+KE claude
+® vou
+Write a GitHub Actions workflow that runs Trivy container scan, Semgrep SAST, and
+Gitleaks secret detection, failing on high severity
+SK claude
+security. yml
+name: Security Pipeline
+on: [push, pull_request]
+jobs:
+security-scan:
+runs-on: ubuntu-latest
+steps:
+- uses: actions/checkout@v4
+- name: Trivy Container Scan
+uses: aquasecurity/trivy@vo
+with:
+severity: HIGH, CRITICAL
+exit-code: '1'
+name: Semgrep SAST
+uses: semgrep/semgrep@v1
+name: Gitleaks Secrets
+uses: gitleaks/gitleaks@v2
+with:
+args: detect --no-banner
+Reply to Claude. a
+Why use this
+Every project needs a security pipeline but configuring multiple tools with
+the right flags takes hours. Get a complete workflow you can commit and
+run.
+Adapt it
+Add OWASP ZAP for DAST, Checkov for laC scanning, or swap GitHub
+Actions for GitLab Cl / Jenkins / Azure DevOps syntax.
+@kerem.tech eovccce

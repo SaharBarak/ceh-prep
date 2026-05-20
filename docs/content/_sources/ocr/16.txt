@@ -1,0 +1,178 @@
+--- t_01.jpg ---
+¥ ©) GitHub - leaningtech/webvm:) X = + = oO x
+€ 3 G £3 github.com/leaningt.. C4 Q f 47 f fae || Sy a
+D -Npmrc 2 years ago
+[1 README 418 Apache-2.0 license
+WebVM
+This repository hosts the source code for
+https://webvm.io, a Linux virtual machine that runs in
+your browser.
+Try out the new Alpine / Xorg / i3 graphical environment:
+https://webvm.io/alpine.html
+What is WebVM?
+WebVM is a server-less virtual environment running fully
+client-side in HTML5/WebAssembly. It's designed to be
+INT res Fa el Pa | ~ eng sapaliliog Fa ead
+i ®
+--- t_02.jpg ---
+YQ) GitHub - leaningtech/webvm:\ X = +
+< 9 GCG ®3 github.com/leaningt.. C4 Q
+(1 README 41 Apache-2.0 license
+WebVM
+This repository hosts the source code for
+https://webvm.io, a Linux virtual machine that runs in
+your browser.
+Try out the new Alpine / Xorg / i3 graphical environment:
+https://webvm.io/alpine.html
+What is WebVM?
+WebVM is a sever-lesal NU Xoament running fully
+client-side in HTML5/WebAssembly. It's designed to be
+Linux ABl-compatible and runs an unmodified Debian
+distribution including many native development
+toolchains.
+Ta
+--- t_03.jpg ---
+v ©) GitHub - leaningtech/webym: \ x +
+a a G | £3 github.com/leaningt.. C4 Q
+(1 README 42 Apache-2.0 license
+This repository hosts the source code for
+https://webvm.io, a Linux virtual machine that runs in
+your browser.
+Try out the new Alpine / Xorg / i3 graphical environment:
+https://webvm.io/alpine.html
+What is WebVM?
+WebVM is a server-less virtual environment running fully
+client-side in HTML5/WebAssembly. It's designed to be
+i ectiis Debian
+distribution including many native development
+Linux ABl-compatible |
+toolchains.
+WebVM is powered by the CheerpxX virtualization engine,
+ie
+which provides:
+--- t_04.jpg ---
+¥ — @) GitHub -leaningtech/webvm:\ X = +
+€ > G 23 github.com/leaningt.. C4 Q
+(1 README 42 Apache-2.0 license
+What is WebVM?
+WebVM is a server-less virtual environment running fully
+client-side in HTML5/WebAssembly. It's designed to be
+Linux ABl-compatible and runs an unmodified Debian
+distribution including many native development
+toolchains.
+WebVM is powered by the CheerpxX virtualization engine
+which provides:
+© x86-to-WebAssembly JIT compiler
+e Virtual block-based file system
+e Linux syscall emulator
+e Safe, sandboxed client-side execution
+Table of Contents
+¢ Networking TAB
+¢ Development & Customization
+© Local Serving & Image Configuration
+° Deploy to GitHub Pages
+e Claude Al Integration
+--- t_05.jpg ---
+~ © Github- leaningtech/webym:\\ +
+€ »* G 23 github.com/leaningt.. C46 Q f 7
+(1 README 42 Apache-2.0 license
+“———~¥-X60-T0- VWWEDASsemply Jil Comper
+e Virtual block-based file system
+e Linux syscall emulator
+e Safe, sandboxed client-side execution
+Table of Contents
+Networking
+Development & Customization
+© Local Serving & Image Configuration
+° Deploy to GitHub Pages
+Claude Al Integration
+Community & Support
+Learn More
+License
+@® Note
+Visit https://webvm.io to get started immediately in
+your browser. No setup required.
+For local setup, custom image builds, and
+fork/deploy guidance, see Development &
+WEB
+Customization.
+Networking
+WebVM supports Tailscale integration. So your browser
+VM can reach your private network and, with an exit
+FTI ’
+ai
+--- t_06.jpg ---
++ Q) GitHub -leaningtech/webvm:\ x = +
+< > G = % githubcom/leaningt.. C4 Q@ f 7 ff © 5 |
+[1 README 49 Apache-2.0 license
+Networking
+WebVM supports Tailscale integration. So your browser
+VM can reach your private network and, with an exit
+node, the public internet too.
+Some low-level networking operations (especially
+ICMP used by ping ) are not currently available in
+this environment. For connectivity checks, use curl
+or wget.
+Local network IN
+1. Open the "Networking" panel from the sidebar
+2. Click "Connect to Tailscale"
+3. Log in (create a free account at tailscale.com if
+needed)
+4. Click "Connect" when prompted
+WebVM now has access to all machines in your Tailscale
+network!
+Internet Usage TipREAL
+On slower connections there may be a short delay
+before initialisation. Connection status is shown as a
+TET
+ba
+--- t_07.jpg ---
++ — @) GitHub -leaningtech/jwebvm:) x = +
+© > @  & githubcom/leaningt.. C4 Q
+1 README 42 Apache-2.0 license
+or wget.
+Local network
+1. Open the "Networking" panel from the sidebar
+2. Click "Connect to Tailscale"
+3. Log in (create a free account at tailscale.com if
+needed)
+4. Click "Connect" when prompted
+WebVM now has access to all machines in your Tailscale
+network!
+Internet Usage Tips h
+Q Tip
+On slower connections there may be a short delay
+before initialisation. Connection status is shown as a
+colored dot on the button: orange = local network,
+green = global/internet. The button text shows your
+Tailscale IP address once connected.
+To access the public internet from WebVM, set up an Exit
+Node on “ENVIRONMENT”
+1. Follow the Tailscale Exit Node quickstart (sections:
+“Advertise a device as an exit node")
+2. WebVM automatically uses the exit node once
+advertised
+--- t_08.jpg ---
+v
+©) GitHub - leaningtechjwebvm:) x = +
+Cc £3 github.com/leaningt.. C5 Q f 7 ft © bm
+[1 README) 42 Apache-2.0 license
+4. Click "Connect" when prompted
+WebVM now has access to all machines in your Tailscale
+network!
+Internet Usage Tips
+On slower connections there may be a short delay
+before initialisation. Connection status is shown as a
+colored dot on the button: orange = local network,
+green = global/internet. The button text shows your
+Tailscale IP address once connected.
+To access the public internet from WebVM, set up an ea
+Node on another device in your Tailscale network:
+1. Follow the Tailscale Exit Node quickstart (sections:
+“Advertise a device as an exit node")
+2. WebVM automatically uses the exit node once
+advertised
+Using an Auth Key
+As an alternative to interaf\ gin, add your Tailscale
+auth key to the URL fragment:
+https: //webvm. io/#authKey=<your-ephemeral-key> Oo

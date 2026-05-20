@@ -1,0 +1,20 @@
+ Track IPs, phone numbers, and user names from one CLI.
+ Manual OSint checks waste time fast.
+ GhostTrack pulls common identity clues into one workflow,
+ instead of opening separate tools for every lookup.
+ GhostTrack is a Python OSint utility.
+ He gives you three primitives, IPGO location,
+ phone number fingerprinting, and username checks
+ across social platforms.
+ Under the hood, it combines external IP data sources,
+ the phone and numbers library, and site checks for user names.
+ So the workflow is simple.
+ Enter an identifier, query the right source,
+ and get a compact investigation result back.
+ This is most useful for security teams, journalists,
+ and anyone validating suspicious contacts.
+ It speeds up first-pass verification
+ before you escalate to deeper forensics.
+ It has over 10,000 stars and supports Linux plus termics.
+ That makes it easy to test on desktop or Android right away.
+ Follow for more open source AI breakdowns.

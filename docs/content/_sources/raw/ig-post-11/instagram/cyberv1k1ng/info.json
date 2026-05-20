@@ -1,0 +1,45 @@
+{
+    "post_id": "3887017255016442103",
+    "post_shortcode": "DXxdZlhEaj3",
+    "likes": 945,
+    "liked": false,
+    "pinned": [],
+    "description": "Apocalypse AI - Automating Pentesting using Local LLMs \n\nHeard from multiple Red Teamers across the country this week and they are very upset that Anthropic has removed a lot of cyber support in the latest version of Claude Sonnet\n\nIn fact, all the big name LLMs are working to increase security in their products, especially now from all the earth ending fear of Mythos (and @ringmast4r 😁👊)\n\nI did laugh when I heard the devs put Mythos behind a firewall and challenged it to escape, and it did, apparently finding multiple zero day vulnerabilities on its way out\n\n\"It's too scary to release to the public now\", they said, but no worries, \"We secured it behind a firewall...\" 🤔🤣\n\nClaude was the go to for Red Teamers, but now it seems many are switching to either a commercial AI security testing platform or ...\n\nBuilding their own using local LLMs\n\nFunny you mention that, pictured is one of the automated Pentesting platforms I created last year\n\nIt can use any local LLM, has several automated \"chain\" attack modes - think of it as specific topic attacks like Recon or WebApp\n\nYou can also ask it for direction and advice\n\nI made two versions of it, a true \"MCP\" server version, but one straight Python version\n\nI mean, do you REALLY need an MCP server when Python can call the tools and fill in variables just as easy...\n\nI cover how I created both in my upcoming new book, \"Pentesting with AI\", available soon!\n\nWant to learn a lot about ethical hacking using hands on step by step tutorials? Check out my entire book learning series, available on Amazon \n\nLink in Bio\n\n#artificialintelligence #linux #hackerman #pentesting #infosec",
+    "tags": [
+        "#artificialintelligence",
+        "#hackerman",
+        "#infosec",
+        "#linux",
+        "#pentesting"
+    ],
+    "owner_id": "44552679983",
+    "username": "cyberv1k1ng",
+    "fullname": "Daniel Dieterle",
+    "post_date": "2026-04-30 22:36:28",
+    "date": "2026-04-30 22:36:28",
+    "audio_title": "Hells Bells",
+    "audio_duration": 312.815,
+    "audio_user": {
+        "strong_id__": "762770654",
+        "pk": "762770654",
+        "pk_id": "762770654",
+        "id": "762770654",
+        "username": "acdc",
+        "full_name": "AC/DC",
+        "is_private": false,
+        "is_verified": true,
+        "profile_pic_id": "3572943720686904070_762770654",
+        "profile_pic_url": "https://instagram.ftlv5-1.fna.fbcdn.net/v/t51.2885-19/481096219_23895997653323041_6813937455208631692_n.jpg?stp=dst-jpg_s150x150_tt6&cb=8438d1d6-89aba764&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4zMjAuYzIifQ&_nc_ht=instagram.ftlv5-1.fna.fbcdn.net&_nc_cat=1&_nc_oc=Q6cZ2gHSrIGvMGONCq0Sniaf3nhrGb6ONRZc4Q76gqpPeYLepYhHVtD-O7sQzB8qT1EcvzmuR69Ahb4_unerlPWK58Ql&_nc_ohc=yi8pDM0rmjcQ7kNvwH1wyIM&_nc_gid=t4btW9tnkSO1dZjOYf0Wdg&edm=ALQROFkBAAAA&ccb=7-5&oh=00_Af4EUis6d085H-GM06oar3XiWRvUSnu3z48qQ5NLSlNLCQ&oe=6A1100B5&_nc_sid=fc8dfb"
+    },
+    "audio_artist": "AC/DC",
+    "audio_timestamps": [
+        19000,
+        87000,
+        55000
+    ],
+    "type": "post",
+    "post_url": "https://www.instagram.com/p/DXxdZlhEaj3/",
+    "count": 2,
+    "category": "instagram",
+    "subcategory": "post"
+}

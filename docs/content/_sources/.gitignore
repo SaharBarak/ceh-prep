@@ -1,0 +1,4 @@
+# Large binaries — kept locally for re-processing, not committed.
+# Re-fetch with docs/content/_sources/pipeline.sh
+videos/
+frames/

@@ -1,0 +1,23 @@
+Python is the most widely used language in offensive security, not because it's trendy, but because it gives you full control over every layer of an attack or defense workflow.
+
+Most professional security tools you use daily are either built with Python or have a Python API. Learning these libraries doesn't just help you in CTFs, it makes you dangerous in real engagements.
+
+Here are 7 libraries every security engineer should have in their toolkit:
+
+1. Scapy: craft, send, and sniff raw network packets at any protocol layer. Used for recon, fuzzing, and building custom scanners.
+
+2. Impacket: interact with Windows protocols like SMB, MSRPC, and LDAP. Essential for credential dumping, Pass-the-Hash, and AD attacks.
+
+3. python-nmap: drive Nmap directly from your Python scripts. Automate port scanning and service enumeration in your own tooling.
+
+4. Paramiko: pure-Python SSH2 client. Automate remote command execution, file transfers, and port tunneling without shelling out.
+
+5. Shodan: query the internet's largest index of exposed devices via API. Find vulnerable systems without ever touching the target.
+
+6. pwntools: the go-to framework for CTF and binary exploitation. Simplifies buffer overflows, ROP chains, and shellcode generation.
+
+7. Cryptography: production-safe primitives for encryption, hashing, and key management. Use it whenever you need real crypto in your tools.
+
+Save this. Pick one library. Build something with it this week.
+
+#cybersecurity #python #ethicalhacking #redteam #infosec

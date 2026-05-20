@@ -1,0 +1,11 @@
+ One repo bundles 185+ pen test tools into one workflow, security testers often waste time installing
+ updating and switching between separate tools. This repo centralizes that setup into one menu driven
+ interface. Hacking tool is a Python-based penetration testing launcher, not a single scanner.
+ It gives you categorized access to tools for web attacks, wireless testing, password attacks,
+ and information gathering. The workflow is simple. Open the menu, filter by category or tag,
+ then launch the tool you need. It also supports quick search and recommendations so you can move from
+ intent to the right utility without hunting through docs. This is useful for pen testers and security
+ teams running repeatable audits across web wireless and cloud surfaces. It also helps with demos and
+ lab work because the tooling is already organized by task. The repo is broad, 185+ tools, 20 categories,
+ and support for Linux, Mac OS, and Docker. The README also keeps an authorization warning
+ front and center. Follow for more open source AI breakdowns.

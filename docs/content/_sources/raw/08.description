@@ -1,0 +1,15 @@
+SigDigger is an open-source digital signal analyzer.
+
+Ships with:
+• NOAA weather satellite images in real time
+• Aircraft transponder decoding
+• Pager, walkie-talkie & analog voice interception
+• Live waterfall + full spectrum analysis
+• Custom plugins & SoapySDR support for almost every SDR
+• Built from scratch (Suscan + Sigutils)
+
+No license. No subscription. Just plug and dig.
+
+👉 https://github.com/BatchDrake/SigDigger
+
+Who’s listening to the skies today? Drop a 🔥

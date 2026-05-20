@@ -1,0 +1,6 @@
+ What if you could run a full Linux terminal right inside your browser tab?
+ Web VM is a real Debian Linux environment.
+ No installation, no server, nothing to set up.
+ Open the link and you're already inside a terminal.
+ Run commands, build projects, connect to your network, all from your browser,
+ share and follow for more.

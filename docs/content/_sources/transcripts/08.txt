@@ -1,0 +1,7 @@
+ What's up guys? So this is a tool nobody outside the radio underground is talking about it's called sig digger
+ It's an open source digital signal analyzer that turns cheap SDR dongle into a full radio intelligence rig
+ So you basically you can listen to satellites to code a page or traffic intercept walkie talkies and watch TV signals fall
+ Right out of the air so you guys got to check this out man. Nobody's talking about this. It's free no license no subscription
+ It's really cool actually because you used to have to have like 40k
+ Worth of equipment like a spectrum analyzer and shit. So like that's crazy
+ Linux macOS is crucial guys this thing sick you guys got to check it out
