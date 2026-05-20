@@ -42,14 +42,13 @@ export default async function BonusLibraryPage() {
 
   return (
     <>
-      <nav className="mb-10">
-        <Link
-          href={isAuthed ? "/dashboard" : "/"}
-          className="mono-tag hover:text-[var(--color-accent)]"
-        >
-          ← {isAuthed ? "Dashboard" : "Home"}
-        </Link>
-      </nav>
+      {isAuthed && (
+        <nav className="mb-10">
+          <Link href="/dashboard" className="mono-tag hover:text-[var(--color-accent)]">
+            ← Dashboard
+          </Link>
+        </nav>
+      )}
 
       <header className="mb-12 border-b border-[var(--color-line)] pb-10">
         <p className="mono-tag mb-4">Bonus library</p>
@@ -66,16 +65,6 @@ export default async function BonusLibraryPage() {
               ? `Free preview: first ${FREE_PREVIEW_COUNT}.`
               : `Preview the first ${FREE_PREVIEW_COUNT} for free — sign up to unlock the rest with the 3-day trial.`}
         </p>
-        {!isAuthed && (
-          <div className="mt-6 flex flex-wrap items-center gap-3">
-            <Link href="/signup" className="btn-primary">
-              Start free — 3 days
-            </Link>
-            <Link href="/pricing" className="btn-ghost">
-              $30/mo · see pricing
-            </Link>
-          </div>
-        )}
       </header>
 
       <ul className="grid grid-cols-1 gap-px bg-[var(--color-line)] md:grid-cols-2">

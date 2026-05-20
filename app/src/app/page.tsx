@@ -159,7 +159,7 @@ export default function LandingPage() {
       {/* ──────────────────────────────────────────────────────────────
           3. The terminal — sells the WebVM with a fake-prompt block.
          ────────────────────────────────────────────────────────────── */}
-      <section className="mb-28 grid grid-cols-1 items-start gap-10 md:grid-cols-12">
+      <section id="lab" className="mb-28 scroll-mt-24 grid grid-cols-1 items-start gap-10 md:grid-cols-12">
         <div className="md:col-span-5">
           <p className="mono-tag mb-4 text-[var(--color-accent)]">
             The lab · {totalDrills} graded drills
@@ -339,7 +339,7 @@ export default function LandingPage() {
       {/* ──────────────────────────────────────────────────────────────
           5. Curriculum scrubber — all 14 days, compact.
          ────────────────────────────────────────────────────────────── */}
-      <section className="mb-28">
+      <section id="curriculum" className="mb-28 scroll-mt-24">
         <Reveal>
           <header className="mb-10 flex items-end justify-between gap-6">
             <div>

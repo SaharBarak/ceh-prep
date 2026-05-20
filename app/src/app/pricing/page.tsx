@@ -23,12 +23,6 @@ export default function PricingPage() {
 
   return (
     <>
-      <nav className="mb-16">
-        <Link href="/" className="mono-tag hover:text-[var(--color-accent)]">
-          ← Back
-        </Link>
-      </nav>
-
       <header className="mb-20 grid grid-cols-1 gap-6 md:grid-cols-12">
         <div className="md:col-span-7">
           <p className="mono-tag mb-6">Pricing</p>
