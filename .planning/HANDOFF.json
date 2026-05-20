@@ -20,7 +20,7 @@
     {"id": "phase-10-gaps", "name": "Phase 10 gaps closed: signup timezone + requireSession lastActiveAt", "status": "done", "commit": "43e0e75"},
     {"id": "roadmap-12", "name": "Phase 12 added scope-gated", "status": "done", "commit": "4c934c3"},
     {"id": "phase-12-scope", "name": "Phase 12 scope locked from user Q&A", "status": "done", "commit": "309e01e"},
-    {"id": "phase-12-track-b-mvp", "name": "Track B MVP: personas.json + playwright/sdk deps + icp-funnel-sim.ts harness + npm run qa:icp + README", "status": "done", "commit": "PENDING"}
+    {"id": "phase-12-track-b-mvp", "name": "Track B MVP: personas.json + playwright/sdk deps + icp-funnel-sim.ts harness + npm run qa:icp + README", "status": "done", "commit": "fd948bf"}
   ],
   "remaining_tasks": [
     {"id": 5, "name": "Run harness with real ANTHROPIC_API_KEY against localhost:3000 — verify report quality before automating", "status": "not_started"},
