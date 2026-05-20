@@ -9,7 +9,17 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { DAYS } from "@/lib/content";
 import { getBonusItems, type BonusItem } from "@/lib/content/bonus";
-import { Reveal, StatGrid, BlinkCaret } from "./page.client";
+import {
+  Reveal,
+  StatGrid,
+  TerminalTypewriter,
+  BreathingDot,
+  BreathingIcon,
+  ScrollProgress,
+  StaggerGrid,
+  StaggerList,
+  StaggerItem,
+} from "./page.client";
 
 /**
  * Landing page — sells on real, verifiable artifacts.
@@ -42,6 +52,8 @@ export default function LandingPage() {
 
   return (
     <>
+      <ScrollProgress />
+
       {/* ──────────────────────────────────────────────────────────────
           1. Hero — asymmetric 8/4 split. Headline + value left, receipts
           panel right. CTAs above-the-fold.
@@ -49,7 +61,7 @@ export default function LandingPage() {
       <section className="mb-28 grid grid-cols-1 items-end gap-12 border-b border-[var(--color-line)] pb-20 md:grid-cols-12 md:gap-10">
         <div className="md:col-span-8">
           <p className="mono-tag mb-6 flex items-center gap-2">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
+            <BreathingDot />
             CEH v13 · 14-day sprint · 3 days free
           </p>
           <h1 className="display text-[44px] leading-[1.02] md:text-[96px]">
@@ -131,7 +143,7 @@ export default function LandingPage() {
           </h2>
         </Reveal>
 
-        <div className="grid grid-cols-1 gap-px bg-[var(--color-line)] md:grid-cols-3">
+        <StaggerGrid className="grid grid-cols-1 gap-px bg-[var(--color-line)] md:grid-cols-3">
           <Anchor
             n="01"
             icon={<Terminal size={22} weight="duotone" />}
@@ -153,7 +165,7 @@ export default function LandingPage() {
             title={`${totalQuestions} questions, every one explained.`}
             body="Every quiz answer ships with a `why` field — not just A/B/C/D. Day 14 runs a domain-weighted 125-question simulator that mirrors the real CEH v13 exam pacing."
           />
-        </div>
+        </StaggerGrid>
       </section>
 
       {/* ──────────────────────────────────────────────────────────────
@@ -216,53 +228,60 @@ export default function LandingPage() {
               </span>
             </div>
 
-            {/* body */}
-            <pre className="overflow-x-auto p-5 font-mono text-[13px] leading-relaxed text-[var(--color-ink-dim)]">
-              <span className="text-[var(--color-ink-faint)]">
-                user@webvm:~$
-              </span>{" "}
-              drill start day10 01
-              {"\n"}
-              <span className="text-[var(--color-ink-faint)]">
-                loaded
-              </span>{" "}
-              6 SQLi payload-construction prompts → ./questions.txt
-              {"\n"}
-              <span className="text-[var(--color-ink-faint)]">
-                user@webvm:~$
-              </span>{" "}
-              vim answers.txt
-              {"\n"}
-              <span className="text-[var(--color-ink-faint)]">
-                user@webvm:~$
-              </span>{" "}
-              drill check
-              {"\n"}
-              <span className="text-[var(--color-accent)]">
-                ✓ 5/6 correct
-              </span>{" "}
-              · q3 expected `&apos; OR 1=1 --`
-              {"\n"}
-              <span className="text-[var(--color-ink-faint)]">
-                user@webvm:~$
-              </span>{" "}
-              sqlmap -u &quot;http://lab/item?id=1&quot; --dump -C email,password
-              <BlinkCaret />
-            </pre>
+            {/* body — typewriter on first viewport intersect, then static */}
+            <TerminalTypewriter
+              lines={[
+                {
+                  chunks: [
+                    { kind: "dim", text: "user@webvm:~$ " },
+                    { kind: "out", text: "drill start day10 01" },
+                  ],
+                },
+                {
+                  chunks: [
+                    { kind: "dim", text: "loaded" },
+                    { kind: "out", text: " 6 SQLi payload-construction prompts → ./questions.txt" },
+                  ],
+                },
+                {
+                  chunks: [
+                    { kind: "dim", text: "user@webvm:~$ " },
+                    { kind: "out", text: "vim answers.txt" },
+                  ],
+                },
+                {
+                  chunks: [
+                    { kind: "dim", text: "user@webvm:~$ " },
+                    { kind: "out", text: "drill check" },
+                  ],
+                },
+                {
+                  chunks: [
+                    { kind: "accent", text: "✓ 5/6 correct" },
+                    { kind: "out", text: " · q3 expected `' OR 1=1 --`" },
+                  ],
+                },
+                {
+                  chunks: [
+                    { kind: "dim", text: "user@webvm:~$ " },
+                    { kind: "out", text: "sqlmap -u \"http://lab/item?id=1\" --dump -C email,password" },
+                  ],
+                },
+              ]}
+            />
           </div>
 
-          {/* drill list — tiny chips, real data */}
+          {/* drill list — tiny chips, real data; lightning icons breathe
+              out of sync (phase offset per chip) per taste-skill §9 */}
           <div className="mt-4 flex flex-wrap gap-2">
-            {drillDays.map((d) => (
+            {drillDays.map((d, i) => (
               <span
                 key={d.n}
                 className="mono-tag flex items-center gap-1.5 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 normal-case tracking-normal text-[var(--color-ink-dim)]"
               >
-                <Lightning
-                  size={11}
-                  weight="fill"
-                  className="text-[var(--color-accent)]"
-                />
+                <BreathingIcon phase={i * 0.42} className="text-[var(--color-accent)]">
+                  <Lightning size={11} weight="fill" />
+                </BreathingIcon>
                 Day {String(d.n).padStart(2, "0")} ·{" "}
                 <span className="text-[var(--color-ink-faint)]">
                   {d.exercise.drillSlug?.split("/").pop()}
@@ -298,11 +317,12 @@ export default function LandingPage() {
           </header>
         </Reveal>
 
-        <div className="grid grid-cols-1 gap-px bg-[var(--color-line)] md:grid-cols-3">
+        <StaggerGrid className="grid grid-cols-1 gap-px bg-[var(--color-line)] md:grid-cols-3">
           {previews.map((item, idx) => (
-            <article
+            <StaggerItem
+              as="article"
               key={item.slug}
-              className="group relative flex flex-col gap-4 bg-[var(--color-bg)] p-7 transition-colors hover:bg-[var(--color-surface)] md:p-8"
+              className="card-lift group relative flex flex-col gap-4 bg-[var(--color-bg)] p-7 hover:bg-[var(--color-surface)] md:p-8"
             >
               <div className="flex items-baseline gap-3">
                 <span className="font-mono text-xs text-[var(--color-ink-faint)]">
@@ -331,9 +351,9 @@ export default function LandingPage() {
               >
                 Read article {String(idx + 1).padStart(2, "0")} →
               </Link>
-            </article>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerGrid>
       </section>
 
       {/* ──────────────────────────────────────────────────────────────
@@ -354,9 +374,10 @@ export default function LandingPage() {
           </header>
         </Reveal>
 
-        <ol className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-line)] sm:grid-cols-2 lg:grid-cols-7">
-          {DAYS.map((d) => (
-            <li
+        <StaggerList className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-line)] sm:grid-cols-2 lg:grid-cols-7">
+          {DAYS.map((d, i) => (
+            <StaggerItem
+              as="li"
               key={d.n}
               className="group flex flex-col gap-2 bg-[var(--color-bg)] p-5 transition-colors hover:bg-[var(--color-surface)]"
             >
@@ -365,12 +386,13 @@ export default function LandingPage() {
                   Day {String(d.n).padStart(2, "0")}
                 </span>
                 {d.exercise.drillSlug && (
-                  <Lightning
-                    size={12}
-                    weight="fill"
-                    className="text-[var(--color-accent)]"
-                    aria-label="has graded drill"
-                  />
+                  <BreathingIcon phase={(i % 5) * 0.36} className="text-[var(--color-accent)]">
+                    <Lightning
+                      size={12}
+                      weight="fill"
+                      aria-label="has graded drill"
+                    />
+                  </BreathingIcon>
                 )}
               </div>
               <p className="text-sm leading-snug text-[var(--color-ink)]">
@@ -379,16 +401,16 @@ export default function LandingPage() {
               <p className="font-mono text-[10px] text-[var(--color-ink-faint)]">
                 {d.quiz.length} qs
               </p>
-            </li>
+            </StaggerItem>
           ))}
-        </ol>
+        </StaggerList>
 
       </section>
 
       {/* ──────────────────────────────────────────────────────────────
           6. Closing CTA + footer.
          ────────────────────────────────────────────────────────────── */}
-      <section className="mb-20 grid grid-cols-1 items-center gap-10 rounded-2xl border border-dashed border-[var(--color-line-strong)] bg-gradient-to-br from-[rgba(190,242,100,0.05)] to-transparent p-10 md:grid-cols-12 md:p-14">
+      <section className="cta-glow mb-20 grid grid-cols-1 items-center gap-10 rounded-2xl border border-dashed border-[var(--color-line-strong)] p-10 md:grid-cols-12 md:p-14">
         <div className="md:col-span-8">
           <p className="mono-tag mb-4 text-[var(--color-accent)]">
             Three days free. No card to start.
@@ -484,7 +506,10 @@ function Anchor({
   body: string;
 }) {
   return (
-    <article className="flex flex-col gap-4 bg-[var(--color-bg)] p-7 transition-colors hover:bg-[var(--color-surface)] md:p-8">
+    <StaggerItem
+      as="article"
+      className="card-lift flex flex-col gap-4 bg-[var(--color-bg)] p-7 hover:bg-[var(--color-surface)] md:p-8"
+    >
       <div className="flex items-center justify-between text-[var(--color-ink-faint)]">
         <span className="font-mono text-xs">{n}</span>
         <span className="text-[var(--color-accent)]">{icon}</span>
@@ -494,7 +519,7 @@ function Anchor({
       <p className="text-sm leading-relaxed text-[var(--color-ink-dim)]">
         {body}
       </p>
-    </article>
+    </StaggerItem>
   );
 }
 

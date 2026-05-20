@@ -65,7 +65,10 @@ body::before {
   color: var(--color-ink-faint);
 }
 
-/* Buttons */
+/* Buttons — tactile feedback per taste-skill §3 Rule 5.
+   transform-only animations (hardware-accelerated per §5);
+   cubic-bezier easing (no linear); :active translates back to 0 for
+   the "push" sensation. Tinted shadow on hover (per §3 Rule 4). */
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -76,9 +79,17 @@ body::before {
   font-weight: 500;
   letter-spacing: 0.01em;
   border-radius: 999px;
-  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), filter 200ms;
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+              filter 200ms,
+              box-shadow 240ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
-.btn-primary:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.btn-primary:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px -8px rgba(190, 242, 100, 0.35);
+}
+.btn-primary:active { transform: translateY(0); transition-duration: 80ms; }
 
 .btn-ghost {
   display: inline-flex;
@@ -89,9 +100,83 @@ body::before {
   color: var(--color-ink-dim);
   border-radius: 999px;
   font-size: 14px;
-  transition: border-color 200ms, color 200ms;
+  transition: border-color 200ms, color 200ms,
+              transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
-.btn-ghost:hover { border-color: var(--color-line-strong); color: var(--color-ink); }
+.btn-ghost:hover {
+  border-color: var(--color-line-strong);
+  color: var(--color-ink);
+  transform: translateY(-2px);
+}
+.btn-ghost:active { transform: translateY(0); transition-duration: 80ms; }
+
+/* Anchor card hover lift — used by the 3 proof cards (REAL LAB /
+   REAL TOOLS / REAL EXAM PREP). Lime-tinted shadow per §3 Rule 4
+   "tint shadow to background hue" (accent here, since the cards sit
+   on the surface, not the bg). transform + box-shadow only. */
+.card-lift {
+  transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 280ms cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 200ms;
+  will-change: transform;
+}
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 44px -20px rgba(190, 242, 100, 0.12);
+}
+
+/* Breathing pulse — used on status dots / "live system" indicators.
+   Opacity-only animation (hardware-accelerated); 2s slow cycle so it
+   reads as ambient, not anxious. §4 Perpetual Micro-Interactions. */
+@keyframes breathe-slow {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
+}
+.breathe-slow {
+  animation: breathe-slow 2.2s ease-in-out infinite;
+  will-change: opacity;
+}
+
+/* Per-element phase-offset breathing — the lightning icons in the
+   curriculum grid + drill chips use this. Each gets a slightly
+   different --phase delay so they breathe out of sync (the skill
+   §9 specifically calls out "breathing status indicators" not
+   synchronized blinking). */
+@keyframes breathe-icon {
+  0%, 100% { opacity: 0.55; transform: scale(0.94); }
+  50%      { opacity: 1;    transform: scale(1.04); }
+}
+.breathe-icon {
+  animation: breathe-icon 1.8s ease-in-out infinite;
+  animation-delay: var(--phase, 0s);
+  will-change: opacity, transform;
+}
+
+/* Closing-CTA gradient breathing — the existing lime-tinted radial
+   slowly oscillates intensity. Background-position trick keeps it
+   on the compositor (no expensive paint). §8 Mesh Gradient lite. */
+@keyframes cta-glow {
+  0%, 100% { background-color: rgba(190, 242, 100, 0.04); }
+  50%      { background-color: rgba(190, 242, 100, 0.075); }
+}
+.cta-glow {
+  animation: cta-glow 6s ease-in-out infinite;
+  will-change: background-color;
+}
+
+/* Respect reduced-motion users — the skill's performance guard +
+   accessibility baseline. All ambient loops collapse to static. */
+@media (prefers-reduced-motion: reduce) {
+  .breathe-slow,
+  .breathe-icon,
+  .cta-glow {
+    animation: none;
+  }
+  .btn-primary, .btn-ghost, .card-lift {
+    transition-duration: 0ms;
+  }
+}
 
 /* Lesson prose — applied to dangerouslySetInnerHTML'd lesson HTML */
 .prose-lesson p { margin: 0 0 1rem; }

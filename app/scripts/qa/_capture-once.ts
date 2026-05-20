@@ -42,12 +42,20 @@ async function main(): Promise<void> {
   process.stderr.write("footer captured\n");
 
   // Full-page safety net — catches sections that fall between fixed offsets.
-  // The 4 viewport shots simulate what a first-time visitor literally sees at
-  // four scroll-stop points; full-page is the harness's reality-check. Lesson
-  // baked in from the 2026-05-20 first run, where the original 3-capture
-  // method (0/0.5/1.0) missed the entire mock-terminal section.
+  // Before snapping, scroll the entire page top→bottom in steps so any
+  // `whileInView` IntersectionObserver triggers fire (Framer Motion's stagger
+  // reveals stay in their `hidden` state otherwise). Then return to top
+  // and wait for any settle frames before capturing.
+  await page.evaluate(async () => {
+    const h = document.documentElement.scrollHeight;
+    const steps = 12;
+    for (let i = 0; i <= steps; i++) {
+      window.scrollTo({ top: (h * i) / steps, behavior: "instant" });
+      await new Promise((r) => setTimeout(r, 80));
+    }
+  });
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
-  await page.waitForTimeout(300);
+  await page.waitForTimeout(800);
   await page.screenshot({ path: "/tmp/ceh-qa-fullpage.png", fullPage: true });
   process.stderr.write("fullpage captured\n");
 
