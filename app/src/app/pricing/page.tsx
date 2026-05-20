@@ -1,113 +1,144 @@
 import Link from "next/link";
-import type { Route } from "next";
+import { DAYS } from "@/lib/content";
+import { getBonusItems } from "@/lib/content/bonus";
 
+/**
+ * Pricing page — sells via the same receipts the landing does.
+ *
+ * Honest position: Pro is $30/mo USD; billing rolls out with Phase 4
+ * (Paddle integration). Until then, Pro feature access is gated by the
+ * tier field on the User document — we can flip individual accounts
+ * manually via the admin CLI. The page says all this out loud rather
+ * than faking a checkout that doesn't exist.
+ */
 export default function PricingPage() {
+  const bonus = getBonusItems();
+  const totalDays = DAYS.length;
+  const totalQuestions = DAYS.reduce((s, d) => s + d.quiz.length, 0);
+  const totalDrills = DAYS.filter((d) => d.exercise.drillSlug).length;
+  const freeQuestions = DAYS.filter((d) => d.n <= 3).reduce(
+    (s, d) => s + d.quiz.length,
+    0,
+  );
+
   return (
-    <main className="mx-auto w-full max-w-[1400px] px-6 py-14 md:px-10">
-      <nav className="mb-20">
+    <>
+      <nav className="mb-16">
         <Link href="/" className="mono-tag hover:text-[var(--color-accent)]">
           ← Back
         </Link>
       </nav>
 
-      <header className="mb-16 grid grid-cols-1 gap-6 md:grid-cols-12">
+      <header className="mb-20 grid grid-cols-1 gap-6 md:grid-cols-12">
         <div className="md:col-span-7">
           <p className="mono-tag mb-6">Pricing</p>
-          <h1 className="display text-[56px] md:text-8xl">
-            Free.
+          <h1 className="display text-[56px] leading-[1.02] md:text-[88px]">
+            Three days free.
             <br />
-            Forever.
+            <em className="not-italic text-[var(--color-accent)]">$30/mo</em>{" "}
+            after that.
           </h1>
         </div>
-        <p className="max-w-[46ch] text-lg text-[var(--color-ink-dim)] md:col-span-5 md:pt-10">
-          The pricing page exists because real products have one. Both tiers
-          ship at $0. If we ever charge, we&apos;ll warn you first, and the
-          static free version never changes.
+        <p className="max-w-[46ch] text-lg text-[var(--color-ink-dim)] md:col-span-5 md:pt-12">
+          Two tiers. The free tier is a real product — first 3 days of the
+          curriculum, no time limit, no card. Pro unlocks the rest.
         </p>
       </header>
 
       <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <Tier
           name="Free"
-          tag="v0 · static HTML"
+          tag="No card · no expiry"
           price="$0"
-          priceSub="forever"
+          priceSub="3 days, full content"
           accent={false}
           features={[
-            "First 3 days of curriculum",
-            "15 graded questions",
-            "Local progress (this browser only)",
-            "Zero accounts, zero tracking",
-            "Double-click a single HTML file",
+            "Days 1-3: Foundations + Lab Setup, Footprinting & Recon, Scanning Networks",
+            `${freeQuestions} graded quiz questions with explanations`,
+            "Day 01 grep-the-flag drill in the in-browser lab",
+            "First 3 bonus articles (OSINT engines, Python libs, SQLMap)",
+            "Progress synced across devices once you have an account",
           ]}
           cta={{
-            label: "Open /free/index.html",
-            href: "/",
-            note: "Clone the repo, open free/index.html in a browser. No build.",
+            label: "Start free",
+            href: "/signup",
           }}
         />
         <Tier
           name="Pro"
-          tag="app · full sprint"
-          price="$0"
-          priceSub="while in beta"
-          crossedPrice="$9 / mo"
+          tag={`All ${totalDays} days · cancel anytime`}
+          price="$30"
+          priceSub="per month, USD"
           accent
           features={[
-            "All 14 days of curriculum",
-            "70 graded questions",
-            "125-question timed exam simulator",
-            "Progress synced across devices",
-            "Domain-level accuracy breakdown",
-            "Flagged-question review deck",
-            "Daily streak + completion badge",
+            `All ${totalDays} days — Foundations through 125-question exam simulator`,
+            `${totalQuestions} explained quiz questions across every CEH v13 domain`,
+            `${totalDrills} graded WebVM drills (Day 1 grep, Day 3 nmap, Day 10 SQLi, Day 13 crypto) — more shipping`,
+            `${bonus.length} curated bonus articles with real GitHub repos surfaced`,
+            "In-browser Debian lab — nmap, sqlmap, hydra, john, gobuster, gdb pre-loaded",
+            "Domain-weighted timed exam simulator (125 q · 4 h · mirrors real v13)",
           ]}
-          cta={{ label: "Start the sprint", href: "/signup" }}
+          cta={{
+            label: "Start free first →",
+            href: "/signup?intent=pro",
+            note: "Billing opens once Paddle integration ships (Phase 4). Sign up free now; we'll email when Pro checkout is live.",
+          }}
         />
       </section>
 
-      <section className="mt-20">
-        <p className="mono-tag mb-6">Questions people ask</p>
-        <div className="grid grid-cols-1 gap-px bg-[var(--color-line)] md:grid-cols-2">
-          {FAQ.map(({ q, a }) => (
-            <div key={q} className="bg-[var(--color-bg)] p-6 md:p-8">
-              <h4 className="display mb-2 text-xl">{q}</h4>
-              <p className="text-sm leading-relaxed text-[var(--color-ink-dim)]">{a}</p>
-            </div>
-          ))}
+      <section className="mt-24 grid grid-cols-1 gap-8 border-t border-[var(--color-line)] pt-16 md:grid-cols-12">
+        <div className="md:col-span-5">
+          <p className="mono-tag mb-3">// what you don&apos;t pay for</p>
+          <h2 className="display text-3xl md:text-4xl">
+            No tricks below the line.
+          </h2>
         </div>
+        <ul className="space-y-5 text-sm text-[var(--color-ink-dim)] md:col-span-7">
+          {[
+            [
+              "No setup fee, no annual contract",
+              "$30/mo is the whole price. Cancel any time; you keep access through the billing period.",
+            ],
+            [
+              "No upsell to a $500 'pro+' tier",
+              "Pro is Pro. The 14-day curriculum, the lab, the bonus library, the exam sim — all in one tier.",
+            ],
+            [
+              "No data sales",
+              "We send transactional email only (verify, reset, billing receipts). No newsletter, no third-party tracking pixels.",
+            ],
+            [
+              "No teaching of techniques without ethics first",
+              "Day 1 covers authorization, scope, and the line between research and felony. Every later module references it.",
+            ],
+          ].map(([title, body]) => (
+            <li key={title}>
+              <p className="text-[var(--color-ink)]">{title}</p>
+              <p className="mt-1">{body}</p>
+            </li>
+          ))}
+        </ul>
       </section>
-    </main>
+
+      <footer className="mt-24 border-t border-[var(--color-line)] pt-10 text-xs text-[var(--color-ink-faint)]">
+        Have a question about billing or scope? Email{" "}
+        <a
+          href="mailto:hello@cehprep.local"
+          className="hover:text-[var(--color-ink-dim)]"
+        >
+          hello@cehprep.local
+        </a>
+        . We respond within a day.
+      </footer>
+    </>
   );
 }
-
-const FAQ = [
-  {
-    q: "Is this affiliated with EC-Council?",
-    a: "No. We are an independent prep tool. EC-Council owns the CEH trademark and runs the official exam.",
-  },
-  {
-    q: "Why is Pro free?",
-    a: "We built it for ourselves. Running costs are small. If that ever changes we'll add a real price and warn you a month in advance. The static /free version never changes and never requires an account.",
-  },
-  {
-    q: "Do you sell my data?",
-    a: "No. No ads, no analytics beyond basic server logs. Progress data is stored encrypted and keyed to your account.",
-  },
-  {
-    q: "Will this replace hands-on practice?",
-    a: "No. CEH is 70% theory; the exercise each day points you at real tools (Nmap, Burp, sqlmap, Wireshark) in your own lab. Use them.",
-  },
-];
-
-type CTA = { label: string; href: Route; note?: string };
 
 const Tier = ({
   name,
   tag,
   price,
   priceSub,
-  crossedPrice,
   features,
   cta,
   accent,
@@ -116,9 +147,8 @@ const Tier = ({
   tag: string;
   price: string;
   priceSub: string;
-  crossedPrice?: string;
   features: string[];
-  cta: CTA;
+  cta: { label: string; href: string; note?: string };
   accent: boolean;
 }) => (
   <article
@@ -128,17 +158,12 @@ const Tier = ({
         : "border-[var(--color-line)] bg-[var(--color-surface)]"
     }`}
   >
-    <div className="mb-8 flex items-baseline justify-between">
+    <div className="mb-8 flex items-baseline justify-between gap-4">
       <div>
         <h3 className="display text-4xl">{name}</h3>
         <p className="mono-tag mt-2">{tag}</p>
       </div>
       <div className="text-right">
-        {crossedPrice && (
-          <div className="font-mono text-xs text-[var(--color-ink-faint)] line-through">
-            {crossedPrice}
-          </div>
-        )}
         <div
           className={`display text-4xl ${accent ? "text-[var(--color-accent)]" : ""}`}
         >
@@ -162,7 +187,7 @@ const Tier = ({
     </ul>
 
     <Link href={cta.href} className={accent ? "btn-primary" : "btn-ghost"}>
-      {cta.label} →
+      {cta.label}
     </Link>
     {cta.note && (
       <p className="mt-4 text-xs text-[var(--color-ink-faint)]">{cta.note}</p>
