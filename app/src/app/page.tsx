@@ -60,19 +60,16 @@ export default function LandingPage() {
             slog.
           </h1>
           <p className="mt-8 max-w-[58ch] text-lg leading-relaxed text-[var(--color-ink-dim)]">
-            A 14-day <strong className="font-semibold text-[var(--color-ink)]">CEH v13</strong>{" "}
-            sprint built by people who actually use{" "}
-            <code className="font-mono text-[var(--color-accent)]">nmap</code>
-            ,{" "}
-            <code className="font-mono text-[var(--color-accent)]">sqlmap</code>
-            , and{" "}
-            <code className="font-mono text-[var(--color-accent)]">hashcat</code>
-            . Each day: a ~30-min lesson,{" "}
+            Fourteen days. <strong className="font-semibold text-[var(--color-ink)]">CEH v13</strong>,
+            module-for-module. A graded Debian shell in a browser tab — real{" "}
+            <code className="font-mono text-[var(--color-accent)]">nmap</code>,{" "}
+            <code className="font-mono text-[var(--color-accent)]">sqlmap</code>,{" "}
+            <code className="font-mono text-[var(--color-accent)]">hashcat</code>, not
+            screenshots. A ~30-minute lesson and{" "}
             <strong className="font-semibold text-[var(--color-ink)]">
               {Math.round(totalQuestions / totalDays)}
             </strong>{" "}
-            explained quiz questions, and a hands-on lab that runs in a browser
-            tab — not a slide deck.
+            explained quiz questions per day. Not a slide deck.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-3">
             <Link href="/signup" className="btn-primary">
@@ -103,7 +100,7 @@ export default function LandingPage() {
 
         {/* Receipts panel — concrete counts, all traceable to repo */}
         <aside className="md:col-span-4">
-          <p className="mono-tag mb-3 text-right">// shipped &amp; verifiable</p>
+          <p className="mono-tag mb-3 text-right">The build</p>
           <StatGrid
             items={[
               { k: totalDays, l: "days of v13" },
@@ -126,9 +123,11 @@ export default function LandingPage() {
          ────────────────────────────────────────────────────────────── */}
       <section className="mb-28">
         <Reveal>
-          <p className="mono-tag mb-5">// what makes it different</p>
-          <h2 className="display mb-12 max-w-[20ch] text-3xl md:text-5xl">
-            Three things a Udemy CEH course can&apos;t do.
+          <p className="mono-tag mb-5">The shape of it</p>
+          <h2 className="display mb-12 max-w-[24ch] text-3xl md:text-5xl">
+            What a video course can&apos;t do.
+            <br />
+            <em className="not-italic text-[var(--color-accent)]">This does.</em>
           </h2>
         </Reveal>
 
@@ -163,7 +162,7 @@ export default function LandingPage() {
       <section className="mb-28 grid grid-cols-1 items-start gap-10 md:grid-cols-12">
         <div className="md:col-span-5">
           <p className="mono-tag mb-4 text-[var(--color-accent)]">
-            // lab · {totalDrills} graded drills
+            The lab · {totalDrills} graded drills
           </p>
           <h2 className="display text-3xl leading-tight md:text-5xl">
             It opens.
@@ -281,16 +280,16 @@ export default function LandingPage() {
         <Reveal>
           <header className="mb-10 flex items-end justify-between gap-6">
             <div>
-              <p className="mono-tag mb-3">// from the lab notebook</p>
+              <p className="mono-tag mb-3">The library</p>
               <h2 className="display text-3xl md:text-5xl">
                 Writeups, tool deep-dives,
                 <br />
                 bonus repos.
               </h2>
               <p className="mt-4 max-w-[52ch] text-sm text-[var(--color-ink-dim)]">
-                Not testimonials — practitioner writeups linked to real GitHub
-                repos. The bonus library doubles as the advanced track when the
-                14-day sprint isn&apos;t enough.
+                Practitioner writeups linked to real GitHub projects. The
+                advanced track for anyone who clears the sprint and wants to
+                keep going.
               </p>
             </div>
             <Link href="/bonus" className="btn-ghost shrink-0">
@@ -344,7 +343,7 @@ export default function LandingPage() {
         <Reveal>
           <header className="mb-10 flex items-end justify-between gap-6">
             <div>
-              <p className="mono-tag mb-3">// 14-day plan</p>
+              <p className="mono-tag mb-3">The plan</p>
               <h2 className="display text-3xl md:text-5xl">
                 Recon → exploit → exam.
               </h2>
@@ -384,16 +383,6 @@ export default function LandingPage() {
           ))}
         </ol>
 
-        <p className="mt-6 max-w-[60ch] font-mono text-[11px] leading-relaxed text-[var(--color-ink-faint)]">
-          // CEH v13 AI/ML attack content covered in Day 07 (AI-augmented
-          phishing &amp; malware) and Day 09 (prompt-injection &amp; LLM
-          web-app attacks). Advanced track lives in the{" "}
-          <Link href="/bonus" className="text-[var(--color-ink-dim)] hover:text-[var(--color-accent)]">
-            bonus library
-          </Link>{" "}
-          — HTB-quality writeups, exploit walkthroughs, and CTF-style drills
-          for HTB / TryHackMe regulars.
-        </p>
       </section>
 
       {/* ──────────────────────────────────────────────────────────────
@@ -402,7 +391,7 @@ export default function LandingPage() {
       <section className="mb-20 grid grid-cols-1 items-center gap-10 rounded-2xl border border-dashed border-[var(--color-line-strong)] bg-gradient-to-br from-[rgba(190,242,100,0.05)] to-transparent p-10 md:grid-cols-12 md:p-14">
         <div className="md:col-span-8">
           <p className="mono-tag mb-4 text-[var(--color-accent)]">
-            // 3 days free · no card to start
+            Three days free. No card to start.
           </p>
           <h2 className="display text-3xl leading-tight md:text-5xl">
             Day 01 is{" "}
@@ -451,7 +440,7 @@ export default function LandingPage() {
             </Link>
           </div>
         </div>
-        <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-[var(--color-line)] pt-6 font-mono text-[11px]">
+        <div className="mt-8 flex flex-wrap items-center gap-2 border-t border-[var(--color-line)] pt-6 text-[12px] leading-relaxed text-[var(--color-ink-faint)]">
           <span>Built by</span>
           <a
             href="https://github.com/SaharBarak"
@@ -463,12 +452,12 @@ export default function LandingPage() {
           </a>
           <span className="text-[var(--color-line-strong)]">·</span>
           <span>
-            shipping the lab fork at{" "}
+            lab fork:{" "}
             <a
               href="https://github.com/SaharBarak/ceh-webvm"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[var(--color-ink-dim)] hover:text-[var(--color-accent)]"
+              className="font-mono text-[var(--color-ink-dim)] hover:text-[var(--color-accent)]"
             >
               SaharBarak/ceh-webvm
             </a>
