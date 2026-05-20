@@ -12,6 +12,7 @@ node_modules/
 
 # Tooling
 .eslintcache
+tsconfig.tsbuildinfo
 *.log
 .DS_Store
 

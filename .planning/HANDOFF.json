@@ -1,13 +1,13 @@
 {
   "version": "1.0",
-  "timestamp": "2026-05-20T15:18:36.218Z",
+  "timestamp": "2026-05-20T16:30:00.000Z",
   "phase": "12",
   "phase_name": "Testing + LLM Quality Review",
   "phase_dir": ".planning/phases/12-testing-and-llm-quality-review",
   "plan": null,
   "task": null,
   "total_tasks": 6,
-  "status": "paused",
+  "status": "track_b_mvp_shipped",
   "completed_tasks": [
     {"id": "phase-6", "name": "Curriculum content module + paused-phase scaffolding", "status": "done", "commit": "832d1f5"},
     {"id": "phase-7", "name": "Reader toolbar + progress strip + mark-complete", "status": "done", "commit": "022c541"},
@@ -19,32 +19,32 @@
     {"id": "phase-10", "name": "Drip email MVP: EmailDispatch + Drip.tsx + /api/cron/drip + /api/unsubscribe", "status": "done", "commit": "135b113"},
     {"id": "phase-10-gaps", "name": "Phase 10 gaps closed: signup timezone + requireSession lastActiveAt", "status": "done", "commit": "43e0e75"},
     {"id": "roadmap-12", "name": "Phase 12 added scope-gated", "status": "done", "commit": "4c934c3"},
-    {"id": "phase-12-scope", "name": "Phase 12 scope locked from user Q&A", "status": "done", "commit": "309e01e"}
+    {"id": "phase-12-scope", "name": "Phase 12 scope locked from user Q&A", "status": "done", "commit": "309e01e"},
+    {"id": "phase-12-track-b-mvp", "name": "Track B MVP: personas.json + playwright/sdk deps + icp-funnel-sim.ts harness + npm run qa:icp + README", "status": "done", "commit": "PENDING"}
   ],
   "remaining_tasks": [
-    {"id": 1, "name": "Write app/scripts/qa/personas.json (5 ICPs: Sarah/Marcus/Alex/Priya/Dave)", "status": "not_started"},
-    {"id": 2, "name": "npm i -D playwright @anthropic-ai/sdk + npx playwright install chromium (~250 MB)", "status": "not_started"},
-    {"id": 3, "name": "Write app/scripts/qa/icp-funnel-sim.ts — landing-only MVP with budget cap + prompt caching + chain-of-critique", "status": "not_started"},
-    {"id": 4, "name": "Add npm run qa:icp script + README in app/scripts/qa/", "status": "not_started"},
-    {"id": 5, "name": "Expand harness surface — signup -> curriculum -> lab -> exam (follow-up phases)", "status": "not_started"},
-    {"id": 6, "name": "Track A: Vitest + Playwright + MSW + supertest deterministic suite", "status": "deferred_until_track_b_proven"}
+    {"id": 5, "name": "Run harness with real ANTHROPIC_API_KEY against localhost:3000 — verify report quality before automating", "status": "not_started"},
+    {"id": 6, "name": "Expand harness surface — signup -> curriculum -> lab -> exam (follow-up phases)", "status": "not_started"},
+    {"id": 7, "name": "Nightly cron at 03:00 UTC (decision logged; not wired)", "status": "not_started"},
+    {"id": 8, "name": "Track A: Vitest + Playwright + MSW + supertest deterministic suite", "status": "deferred_until_track_b_proven"}
   ],
   "blockers": [],
   "human_actions_pending": [
-    {"action": "Provide ANTHROPIC_API_KEY env var before running the QA harness", "context": "scripts/qa/icp-funnel-sim.ts reads process.env.ANTHROPIC_API_KEY directly; not part of Next.js env validation", "blocking": false},
-    {"action": "Accept ~250 MB Chromium download during deps install", "context": "npx playwright install chromium downloads the browser binary; user should be warned before running", "blocking": false}
+    {"action": "Set ANTHROPIC_API_KEY in env, start `npm run dev` in one terminal, then `npm run qa:icp` in another", "context": "harness exits cleanly without the key — CI-safe", "blocking": false},
+    {"action": "Review first generated report at .planning/qa-reports/YYYY-MM-DD-landing.md before deciding to automate", "context": "MVP shape is intentional; report quality is the gate for surface expansion + cron", "blocking": false}
   ],
   "decisions": [
     {"decision": "Phase 12 split into Track A (deterministic) + Track B (ICP simulation); Track B first", "rationale": "User's detailed answers made Track B the headline; Track A defers until B proves valuable", "phase": "12"},
     {"decision": "Test stack with mocking: Vitest + Playwright + MSW + supertest", "rationale": "User chose 'with mocking' over leaner Vitest+Playwright only", "phase": "12"},
-    {"decision": "Sonnet for per-step ICP vision pass; Haiku for chain-of-critique synthesis", "rationale": "Vision needs Sonnet; re-reading notes is cheap, Haiku is sufficient", "phase": "12"},
+    {"decision": "Sonnet 4.6 for per-step ICP vision pass; Haiku 4.5 for chain-of-critique synthesis", "rationale": "Vision needs Sonnet; re-reading notes is cheap, Haiku is sufficient", "phase": "12"},
     {"decision": "Advisory only — never blocks merges", "rationale": "User explicit choice; safer for v1, humans own merge call", "phase": "12"},
     {"decision": "Chain-of-critique: 3 passes (notes / re-read for missed observations / aggregate)", "rationale": "User chose chain over single-pass to catch second-order issues", "phase": "12"},
     {"decision": "Whole-repo nightly cron (03:00 UTC), not per-PR", "rationale": "User picked nightly for whole-funnel coverage", "phase": "12"},
     {"decision": "MVP shape: landing-page-only first; expand surface phase-by-phase", "rationale": "Avoid building wrong abstraction before knowing what good critique looks like", "phase": "12"},
-    {"decision": "Budget cap CLAUDE_QA_MAX_USD default $2/run", "rationale": "Prevents runaway loops; ~$30/mo at 3 personas nightly is acceptable", "phase": "12"}
+    {"decision": "Budget cap CLAUDE_QA_MAX_USD default $2/run", "rationale": "Prevents runaway loops; ~$30/mo at 3 personas nightly is acceptable", "phase": "12"},
+    {"decision": "tsx as TypeScript runner for scripts/", "rationale": "Modern, no ts-node config burden; aligns with Node 20+ engines field", "phase": "12"}
   ],
   "uncommitted_files": [],
-  "next_action": "Open new session. Read .planning/HANDOFF.json + .planning/phases/12-testing-and-llm-quality-review/.continue-here.md. Begin task #1: write app/scripts/qa/personas.json with 5 ICPs (full backstories in .continue-here.md).",
-  "context_notes": "12 commits ahead of upstream main; working tree clean. App builds green (npm run build, 14 routes including /api/cron/drip + /api/unsubscribe). Phase 10 drip is shippable end-to-end pending real RESEND_API_KEY in prod. Phase 12 MVP path: (1) personas, (2) install deps + Chromium ~250 MB, (3) ~200-line MVP harness with Playwright + Anthropic SDK + prompt caching for the per-persona context, (4) one screenshot per scroll position + Claude vision critique + markdown report at .planning/qa-reports/YYYY-MM-DD-landing.md. Context window hit 78% so user requested fresh session to continue. Invoke claude-api skill before writing SDK code to pull in current prompt caching best practices."
+  "next_action": "User runs `npm run qa:icp` with real ANTHROPIC_API_KEY against running dev server. Review report at .planning/qa-reports/YYYY-MM-DD-landing.md. If report quality is good: expand harness surface (signup -> curriculum days 1/3/10/13 -> lab iframe -> exam Day 14) phase-by-phase. If report quality is weak: iterate on prompt shape before expanding surface.",
+  "context_notes": "Track B MVP shipped. Files: app/scripts/qa/{personas.json, icp-funnel-sim.ts, README.md}, npm run qa:icp wired, playwright + @anthropic-ai/sdk + tsx installed, chromium browser downloaded (~92 MiB). Build green (14 routes unchanged). Typecheck green. Harness exits cleanly without ANTHROPIC_API_KEY (CI-safe). Cost expectation ~$0.30-$0.55 per 5-persona run; default cap $2 is ~3x headroom. Pricing source: claude-api skill (Jan 2026): Sonnet 4.6 = $3/$15 per 1M, Haiku 4.5 = $1/$5 per 1M, cache writes 1.25x input, cache reads ~0.1x. tsconfig.tsbuildinfo added to .gitignore."
 }
