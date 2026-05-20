@@ -32,6 +32,10 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 3: Google OAuth** — Users can sign in with Google; auto-link gated on verified email; no open redirect, no token confusion
 - [ ] **Phase 4: Paddle Billing + Tier Gate** — Users can upgrade to Pro at $30/mo and unlock days 4-14 + exam simulator; tier is set only by verified webhooks
 - [ ] **Phase 5: Production Hardening (Admin + CSP + Tests + Deploy)** — Nonce-based CSP, pino structured logging, Redis rate limits, audit admin view, test suite, deploy runbook
+- [ ] **Phase 6: Curriculum Content Module** — Ship `app/src/lib/content/` with the typed 14-day CEH v13 curriculum (lesson HTML, quiz banks, lab exercises) and the `getDay` / `DAYS` / `isFreeDay` API the rest of the app already imports
+- [ ] **Phase 7: Lesson Reader Polish** — Per-day reader toolbar (day-jump, font scale, mark-complete, copy-cmd, scroll-spy outline) + sticky-progress UI
+- [ ] **Phase 8: Pro Lab Integration (WebVM)** — Embed `saharbarak.github.io/ceh-webvm` per-day with deep-link drill autostart, gated by `canAccessDay`, with a "Run this drill" CTA on each lab card
+- [ ] **Phase 9: Premium Content Library + Landing Lift** — Render `docs/content/*.md` as `/bonus` (Pro-gated), surface curated content samples on the landing page, and rework hero copy to sell on outcomes from real lesson value
 
 ## Phase Details
 
@@ -109,29 +113,94 @@ Decimal phases appear between their surrounding integers in numeric order.
   5. A fresh deployer following `DEPLOY-01` can take an empty Vercel project and an empty MongoDB Atlas cluster and an empty Paddle sandbox and reach a working production signup → verify → upgrade → access-day-4 smoke test in under 60 minutes using only the runbook — no tribal knowledge, no undocumented env vars, no silent production misconfig.
 **Plans**: TBD
 
+### Phase 6: Curriculum Content Module
+**Goal**: Ship `app/src/lib/content/` with the typed 14-day CEH v13 curriculum — lesson HTML, quiz banks, hands-on lab exercises — and the `getDay` / `DAYS` / `isFreeDay` API that `course/[day]/page.tsx`, `dashboard/page.tsx`, and `actions/progress.ts` already import. PROJECT.md called this module "existing" but git history shows it was never committed; the app does not compile today without it.
+**Depends on**: Phase 1 (stabilization shipped the page-level tier gate this module hooks into)
+**Requirements**: CONTENT-01..09 (to be enumerated during planning)
+**Success Criteria** (what must be TRUE):
+  1. `/course/N` for every N in 1..14 renders real CEH v13 module content (Intro, Footprinting, Scanning, Enumeration, Vuln Analysis, System Hacking, Malware/Sniffing, SocEng/DoS/Hijack, Web/Servers, SQLi, Wireless/Mobile/IoT, Cloud, Crypto, Exam Sim) — not "TODO".
+  2. `npm run build` produces a clean production bundle with zero TypeScript errors about missing `@/lib/content` exports.
+  3. `getDay(n)`, `DAYS`, and `isFreeDay(n)` match the types `course/[day]/page.tsx` and `actions/progress.ts` expect today (no consumer-side changes needed).
+  4. Free-tier users see day 1–3 lesson HTML; day 4+ redirects to `/pricing` (existing page-level tier gate is re-validated end-to-end).
+  5. Quiz answers persist via the existing `saveAnswer` server action with no regressions of the Phase 2 progress flow — same `Map<questionIndex, selectedIndex>` shape.
+**Plans**: TBD (run `/gsd:plan-phase 6`)
+
+---
+
+### Phase 7: Lesson Reader Polish
+**Goal**: Take the per-day reader from "renders content" to "a tool a student wants to spend an hour in". Finalize the lesson toolbar (day-jump dropdown, font-scale, mark-as-complete, copy-cmd buttons on every `<pre>`), add a sticky scroll-spy outline of section headings, and a per-day progress strip that shows lesson read %, quiz answered %, lab attempted Y/N.
+**Depends on**: Phase 6 (need real lesson HTML structure to design the reader UI around)
+**Requirements**: READER-01..07 (to be enumerated during planning)
+**Success Criteria** (what must be TRUE):
+  1. The lesson toolbar is visible at the top of every `/course/[day]` page with day-jump, font-scale (S/M/L persisted to localStorage), and mark-complete; mark-complete writes to Mongo via a new `setLessonComplete(day)` server action that updates a `completedDays: number[]` field on the User.
+  2. Every `<pre>` block in lesson HTML renders with a copy-to-clipboard button that flashes "copied" for 1.5s; the button is keyboard-accessible (Tab + Enter).
+  3. A scroll-spy sidebar lists the lesson's h2/h3 sections and highlights the current section as the user scrolls; clicking a heading scrolls smoothly to it.
+  4. The per-day progress strip renders three pills — Lesson, Quiz, Lab — each filling proportionally as the user makes progress; the strip is sticky at the top of the page and visible from the lesson, quiz, and lab sections.
+  5. All reader controls degrade gracefully on a free-tier user reading days 1–3 (no Pro upsell modal interrupts a 3-minute read).
+**Plans**: TBD (run `/gsd:plan-phase 7`)
+
+---
+
+### Phase 8: Pro Lab Integration (WebVM)
+**Goal**: Wire the live WebVM at `https://saharbarak.github.io/ceh-webvm/` into each day's lab card. Each day's lab gets a "Run this drill" button that opens the WebVM in a Pro-gated panel pre-loaded with the matching drill (deep-link via URL fragment that the WebVM page parses to auto-run `drill start dayNN MM`). Iframe is sandboxed; cross-origin postMessage carries pass/fail back to the host so the host UI marks the lab attempted/completed.
+**Depends on**: Phase 6 (lab card needs real `day.exercise` data), Phase 1 (entitlements gate already shipped)
+**Requirements**: LAB-01..08 (to be enumerated during planning)
+**Success Criteria** (what must be TRUE):
+  1. A Pro user on `/course/3` clicks "Run this drill" on the lab card and sees the WebVM mount in a side panel within 8 seconds, already at the right drill prompt — no manual `drill start` typing needed.
+  2. A free-tier user on `/course/3` (a free day) sees the same lab card but the "Run this drill" CTA shows a lock + "Upgrade to Pro to launch the in-browser lab" with a `/pricing?from=lab-day3` link — the iframe never mounts for free users.
+  3. The WebVM iframe is sandboxed with `sandbox="allow-scripts allow-same-origin allow-popups"` and `allow="clipboard-read; clipboard-write"`; CSP allows `frame-src https://saharbarak.github.io` in the same nonce-based policy Phase 5 ships.
+  4. When the user runs `drill check` inside the WebVM and the drill passes, the WebVM posts a `cehprep:drill:pass` message back to the host window via postMessage with `{ day, slug }`; the host validates `event.origin === 'https://saharbarak.github.io'` and writes to a new `completedDrills` field on the User.
+  5. The day→drill mapping comes from `CURRICULUM-MAP.md` parsed at build time into a typed `dayDrills.ts` lookup table — no hardcoded slugs in the React component.
+**Plans**: TBD (run `/gsd:plan-phase 8`)
+
+---
+
+### Phase 9: Premium Content Library + Landing Lift
+**Goal**: Make the `docs/content/*.md` bonus library reachable from the running app at `/bonus` (Pro-gated, with a free-tier teaser of the first 3 items) and rework the landing page to sell on real content value — pull excerpts from items like the 32 OSINT search engines, the SQLMap workflow, the bug-bounty platforms list — instead of generic "ace your CEH" copy. The premium proof IS the content.
+**Depends on**: Phase 4 (paywall must exist for Pro gate); Phase 8 helpful but not required
+**Requirements**: LIB-01..05, LAND-01..06 (to be enumerated during planning)
+**Success Criteria** (what must be TRUE):
+  1. `/bonus` lists every `docs/content/NN-*.md` item with title, topic, primary day, and a 2-line teaser; Pro users get the full markdown rendered server-side; free users get the first 3 items full + the rest gated.
+  2. Each `/bonus/[slug]` renders the markdown with syntax highlighting on code blocks, working anchor links, and a per-item "Related Day" CTA that links to `/course/N` for the primary day in `CURRICULUM-MAP.md`.
+  3. The landing-page hero replaces the generic value copy with a 3-card preview pulling actual snippets from the bonus library (e.g. "7 Claude prompts every cybersecurity engineer should save" — `01-claude-prompts-cybersecurity.md`); clicking a preview card scrolls to a sample reader pane.
+  4. A new "What's inside Pro" landing-page section shows the per-day bonus content count via the `CURRICULUM-MAP.md` index — concrete numbers ("14 days · 18 bonus articles · 6 in-browser drills") instead of vague claims.
+  5. Conversion-relevant tracking: the landing hero's primary CTA, the bonus-preview clicks, and the "Upgrade to Pro" CTA on `/bonus/[slug]` all fire structured analytics events that Phase 5's analytics layer can pick up.
+**Plans**: TBD (run `/gsd:plan-phase 9`)
+
+---
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
+Phases 1–5 execute in numeric order (auth/billing/hardening track). Phases 6–9 execute in numeric order (content/lab/landing track). The two tracks can proceed in parallel; the only cross-track dependency is Phase 9 → Phase 4 (Pro paywall must exist before the bonus library is Pro-gated end-to-end).
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Stabilization | 0/6 | Not started | - |
+| 1. Stabilization | 6/6 | Complete | 2026-04-14 |
 | 2. Email Identity | 6/6 | Complete | 2026-04-14 |
-| 3. Google OAuth | 0/TBD | Not started | - |
-| 4. Paddle Billing + Tier Gate | 0/TBD | Not started | - |
+| 3. Google OAuth | 0/TBD | Paused (plans drafted) | - |
+| 4. Paddle Billing + Tier Gate | 0/TBD | Paused (context gate) | - |
 | 5. Production Hardening | 0/TBD | Not started | - |
+| 6. Curriculum Content Module | 0/TBD | Not started | - |
+| 7. Lesson Reader Polish | 0/TBD | Not started | - |
+| 8. Pro Lab Integration (WebVM) | 0/TBD | Not started | - |
+| 9. Premium Content Library + Landing Lift | 0/TBD | Not started | - |
 
 ## Coverage
 
+**v1 monetization + security track** (Phases 1–5):
 - v1 requirements total: **77** (STAB 9 + EMAIL 5 + VERIFY 4 + RESET 4 + OAUTH 9 + TIER 5 + PADDLE 11 + ADMIN 5 + PROD 9 + ANALYTICS 6 + TEST 7 + DEPLOY 3)
-- Mapped to phases: **77**
-- Unmapped: **0** ✓
-- Duplicates: **0** ✓
+- Mapped to phases: **77** · Unmapped: **0** ✓ · Duplicates: **0** ✓
 
 Note: The REQUIREMENTS.md traceability footer previously listed "69 total" — this was an off-by-2 miscount (verified by enumerating all REQ-IDs in the traceability table). The correct total is 71.
 
+**Content + lab + landing track** (Phases 6–9):
+- New requirement families: CONTENT-*, READER-*, LAB-*, LIB-*, LAND-*
+- Counts TBD until `/gsd:plan-phase 6..9` enumerates them
+- REQUIREMENTS.md will be extended at plan time
+
 ---
 *Roadmap created: 2026-04-13*
-*Granularity: standard (5 phases, at floor of 5-8 band)*
+*Phases 6-9 added: 2026-05-19 (content + lab + landing track)*
+*Granularity: standard (9 phases — original 5 v1 + 4 content/lab/landing)*
 *Parallelization: enabled*
