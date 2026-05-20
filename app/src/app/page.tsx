@@ -430,6 +430,29 @@ export default function LandingPage() {
             </Link>
           </div>
         </div>
+        <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-[var(--color-line)] pt-6 font-mono text-[11px]">
+          <span>Built by</span>
+          <a
+            href="https://github.com/SaharBarak"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[var(--color-ink-dim)] hover:text-[var(--color-accent)]"
+          >
+            Sahar Barak
+          </a>
+          <span className="text-[var(--color-line-strong)]">·</span>
+          <span>
+            shipping the lab fork at{" "}
+            <a
+              href="https://github.com/SaharBarak/ceh-webvm"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[var(--color-ink-dim)] hover:text-[var(--color-accent)]"
+            >
+              SaharBarak/ceh-webvm
+            </a>
+          </span>
+        </div>
       </footer>
     </>
   );
