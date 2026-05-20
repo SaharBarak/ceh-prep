@@ -38,6 +38,27 @@ const EnvSchema = z.object({
       (v) => process.env.NODE_ENV !== "production" || !v.includes("localhost"),
       "RESEND_FROM_ADDRESS must be a real verified sender in production",
     ),
+  // ── Email Engagement (Phase 10 + 11) ───────────────────
+  // CRON_SECRET gates the /api/cron/* routes — Vercel Cron sets this
+  // header on every invocation. Without it, the routes 401 silently.
+  // 32+ chars to make brute-force pointless; production requires a
+  // non-default value, dev gets a fixed placeholder.
+  CRON_SECRET: z
+    .string()
+    .min(16, "CRON_SECRET must be at least 16 characters")
+    .default("dev-cron-secret-do-not-use-in-prod")
+    .refine(
+      (v) =>
+        process.env.NODE_ENV !== "production" ||
+        v !== "dev-cron-secret-do-not-use-in-prod",
+      "CRON_SECRET must be set in production",
+    ),
+  // Marketing-unsubscribe token signing key. Separate from SESSION_SECRET
+  // so unsub links survive session-secret rotation.
+  UNSUB_SECRET: z
+    .string()
+    .min(16, "UNSUB_SECRET must be at least 16 characters")
+    .default("dev-unsub-secret-do-not-use-in-prod"),
 });
 
 export type Env = z.infer<typeof EnvSchema>;
@@ -50,6 +71,8 @@ const parsed = EnvSchema.safeParse({
   NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   RESEND_API_KEY: process.env.RESEND_API_KEY,
   RESEND_FROM_ADDRESS: process.env.RESEND_FROM_ADDRESS,
+  CRON_SECRET: process.env.CRON_SECRET,
+  UNSUB_SECRET: process.env.UNSUB_SECRET,
 });
 
 if (!parsed.success) {

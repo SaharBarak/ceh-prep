@@ -42,6 +42,20 @@ const userSchema = new Schema(
     // ── Per-user lesson + lab completion (Phase 7 + Phase 8) ─
     completedDays: { type: [Number], default: [] },
     completedDrills: { type: [String], default: [] },
+
+    // ── Email engagement (Phase 10 + 11) ───────────────────
+    // marketingOptOut kills ALL marketing streams (drip + broadcast +
+    // re-engagement). Transactional email (verify/reset) always flows.
+    marketingOptOut: { type: Boolean, default: false },
+    // marketingNudgeOptOut kills only the re-engagement nudges — used to
+    // give Pro users a softer default for the win-back stream.
+    marketingNudgeOptOut: { type: Boolean, default: false },
+    // IANA TZ identifier captured at signup (e.g. "Europe/Berlin"). Used
+    // to fire the daily drip at ~09:00 local instead of naive UTC.
+    timezone: { type: String, default: "UTC" },
+    // Last active timestamp — touched on every requireSession() hit;
+    // re-engagement uses (now - lastActiveAt) > 7d / 21d as the trigger.
+    lastActiveAt: { type: Date, default: Date.now },
   },
   {
     versionKey: false,
