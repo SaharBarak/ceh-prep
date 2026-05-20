@@ -8,7 +8,7 @@ status: unknown
 stopped_at: Phase 3 context gathered
 last_updated: "2026-04-14T15:46:21.032Z"
 progress:
-  total_phases: 9
+  total_phases: 11
   completed_phases: 2
   total_plans: 12
   completed_plans: 12
@@ -139,6 +139,8 @@ Full decision log lives in PROJECT.md Key Decisions table. Most recent decisions
 - 2026-05-19: Added Phase 7 (Lesson Reader Polish) — toolbar / scroll-spy / progress strip
 - 2026-05-19: Added Phase 8 (Pro Lab Integration / WebVM) — embed `saharbarak.github.io/ceh-webvm` per-day, postMessage pass/fail back to host
 - 2026-05-19: Added Phase 9 (Premium Content Library + Landing Lift) — render `docs/content/*.md` as `/bonus`, rework hero copy with real content samples
+- 2026-05-20: Added Phase 10 (Email Drip — Curriculum Sequence) — Resend Audiences + 14-day onboarding drip; Day 4 free→Pro upsell
+- 2026-05-20: Added Phase 11 (Email Broadcast + Re-engagement) — fire-on-publish bonus digest + 7/21-day re-engagement nudges
 
 ### Pending Todos
 

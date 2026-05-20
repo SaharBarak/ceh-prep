@@ -36,6 +36,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 7: Lesson Reader Polish** — Per-day reader toolbar (day-jump, font scale, mark-complete, copy-cmd, scroll-spy outline) + sticky-progress UI
 - [ ] **Phase 8: Pro Lab Integration (WebVM)** — Embed `saharbarak.github.io/ceh-webvm` per-day with deep-link drill autostart, gated by `canAccessDay`, with a "Run this drill" CTA on each lab card
 - [ ] **Phase 9: Premium Content Library + Landing Lift** — Render `docs/content/*.md` as `/bonus` (Pro-gated), surface curated content samples on the landing page, and rework hero copy to sell on outcomes from real lesson value
+- [ ] **Phase 10: Email Drip — Curriculum Sequence** — Resend Audiences scaffolding + 14-day onboarding drip: one curriculum-tied email per day starting one day after signup, with free→Pro upsell injected at Day 4
+- [ ] **Phase 11: Email Broadcast + Re-engagement** — Fire-on-publish bonus-library digest broadcast, plus 7-day / 21-day re-engagement nudges for inactive users; shares Phase 10's Audience + suppression list
 
 ## Phase Details
 
@@ -169,10 +171,41 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 ---
 
+### Phase 10: Email Drip — Curriculum Sequence
+**Goal**: A new signup receives a 14-day curriculum-tied drip email — one per day starting one calendar day after signup, in the user's signup-time-zone, with each day's blurb + a sample question + a deep-link to `/course/N`. Free-tier users hit Day 4 with a "tomorrow is Pro territory — here's what's inside" upsell. The whole stream rides on Resend Audiences (same vendor as the transactional layer); a single unsubscribe kills marketing without touching the transactional channel.
+**Depends on**: Phase 2 (`lib/infra/resend/` and audit pattern), Phase 6 (`DAYS` is the content source)
+**Requirements**: DRIP-01..09 (to be enumerated during planning)
+**Success Criteria** (what must be TRUE):
+  1. A user signs up at 23:00 local time and receives "Day 1 of your sprint is ready" at ~09:00 their local time the next calendar day — never at 02:00 their time because the queue is naive UTC. Subsequent days arrive at the same local hour ±15 min jitter.
+  2. A free-tier user receives Days 1–3 in the standard format; the Day 4 email's body is replaced with the "this is where Pro picks up" upsell variant that lists what they'll get + an `/pricing?from=drip-day4` CTA. Pro users (or anyone whose tier flipped after signup) get the standard Day 4 email instead.
+  3. Every drip-sent message is logged in the audit collection with `kind="drip"`, the day number, the user's hashed email, the audience-id, and the outcome (`sent` / `bounce` / `suppressed`). No raw email addresses, no token material.
+  4. A user clicks the unsubscribe link in any drip email → the user's `marketingOptOut: true` flag flips, the Resend Audiences contact is removed, and no subsequent drip OR broadcast (Phase 11) email is ever sent to that address. Transactional email (verify, reset) continues to flow.
+  5. Re-running the drip cron repeatedly during a window is a no-op for any user who already received that day's email — keyed by a `(userId, day, kind)` unique index on the EmailDispatch collection. Out-of-order delivery + retries never produce a duplicate Day-N email to the same user.
+**Plans**: TBD (run `/gsd:plan-phase 10`)
+
+---
+
+### Phase 11: Email Broadcast + Re-engagement
+**Goal**: When a new bonus-library item is published (a new `docs/content/NN-*.md` file lands on main), every opted-in user receives a digest email leading with the new article + 2 micro-snippets from earlier items + a deep-link to `/bonus/[slug]`. In parallel, users inactive for 7 and 21 days receive a single re-engagement nudge each, never more, never to people who unsubscribed from broadcast. Builds on Phase 10's Audience + suppression list.
+**Depends on**: Phase 10 (Audience + suppression infrastructure)
+**Requirements**: BLAST-01..06, REENG-01..04 (to be enumerated during planning)
+**Success Criteria** (what must be TRUE):
+  1. A new `docs/content/NN-*.md` file landing on `main` (detected by build-time SHA of the bonus library index) triggers a one-shot broadcast within the next cron tick (≤15 min). The email's lead-story link is the new article; the two snippets are deterministically chosen from the existing library (deduplicated by send-history). The broadcast is sent exactly once per article — never re-fires on rebuild.
+  2. A user who has not opened `/dashboard` or any `/course/*` in 7 days receives a single "Day {lastDay+1} is still waiting" nudge with a deep-link back to their last active day. Same user at 21 days receives a single "We saved your spot — pick up where you left off" nudge with their current quiz-progress %. After 21 days, no further re-engagement emails ever fire for that user from this stream.
+  3. Pro users get the broadcast (it's value-aligned content), but the re-engagement nudges only fire for free-tier accounts — paying users get a softer "we noticed you've been quiet" variant gated behind a separate `marketingNudgeOptOut` flag (defaulted opt-out for Pro).
+  4. A user who unsubscribed in Phase 10's drip emails (`marketingOptOut: true`) never receives a broadcast OR a re-engagement message — the suppression list is one-source-of-truth across all three streams.
+  5. CAN-SPAM + GDPR minima are visible: every broadcast and re-engagement email carries the physical mailing address in the footer, a one-click unsubscribe link in the header (`List-Unsubscribe` + `List-Unsubscribe-Post: List-Unsubscribe=One-Click` headers), and the "why are you receiving this" line that names which stream (drip / broadcast / re-engagement) and how to opt out of that one specifically.
+**Plans**: TBD (run `/gsd:plan-phase 11`)
+
+---
+
 ## Progress
 
 **Execution Order:**
-Phases 1–5 execute in numeric order (auth/billing/hardening track). Phases 6–9 execute in numeric order (content/lab/landing track). The two tracks can proceed in parallel; the only cross-track dependency is Phase 9 → Phase 4 (Pro paywall must exist before the bonus library is Pro-gated end-to-end).
+Three parallel tracks share the milestone:
+  - Auth/billing/hardening: 1 → 2 → 3 → 4 → 5
+  - Content/lab/landing: 6 → 7 → 8 → 9 (parallel to auth track; only 9 → 4 cross-track dep for the Pro paywall)
+  - Email engagement: 10 → 11 (depends on Phase 2's Resend foundation + Phase 6's content; parallel to everything else)
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -185,6 +218,8 @@ Phases 1–5 execute in numeric order (auth/billing/hardening track). Phases 6�
 | 7. Lesson Reader Polish | 0/TBD | Not started | - |
 | 8. Pro Lab Integration (WebVM) | 0/TBD | Not started | - |
 | 9. Premium Content Library + Landing Lift | 0/TBD | Not started | - |
+| 10. Email Drip — Curriculum Sequence | 0/TBD | Not started | - |
+| 11. Email Broadcast + Re-engagement | 0/TBD | Not started | - |
 
 ## Coverage
 
@@ -199,8 +234,14 @@ Note: The REQUIREMENTS.md traceability footer previously listed "69 total" — t
 - Counts TBD until `/gsd:plan-phase 6..9` enumerates them
 - REQUIREMENTS.md will be extended at plan time
 
+**Email engagement track** (Phases 10–11):
+- New requirement families: DRIP-*, BLAST-*, REENG-*
+- Counts TBD until `/gsd:plan-phase 10..11` enumerates them
+- Compliance line items (CAN-SPAM / GDPR / one-click unsubscribe) folded into BLAST + REENG
+
 ---
 *Roadmap created: 2026-04-13*
 *Phases 6-9 added: 2026-05-19 (content + lab + landing track)*
-*Granularity: standard (9 phases — original 5 v1 + 4 content/lab/landing)*
+*Phases 10-11 added: 2026-05-20 (email engagement track)*
+*Granularity: 11 phases — 5 v1 + 4 content/lab/landing + 2 email*
 *Parallelization: enabled*
