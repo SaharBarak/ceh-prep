@@ -7,6 +7,10 @@ import { connectDB } from "@/lib/db/mongo";
 import { UserModel } from "@/lib/db/models/user";
 import { canAccessDay, type Tier } from "@/lib/billing/entitlements";
 import { CoursePlayer } from "./course-player";
+import { ReaderToolbar } from "./reader-toolbar";
+import { ProgressStrip } from "./progress-strip";
+import { CopyCmd } from "./copy-cmd";
+import { WebVMPanel } from "./webvm-panel";
 
 export default async function CourseDayPage({
   params,
@@ -27,12 +31,16 @@ export default async function CourseDayPage({
   // is mandatory (CVE-2025-23061 — Mongoose $or-nested NoSQLi defense).
   await connectDB();
   let userTier: Tier = "free";
+  let completedDays: number[] = [];
+  let completedDrills: string[] = [];
   try {
     const user = await UserModel
       .findOne({ _id: { $eq: session.userId } })
-      .select("tier")
+      .select("tier completedDays completedDrills")
       .lean();
     if (user?.tier === "pro") userTier = "pro";
+    completedDays = user?.completedDays ?? [];
+    completedDrills = user?.completedDrills ?? [];
   } catch {
     // On a Mongo blip, fail closed: treat the user as free. Worst case they
     // get redirected to /pricing on a flaky moment; better than leaking
@@ -54,8 +62,21 @@ export default async function CourseDayPage({
   const prev = n > 1 ? n - 1 : null;
   const next = n < 14 ? n + 1 : null;
 
+  const lessonComplete = completedDays.includes(n);
+  const drillComplete = day.exercise.drillSlug
+    ? completedDrills.includes(day.exercise.drillSlug)
+    : false;
+  const answeredCount = Object.keys(answers).length;
+  const quizPct = day.quiz.length > 0 ? (answeredCount / day.quiz.length) * 100 : 0;
+  const lessonPct = lessonComplete ? 100 : 0;
+
   return (
     <>
+      <ReaderToolbar
+        day={n}
+        totalDays={DAYS.length}
+        initiallyComplete={lessonComplete}
+      />
       <nav className="mb-10 flex items-center justify-between">
         <Link href="/dashboard" className="mono-tag hover:text-[var(--color-accent)]">
           ← Dashboard
@@ -87,13 +108,16 @@ export default async function CourseDayPage({
         <p className="text-[var(--color-ink-dim)] md:col-span-4 md:pb-3">{day.blurb}</p>
       </section>
 
+      <ProgressStrip lessonPct={lessonPct} quizPct={quizPct} labDone={drillComplete} />
+
       <section className="mb-14">
         <h2 className="display mb-6 flex items-center gap-4 text-2xl">
           <span className="h-px w-6 bg-[var(--color-accent)]" />
           Lesson
         </h2>
         <div
-          className="prose-lesson max-w-[68ch] text-[15px] leading-relaxed text-[var(--color-ink-dim)]"
+          className="prose-lesson max-w-[68ch] leading-relaxed text-[var(--color-ink-dim)]"
+          style={{ fontSize: "var(--reader-font-size, 17px)" }}
           dangerouslySetInnerHTML={{ __html: day.lesson }}
         />
       </section>
@@ -119,9 +143,15 @@ export default async function CourseDayPage({
         <p className="mb-4 max-w-[60ch] text-sm leading-relaxed text-[var(--color-ink-dim)]">
           {day.exercise.body}
         </p>
-        <pre className="overflow-x-auto rounded-lg border border-[var(--color-line)] bg-[rgba(0,0,0,0.4)] p-4 font-mono text-[12px] text-[var(--color-accent)]">
-          {day.exercise.cmd}
-        </pre>
+        <div className="relative">
+          <CopyCmd cmd={day.exercise.cmd} />
+        </div>
+        <WebVMPanel
+          drillSlug={day.exercise.drillSlug}
+          canRun={userTier === "pro"}
+          day={n}
+          initiallyComplete={drillComplete}
+        />
       </section>
 
       <CoursePlayer day={day} initialAnswers={answers} />
