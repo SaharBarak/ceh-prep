@@ -1,13 +1,13 @@
 {
   "version": "1.0",
-  "timestamp": "2026-05-20T16:30:00.000Z",
+  "timestamp": "2026-05-20T17:15:00.000Z",
   "phase": "12",
   "phase_name": "Testing + LLM Quality Review",
   "phase_dir": ".planning/phases/12-testing-and-llm-quality-review",
   "plan": null,
   "task": null,
-  "total_tasks": 6,
-  "status": "track_b_mvp_shipped",
+  "total_tasks": 8,
+  "status": "track_b_validated_through_two_runs",
   "completed_tasks": [
     {"id": "phase-6", "name": "Curriculum content module + paused-phase scaffolding", "status": "done", "commit": "832d1f5"},
     {"id": "phase-7", "name": "Reader toolbar + progress strip + mark-complete", "status": "done", "commit": "022c541"},
@@ -20,18 +20,28 @@
     {"id": "phase-10-gaps", "name": "Phase 10 gaps closed: signup timezone + requireSession lastActiveAt", "status": "done", "commit": "43e0e75"},
     {"id": "roadmap-12", "name": "Phase 12 added scope-gated", "status": "done", "commit": "4c934c3"},
     {"id": "phase-12-scope", "name": "Phase 12 scope locked from user Q&A", "status": "done", "commit": "309e01e"},
-    {"id": "phase-12-track-b-mvp", "name": "Track B MVP: personas.json + playwright/sdk deps + icp-funnel-sim.ts harness + npm run qa:icp + README", "status": "done", "commit": "fd948bf"}
+    {"id": "phase-12-track-b-mvp", "name": "Track B MVP: personas.json + playwright/sdk deps + icp-funnel-sim.ts harness + npm run qa:icp + README", "status": "done", "commit": "fd948bf"},
+    {"id": "phase-12-run-1", "name": "First ICP report (Sarah/Alex/Priya) — 3/3 would_consider; surfaced harness capture bug + microline opportunity", "status": "done", "commit": "3703a50"},
+    {"id": "phase-12-run-2-and-fixes", "name": "Run 2 (Sarah-delta + Marcus + Dave; Marcus converted) + harness 5-capture refactor + landing fixes (microline visibility bump + v13 in subhead + ~30-min lesson + bolded 4)", "status": "done", "commit": "PENDING"}
   ],
   "remaining_tasks": [
-    {"id": 5, "name": "Run harness with real ANTHROPIC_API_KEY against localhost:3000 — verify report quality before automating", "status": "not_started"},
-    {"id": 6, "name": "Expand harness surface — signup -> curriculum -> lab -> exam (follow-up phases)", "status": "not_started"},
-    {"id": 7, "name": "Nightly cron at 03:00 UTC (decision logged; not wired)", "status": "not_started"},
-    {"id": 8, "name": "Track A: Vitest + Playwright + MSW + supertest deterministic suite", "status": "deferred_until_track_b_proven"}
+    {"id": "p12-named-human", "name": "Landing: add one named human + credential (closes Sarah's #1 across both runs + Dave's hobbyist worry)", "status": "blocked_on_user_input", "blocker": "needs founder name + credential to claim (OSCP/CEH/OSWE/etc.) and whether to add /about page or footer signature"},
+    {"id": "p12-field-notes-rename", "name": "Landing: rename 'Field-notes from people doing the work' to 'From the lab notebook' or repurpose for real practitioner notes (Sarah misframed it in both runs; Dave + Alex agreed)", "status": "not_started"},
+    {"id": "p12-refund-threshold", "name": "Landing: tighten refund threshold language — '80% of CEH v13 pass mark' is ~56% raw which is a low refund bar (Priya + Sarah-v2 caught)", "status": "not_started"},
+    {"id": "p12-sample-snippet", "name": "Landing: add a code snippet pull-quote on bonus cards so depth is visible without clicking through (Sarah both runs + Priya run 1)", "status": "not_started"},
+    {"id": "p12-cron-wire", "name": "Wire nightly cron at 03:00 UTC for icp-funnel-sim (decision logged in run-1 scope)", "status": "not_started"},
+    {"id": "p12-track-a", "name": "Track A: Vitest + Playwright + MSW + supertest deterministic suite", "status": "deferred_until_track_b_proven_in_production"}
+  ],
+  "v2_roadmap_items_from_qa": [
+    {"id": "v2-team-seats", "source": "Dave (run 2)", "summary": "No team/seats purchase path. Triggers v2 billing scope. Dave is correctly priced but can't buy 6 seats. CEH is largely compliance/audit-driven so the buyer is often not the user — this is real B2B money on the table.", "blocking_phase": "phase 4 billing"},
+    {"id": "v2-enterprise-signals", "source": "Dave (run 2)", "summary": "Hobbyist-vs-real-product. No about-the-company, no team-behind-it, no enterprise signals. CISO defense ammunition missing. Triggers v2 brand work + customer logos / pass-rate data once available."},
+    {"id": "v2-advanced-track", "source": "Priya (run 1)", "summary": "No advanced/post-cert track visible. The bonus library (HexStrike-AI, sqlmap workflows) hints at depth but the curriculum grid doesn't reference it. Engineer-tier ICP wants a 'Pro+' or 'post-cert CTF lane' tease."},
+    {"id": "v2-ceh-v13-ai-module", "source": "Priya (run 1)", "summary": "CEH v13 specifically added AI/ML attack content as a domain. Curriculum source check needed: either fold under another module + label explicitly, or add it. For a v13-marketed product in 2026, the absence is a v13-specific liability."}
   ],
   "blockers": [],
   "human_actions_pending": [
-    {"action": "Set ANTHROPIC_API_KEY in env, start `npm run dev` in one terminal, then `npm run qa:icp` in another", "context": "harness exits cleanly without the key — CI-safe", "blocking": false},
-    {"action": "Review first generated report at .planning/qa-reports/YYYY-MM-DD-landing.md before deciding to automate", "context": "MVP shape is intentional; report quality is the gate for surface expansion + cron", "blocking": false}
+    {"action": "Decide founder credential + page placement for Sarah/Dave's 'no named human' friction", "context": "Highest-leverage still-open landing fix. Needs OSCP/CEH/OSWE/etc. credential + LinkedIn or /about page decision.", "blocking": false},
+    {"action": "Provide ANTHROPIC_API_KEY in CI environment to wire up nightly cron", "context": "icp-funnel-sim.ts harness reads process.env.ANTHROPIC_API_KEY directly; exits cleanly without it (CI-safe). Both report runs so far used the host Claude Code session's API path (orchestrator-fan-out) at $0 cost. The standalone harness is shipped and tested but never run with a real key.", "blocking": false}
   ],
   "decisions": [
     {"decision": "Phase 12 split into Track A (deterministic) + Track B (ICP simulation); Track B first", "rationale": "User's detailed answers made Track B the headline; Track A defers until B proves valuable", "phase": "12"},
@@ -42,9 +52,12 @@
     {"decision": "Whole-repo nightly cron (03:00 UTC), not per-PR", "rationale": "User picked nightly for whole-funnel coverage", "phase": "12"},
     {"decision": "MVP shape: landing-page-only first; expand surface phase-by-phase", "rationale": "Avoid building wrong abstraction before knowing what good critique looks like", "phase": "12"},
     {"decision": "Budget cap CLAUDE_QA_MAX_USD default $2/run", "rationale": "Prevents runaway loops; ~$30/mo at 3 personas nightly is acceptable", "phase": "12"},
-    {"decision": "tsx as TypeScript runner for scripts/", "rationale": "Modern, no ts-node config burden; aligns with Node 20+ engines field", "phase": "12"}
+    {"decision": "tsx as TypeScript runner for scripts/", "rationale": "Modern, no ts-node config burden; aligns with Node 20+ engines field", "phase": "12"},
+    {"decision": "5-capture spec for landing screenshots (4 viewport + 1 fullpage), not 3", "rationale": "Run-1 found that 3 captures at scrollY=0/0.5/1.0 missed the mock-terminal section entirely — all 3 agents independently surfaced 'lab told not shown' which was a CAPTURE artifact, not a page bug. Verified by full-page in run 2. Both harness paths updated.", "phase": "12"},
+    {"decision": "Numeric findings from agent vision require source cross-reference", "rationale": "Run 1 & 2 reproduced numeric drift across multiple agents: '4' read as 'x'/'a', '80%' read as '60%'/'80%'. Small grey monospace numerals are unreliable through vision. Future runs should validate any quoted number against rendered HTML or repo source.", "phase": "12"},
+    {"decision": "Team/seats path deferred to v2 billing milestone", "rationale": "Dave's #1 friction is real B2B money on the table but adding marketing copy for infrastructure that doesn't exist (Phase 4 billing) would over-promise. Captured in v2_roadmap_items_from_qa for future scope.", "phase": "12"}
   ],
   "uncommitted_files": [],
-  "next_action": "User runs `npm run qa:icp` with real ANTHROPIC_API_KEY against running dev server. Review report at .planning/qa-reports/YYYY-MM-DD-landing.md. If report quality is good: expand harness surface (signup -> curriculum days 1/3/10/13 -> lab iframe -> exam Day 14) phase-by-phase. If report quality is weak: iterate on prompt shape before expanding surface.",
-  "context_notes": "Track B MVP shipped. Files: app/scripts/qa/{personas.json, icp-funnel-sim.ts, README.md}, npm run qa:icp wired, playwright + @anthropic-ai/sdk + tsx installed, chromium browser downloaded (~92 MiB). Build green (14 routes unchanged). Typecheck green. Harness exits cleanly without ANTHROPIC_API_KEY (CI-safe). Cost expectation ~$0.30-$0.55 per 5-persona run; default cap $2 is ~3x headroom. Pricing source: claude-api skill (Jan 2026): Sonnet 4.6 = $3/$15 per 1M, Haiku 4.5 = $1/$5 per 1M, cache writes 1.25x input, cache reads ~0.1x. tsconfig.tsbuildinfo added to .gitignore."
+  "next_action": "Decide on the highest-leverage still-open landing fix (named human + credential, from Sarah/Dave). Then either wire nightly cron, or move to Phase 11 (post-engagement email — winback/streak), or close milestone via /gsd:audit-milestone.",
+  "context_notes": "Track B MVP complete and validated through 2 ICP simulation runs (Sarah/Alex/Priya in run 1, Sarah-delta/Marcus/Dave in run 2). All 5 ICPs in personas.json have been exercised. Marcus converted with HIGH confidence in run 2 — first proof the harness loop produces actionable persona-distinct verdicts. Landing fixes shipped this session: (1) microline visibility bump with 'no card to start' in lime accent, (2) CEH v13 bolded inline in hero subhead, (3) ~30-min lesson per-day estimate, (4) bolded `4` in subhead to kill numeric vision misread. Harness fixes: 5-capture spec (4 viewport + 1 fullpage) in both icp-funnel-sim.ts and _capture-once.ts. Reports at .planning/qa-reports/2026-05-20-landing.md (run 1) + .planning/qa-reports/2026-05-20-landing-run2.md (run 2). Build green. Typecheck green. Cost so far: $0 — both runs used orchestrator-Claude fan-out, not direct API. Phase 12 ready to either expand (named-human, surface-expansion to signup/curriculum/exam) or close."
 }

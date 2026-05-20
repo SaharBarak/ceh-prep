@@ -140,21 +140,40 @@ async function captureLanding(browser: Browser): Promise<Screenshot[]> {
 
     const shots: Screenshot[] = [];
 
-    const grab = async (label: string): Promise<void> => {
+    const grabViewport = async (label: string): Promise<void> => {
       const buf = await page.screenshot({ type: "png", fullPage: false });
       shots.push({ label, data: buf.toString("base64"), mediaType: "image/png" });
     };
 
-    await grab("hero");
+    const grabFullPage = async (label: string): Promise<void> => {
+      const buf = await page.screenshot({ type: "png", fullPage: true });
+      shots.push({ label, data: buf.toString("base64"), mediaType: "image/png" });
+    };
+
+    // The 4 viewport captures simulate what a first-time visitor literally sees
+    // at four scroll-stop points. The full-page capture catches sections that
+    // fall between fixed offsets (we discovered the 2026-05-20 first run missed
+    // the mock-terminal section entirely with only 3 captures at 0/0.5/1.0).
+    await grabViewport("hero");
 
     const totalHeight = await page.evaluate(() => document.documentElement.scrollHeight);
-    await page.evaluate((y) => window.scrollTo({ top: y, behavior: "instant" }), totalHeight / 2);
+
+    await page.evaluate((y) => window.scrollTo({ top: y, behavior: "instant" }), totalHeight * 0.33);
     await page.waitForTimeout(400);
-    await grab("mid-scroll");
+    await grabViewport("upper-mid");
+
+    await page.evaluate((y) => window.scrollTo({ top: y, behavior: "instant" }), totalHeight * 0.66);
+    await page.waitForTimeout(400);
+    await grabViewport("lower-mid");
 
     await page.evaluate((y) => window.scrollTo({ top: y, behavior: "instant" }), totalHeight);
     await page.waitForTimeout(400);
-    await grab("footer");
+    await grabViewport("footer");
+
+    // Full-page as a safety net for any section that falls between fixed offsets.
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+    await page.waitForTimeout(300);
+    await grabFullPage("fullpage");
 
     return shots;
   } finally {

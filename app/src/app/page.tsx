@@ -60,13 +60,17 @@ export default function LandingPage() {
             slog.
           </h1>
           <p className="mt-8 max-w-[58ch] text-lg leading-relaxed text-[var(--color-ink-dim)]">
-            A 14-day sprint built by people who actually use{" "}
+            A 14-day <strong className="font-semibold text-[var(--color-ink)]">CEH v13</strong>{" "}
+            sprint built by people who actually use{" "}
             <code className="font-mono text-[var(--color-accent)]">nmap</code>
             ,{" "}
             <code className="font-mono text-[var(--color-accent)]">sqlmap</code>
             , and{" "}
             <code className="font-mono text-[var(--color-accent)]">hashcat</code>
-            . Each day: a tight lesson, {Math.round(totalQuestions / totalDays)}{" "}
+            . Each day: a ~30-min lesson,{" "}
+            <strong className="font-semibold text-[var(--color-ink)]">
+              {Math.round(totalQuestions / totalDays)}
+            </strong>{" "}
             explained quiz questions, and a hands-on lab that runs in a browser
             tab — not a slide deck.
           </p>
@@ -88,6 +92,13 @@ export default function LandingPage() {
               peek the terminal
             </a>
           </div>
+          <p className="mt-4 font-mono text-[12px] leading-relaxed text-[var(--color-ink-dim)]">
+            <strong className="font-semibold text-[var(--color-accent)]">no card to start</strong>
+            <span className="mx-2 text-[var(--color-line-strong)]">·</span>
+            cancel anytime
+            <span className="mx-2 text-[var(--color-line-strong)]">·</span>
+            within 80% of CEH v13 pass mark or we refund the month
+          </p>
         </div>
 
         {/* Receipts panel — concrete counts, all traceable to repo */}
