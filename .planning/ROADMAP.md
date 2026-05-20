@@ -201,26 +201,36 @@ Decimal phases appear between their surrounding integers in numeric order.
 ---
 
 ### Phase 12: Testing + LLM Quality Review
-**Goal**: The product gains two backstops at once. A **deterministic test suite** (Vitest unit + Playwright E2E) running in GitHub Actions on every PR — covering the auth → drip → curriculum → lab → bonus funnel and the security invariants (`$eq`-wrap, tier gate at both layers, NoSQLi negative tests, rate-limit truth-tables). And an **LLM-driven review loop** that critiques two surfaces no test suite catches: (a) quiz questions + lesson copy for CEH v13 accuracy + pedagogical clarity, and (b) PR diffs for the project's house-style rules (DDD layering, `$eq` discipline, server-action shape, no Claude-co-author tags, no AI-purple gradients).
 
-Scope is intentionally open — the success criteria below carry **placeholders** until the user picks a variant from the open questions in this phase's CONTEXT.md.
+**Goal**: The product gains two backstops that complement each other.
 
-**Depends on**: Phase 4 (E2E covers the full paywall funnel which needs Paddle wired); softer dep on Phase 5 (CI workflow file)
-**Requirements**: TEST-* + LLMQA-* (to be enumerated during planning, scope-gated)
-**Success Criteria** (what must be TRUE — PLACEHOLDER, narrows after scope Q&A):
-  1. `npm run test` runs the Vitest unit suite locally in <30 s and the Playwright E2E suite headlessly in <2 min; both run in GitHub Actions on every PR and merge-to-main is gated on green.
-  2. The E2E suite covers at least: landing → signup → verify-email → login → /course/1 → quiz-answer → mark-complete → /bonus → /pricing → upgrade-stub. Each step asserts not just navigation but a single backend invariant (Mongo doc shape, audit row, session epoch).
-  3. NoSQLi negative tests: for every server action that takes user input, a Vitest case fires a `$ne`/`$regex` injection payload at the parameter and asserts the action returns `error: "invalid_input"` (or that the `$eq`-wrap neutralized it). The grep-rule (no missing-`$eq` queries) runs in CI.
-  4. The **LLM Quality Review** runs against every changed `app/src/lib/content/days.ts` quiz question on PR open, returns a JSON critique (factual_accuracy / clarity / domain_fit / suggested_improvement), and posts a PR review comment if any field falls below a threshold. Same loop runs on `docs/content/*.md` items to flag stale GitHub repo references + outdated CVE counts.
-  5. The **LLM PR Diff Review** posts an automated review on every PR enforcing the house-style rules: every Mongo query wraps user input in `$eq`, every protected layout re-verifies session, every "use server" file's top-level exports are async, no Claude/Anthropic co-author tags in commit messages, no banned fonts/colors in CSS deltas. Disagreements with the LLM are surfaced as suggestions, not blockers — final merge is human.
-**Plans**: TBD (run `/gsd:plan-phase 12` once scope questions are answered)
+  **Track A — Deterministic test suite.** Vitest + Playwright + MSW (Mock Service Worker for server-action mocking) + supertest (for route-handler integration) running in GitHub Actions on every PR. Covers the full funnel (landing → signup → verify → login → curriculum → quiz → lab → bonus → pricing) and the security invariants (`$eq`-wrap, tier gate at both layers, NoSQLi negative tests, rate-limit truth-tables, drip idempotency).
 
-**Open scope questions before planning:**
-- Test stack: just Vitest + Playwright, or also include MSW for action mocking + supertest for route handlers? Adding mocking layers doubles maintenance.
-- LLM provider for the review loop: Claude API direct (we control the prompt, we eat the cost), or GitHub Copilot Workspace / Actions LLM (free but opaque)? Direct gives us better control.
-- Quality review trigger: only on changed files in a PR (cheap, focused), or whole-repo nightly (expensive but catches drift)? Per-PR is the default; nightly is opt-in.
-- Quiz question critique: blocking (PR can't merge if critique fails) or advisory (comment only, human decides)? Advisory is safer for v1.
-- Self-review: should the LLM also critique the LLM's previous critiques (chain-of-critique), or strictly one-pass? One-pass is simpler; chain-of-critique is what we did manually with `octo:droids:octo-frontend-developer` on the landing.
+  **Track B — Nightly ICP funnel simulation.** A Claude-driven autonomous-user harness that walks the entire product as 3–5 ideal-customer-profile personas (career switcher, SOC analyst refreshing certs, bootcamp grad on tight budget, ethical-hacking hobbyist, security-curious dev). For each persona, the harness uses Playwright to drive a real browser through the funnel — landing page, animations, signup, day-by-day curriculum, in-browser lab, exam simulator — with Claude in the loop at every step judging "is this persona engaged? trusting? converting? bailing?" via vision-API screenshots + DOM snapshots. Chain-of-critique: after the first pass produces notes, Claude re-reads its own notes and surfaces what it missed. Output is a nightly markdown report under `.planning/qa-reports/YYYY-MM-DD.md` with: per-persona walkthrough (notes per step), conversion verdict, top-3 friction points, ranked suggestions.
+
+  Both tracks are **advisory** — neither blocks merges. Track A's CI flag goes red but doesn't enforce; Track B's report is a heads-up for the next morning's work. We trust humans for the merge decision.
+
+**Depends on**: Phase 4 (paywall funnel must exist before persona simulation can judge conversion); soft dep on Phase 5 (shares the CI workflow file)
+**Requirements**: TEST-01..09, MOCK-01..03, ICPSIM-01..10 (to be enumerated during planning)
+
+**Success Criteria** (what must be TRUE):
+  1. `npm run test` runs Vitest unit + integration suite locally in <30 s and Playwright E2E suite headlessly in <2 min. GitHub Actions runs both on every PR; the workflow is advisory (badge shows red/green but no protected-branch enforcement) and the suite covers landing → signup → verify-email → login → `/course/1` → quiz-answer → mark-complete → `/bonus` → `/pricing` → upgrade-stub. Each step asserts a single backend invariant (Mongo doc shape, audit row, session epoch, drip dispatch row).
+  2. **NoSQLi + house-style tests**: for every server action taking user input, a Vitest case fires a `$ne` / `$regex` / `$where` injection payload at the parameter and asserts the action returns `error: "invalid_input"` or that the `$eq`-wrap neutralized it. CI also runs the existing `check-no-eq.sh` grep + a new `check-server-action-async-exports.sh` to enforce the Next-15 build-time constraint at lint time.
+  3. **MSW + supertest layer**: every server action has at least one Vitest case that runs through an MSW handler stub (so Resend/HIBP calls don't hit the network) and one supertest case against the route handler (`/api/verify`, `/api/unsubscribe`, `/api/cron/drip`) asserting auth header gating, response shape, and side-effect (Mongo write, audit row).
+  4. **ICP funnel simulation harness** ships as `scripts/qa/icp-funnel-sim.ts` runnable via `npm run qa:icp`. Single invocation walks N personas (defined in `scripts/qa/personas.json` — 3 to start) through the funnel: hits the dev server, screenshots the landing page, asks Claude vision "would persona X find this trustworthy / would they click through / what feels off?", continues through signup using a per-persona email, exercises 14-day curriculum + a sampled drill + the exam simulator, and produces `.planning/qa-reports/YYYY-MM-DD.md` with per-persona conversion verdict + step-by-step notes + ranked suggestions. Chain-of-critique pass re-reads the report and surfaces missed observations.
+  5. **GitHub Actions nightly schedule** runs the ICP harness against a one-shot Vercel preview deployment (or a fresh dev server inside the workflow), commits the dated report to `.planning/qa-reports/`, and opens an issue tagged `qa-icp` linking the new report if any persona's conversion verdict is "bail" with a friction-rank above 3/5. The Claude API key is read from `secrets.CLAUDE_QA_KEY` — never logged, never echoed, and the budget is capped (`CLAUDE_QA_MAX_USD`) so a runaway prompt loop can't bill us a thousand dollars overnight.
+
+**Plans**: TBD (run `/gsd:plan-phase 12`)
+
+**Phase 12 implementation notes** (locked from scope Q&A 2026-05-20):
+- **Test stack**: Vitest + Playwright + MSW + supertest. Mocking layer accepted as worth the maintenance cost.
+- **LLM provider**: Claude API direct via `@anthropic-ai/sdk`. We own the prompt + budget. Use Sonnet with vision for ICP pass; Haiku for chain-of-critique synthesis pass (cheaper, faster, sufficient for re-reading notes).
+- **Trigger cadence**: Nightly whole-repo (cron 03:00 UTC). Per-PR runs deferred to a future phase if the nightly proves valuable.
+- **Severity**: Advisory only. No merge blocking ever. Reports are inputs to the next morning's work.
+- **Self-review**: Chain-of-critique — first pass produces notes per step, second pass re-reads the full session, third pass aggregates findings into ranked suggestions.
+
+**Budget watch-out** — flagged at planning, owner decides at config time:
+- Claude API with vision is not free. Back-of-envelope: 3 personas × ~30 steps × (Sonnet vision ~$0.01 + Haiku synthesis ~$0.001) = ~$1/night → ~$30/mo. Acceptable for a quality backstop, but the harness hard-stops on `CLAUDE_QA_MAX_USD` per invocation (default $2) to catch runaway loops.
 
 ---
 
@@ -245,7 +255,7 @@ Three parallel tracks share the milestone:
 | 9. Premium Content Library + Landing Lift | 0/TBD | Not started | - |
 | 10. Email Drip — Curriculum Sequence | 0/TBD | Not started | - |
 | 11. Email Broadcast + Re-engagement | 0/TBD | Not started | - |
-| 12. Testing + LLM Quality Review | 0/TBD | Scope-gated | - |
+| 12. Testing + LLM Quality Review | 0/TBD | Scoped, ready to plan | - |
 
 ## Coverage
 

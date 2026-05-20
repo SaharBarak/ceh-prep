@@ -141,7 +141,10 @@ Full decision log lives in PROJECT.md Key Decisions table. Most recent decisions
 - 2026-05-19: Added Phase 9 (Premium Content Library + Landing Lift) — render `docs/content/*.md` as `/bonus`, rework hero copy with real content samples
 - 2026-05-20: Added Phase 10 (Email Drip — Curriculum Sequence) — Resend Audiences + 14-day onboarding drip; Day 4 free→Pro upsell
 - 2026-05-20: Added Phase 11 (Email Broadcast + Re-engagement) — fire-on-publish bonus digest + 7/21-day re-engagement nudges
-- 2026-05-20: Added Phase 12 (Testing + LLM Quality Review) — Vitest + Playwright + GitHub Actions CI, plus LLM-driven critique of quiz/lesson content + PR diffs. Scope gated on 5 open questions in ROADMAP.md Phase 12 entry.
+- 2026-05-20: Added Phase 12 (Testing + LLM Quality Review) — two-track:
+    Track A: Vitest + Playwright + MSW + supertest deterministic suite, advisory CI on every PR.
+    Track B: Claude-driven nightly ICP-funnel-simulation harness — 3-5 ICP personas walk the full product, vision-API judges animations + trust + conversion, chain-of-critique produces ranked friction reports under .planning/qa-reports/YYYY-MM-DD.md.
+    Severity: advisory only (never blocks merges). Budget capped via CLAUDE_QA_MAX_USD env (default $2/run, ~$30/mo).
 
 ### Pending Todos
 
