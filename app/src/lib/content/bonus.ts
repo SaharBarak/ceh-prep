@@ -57,10 +57,22 @@ export const getBonusItems = (): BonusItem[] => {
       const html = marked.parse(raw, { async: false }) as string;
       return { slug, n, title, teaser, primaryDay, html, raw };
     })
+    // Skip placeholder items — sources that were scraped but inaccessible
+    // (private Instagram posts, login-gated Facebook shares) leak permalink
+    // hashes into the title field ("Instagram Post DWX1Jk1k-UK"). Hide them
+    // from public listings until they're either replaced with usable content
+    // or deleted. QA harness run-3 (.planning/qa-reports/) caught all three
+    // showing in the live bonus library — Sarah/Priya/Dave each flagged it.
+    .filter((item) => !isPlaceholderTitle(item.title))
     .sort((a, b) => a.n - b.n);
 
   return cache;
 };
+
+const isPlaceholderTitle = (title: string): boolean =>
+  /^(Instagram Post\s+[A-Za-z0-9_-]+|Facebook Share[: ]|Inaccessible|Login required)/i.test(
+    title.trim(),
+  );
 
 export const getBonusItem = (slug: string): BonusItem | undefined =>
   getBonusItems().find((item) => item.slug === slug);

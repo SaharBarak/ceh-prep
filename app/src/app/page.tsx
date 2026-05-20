@@ -97,7 +97,7 @@ export default function LandingPage() {
             <span className="mx-2 text-[var(--color-line-strong)]">·</span>
             cancel anytime
             <span className="mx-2 text-[var(--color-line-strong)]">·</span>
-            within 80% of CEH v13 pass mark or we refund the month
+            hit 70&nbsp;% on the Day-14 sim or we refund the month
           </p>
         </div>
 
@@ -281,12 +281,17 @@ export default function LandingPage() {
         <Reveal>
           <header className="mb-10 flex items-end justify-between gap-6">
             <div>
-              <p className="mono-tag mb-3">// inside the bonus library</p>
+              <p className="mono-tag mb-3">// from the lab notebook</p>
               <h2 className="display text-3xl md:text-5xl">
-                Field-notes from
+                Writeups, tool deep-dives,
                 <br />
-                people doing the work.
+                bonus repos.
               </h2>
+              <p className="mt-4 max-w-[52ch] text-sm text-[var(--color-ink-dim)]">
+                Not testimonials — practitioner writeups linked to real GitHub
+                repos. The bonus library doubles as the advanced track when the
+                14-day sprint isn&apos;t enough.
+              </p>
             </div>
             <Link href="/bonus" className="btn-ghost shrink-0">
               All {bonus.length} →
@@ -378,6 +383,17 @@ export default function LandingPage() {
             </li>
           ))}
         </ol>
+
+        <p className="mt-6 max-w-[60ch] font-mono text-[11px] leading-relaxed text-[var(--color-ink-faint)]">
+          // CEH v13 AI/ML attack content covered in Day 07 (AI-augmented
+          phishing &amp; malware) and Day 09 (prompt-injection &amp; LLM
+          web-app attacks). Advanced track lives in the{" "}
+          <Link href="/bonus" className="text-[var(--color-ink-dim)] hover:text-[var(--color-accent)]">
+            bonus library
+          </Link>{" "}
+          — HTB-quality writeups, exploit walkthroughs, and CTF-style drills
+          for HTB / TryHackMe regulars.
+        </p>
       </section>
 
       {/* ──────────────────────────────────────────────────────────────
@@ -395,9 +411,14 @@ export default function LandingPage() {
             Open the tab and start.
           </h2>
           <p className="mt-5 max-w-[60ch] text-[var(--color-ink-dim)]">
-            Pro is $30/mo. Cancel anytime. If the simulator doesn&apos;t put
-            you within 80% of CEH v13 pass-mark after a full 14-day run,
-            email us and we&apos;ll refund the month.
+            Pro is $30/mo. Cancel anytime. If you don&apos;t score at least{" "}
+            <strong className="font-semibold text-[var(--color-ink)]">
+              70&nbsp;%
+            </strong>{" "}
+            on the Day-14 simulator after running the full 14-day sprint, email
+            us and we&apos;ll refund the month. 70&nbsp;% is the CEH v13 pass
+            threshold for the most common exam form — clearing it on our
+            simulator is the strongest predictor of clearing it for real.
           </p>
         </div>
         <div className="flex flex-col gap-3 md:col-span-4 md:items-end">

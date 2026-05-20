@@ -76,7 +76,9 @@ export function StatGrid({
           className="bg-[var(--color-surface)] p-5"
         >
           <p className="display text-3xl text-[var(--color-ink)]">{it.k}</p>
-          <p className="mono-tag mt-1">{it.l}</p>
+          <p className="mt-1 font-mono text-[10px] uppercase leading-tight tracking-wider text-[var(--color-ink-dim)]">
+            {it.l}
+          </p>
         </motion.div>
       ))}
     </motion.div>

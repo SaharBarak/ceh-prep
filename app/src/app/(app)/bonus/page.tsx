@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { getBonusItems } from "@/lib/content/bonus";
-import { requireSession } from "@/lib/auth/session";
+import { getSession } from "@/lib/auth/session";
 import { connectDB } from "@/lib/db/mongo";
 import { UserModel } from "@/lib/db/models/user";
 import type { Tier } from "@/lib/billing/entitlements";
@@ -10,28 +9,45 @@ export const dynamic = "force-dynamic";
 
 const FREE_PREVIEW_COUNT = 3;
 
+/**
+ * Public bonus library. The landing page links unauthenticated visitors here
+ * as "All N →" — so we use the soft `getSession()` (returns null when
+ * unauthenticated) rather than `requireSession()` (which throws). Free / pro
+ * gating then keys off the session: no session → free; session + tier=pro →
+ * pro; everything else → free.
+ *
+ * QA harness caught the original bug — landing CTA → /bonus produced a
+ * 500/UNAUTHORIZED hard-error for the entire unauthenticated cohort (see
+ * .planning/qa-reports/ run 3).
+ */
 export default async function BonusLibraryPage() {
-  const session = await requireSession();
+  const session = await getSession();
 
-  await connectDB();
   let tier: Tier = "free";
-  try {
-    const user = await UserModel.findOne({ _id: { $eq: session.userId } })
-      .select("tier")
-      .lean();
-    if (user?.tier === "pro") tier = "pro";
-  } catch {
-    tier = "free";
+  if (session.userId) {
+    await connectDB();
+    try {
+      const user = await UserModel.findOne({ _id: { $eq: session.userId } })
+        .select("tier")
+        .lean();
+      if (user?.tier === "pro") tier = "pro";
+    } catch {
+      tier = "free";
+    }
   }
 
   const items = getBonusItems();
   const isPro = tier === "pro";
+  const isAuthed = Boolean(session.userId);
 
   return (
     <>
       <nav className="mb-10">
-        <Link href="/dashboard" className="mono-tag hover:text-[var(--color-accent)]">
-          ← Dashboard
+        <Link
+          href={isAuthed ? "/dashboard" : "/"}
+          className="mono-tag hover:text-[var(--color-accent)]"
+        >
+          ← {isAuthed ? "Dashboard" : "Home"}
         </Link>
       </nav>
 
@@ -43,8 +59,23 @@ export default async function BonusLibraryPage() {
         <p className="mt-6 max-w-[60ch] text-[var(--color-ink-dim)]">
           Tools, walkthroughs, and tactical breakdowns from the security community —
           deduplicated, indexed by CEH v13 day, and tagged with the GitHub repos
-          they reference. {isPro ? "Pro tier — full access." : `Free preview: first ${FREE_PREVIEW_COUNT}.`}
+          they reference.{" "}
+          {isPro
+            ? "Pro tier — full access."
+            : isAuthed
+              ? `Free preview: first ${FREE_PREVIEW_COUNT}.`
+              : `Preview the first ${FREE_PREVIEW_COUNT} for free — sign up to unlock the rest with the 3-day trial.`}
         </p>
+        {!isAuthed && (
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <Link href="/signup" className="btn-primary">
+              Start free — 3 days
+            </Link>
+            <Link href="/pricing" className="btn-ghost">
+              $30/mo · see pricing
+            </Link>
+          </div>
+        )}
       </header>
 
       <ul className="grid grid-cols-1 gap-px bg-[var(--color-line)] md:grid-cols-2">
@@ -59,10 +90,10 @@ export default async function BonusLibraryPage() {
                 <div className="flex flex-col items-start gap-3 opacity-60">
                   <Card item={item} />
                   <Link
-                    href={`/pricing?from=bonus`}
+                    href={isAuthed ? "/pricing?from=bonus" : "/signup?from=bonus"}
                     className="mono-tag text-[var(--color-accent)]"
                   >
-                    🔒 Upgrade to read →
+                    🔒 {isAuthed ? "Upgrade to read" : "Sign up to read"} →
                   </Link>
                 </div>
               ) : (

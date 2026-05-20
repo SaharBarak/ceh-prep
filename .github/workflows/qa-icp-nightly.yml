@@ -1,0 +1,104 @@
+name: QA · ICP funnel sim (nightly)
+
+# Phase 12 Track B — nightly Claude-driven ICP simulation.
+# Runs 03:00 UTC every day, exits cleanly if ANTHROPIC_API_KEY is missing
+# (CI-safe by design), commits the new report to a dated branch and opens
+# a PR for human review. Advisory — never blocks merges.
+
+on:
+  schedule:
+    # 03:00 UTC daily — chosen because it's deepest off-peak for North America
+    # and Europe, minimising overlap with deploys / merges.
+    - cron: "0 3 * * *"
+  workflow_dispatch: {} # allow manual triggers from the Actions UI
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  icp-sim:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: app
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Build app
+        run: npm run build
+
+      - name: Start production server in background
+        run: |
+          npm run start &
+          echo $! > /tmp/next.pid
+          # Wait for HTTP 200 (cap at ~30s)
+          for i in $(seq 1 30); do
+            if curl -fs http://localhost:3000/ > /dev/null; then
+              echo "Next.js ready after ${i}s"
+              break
+            fi
+            sleep 1
+          done
+
+      - name: Run ICP funnel simulation
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          QA_TARGET_URL: "http://localhost:3000"
+          CLAUDE_QA_MAX_USD: "3"
+        run: npm run qa:icp
+
+      - name: Stop Next.js server
+        if: always()
+        run: |
+          if [ -f /tmp/next.pid ]; then
+            kill "$(cat /tmp/next.pid)" || true
+          fi
+
+      - name: Check for new report
+        id: report
+        working-directory: ${{ github.workspace }}
+        run: |
+          if git diff --quiet --exit-code -- .planning/qa-reports/; then
+            echo "No new report — likely missing ANTHROPIC_API_KEY secret."
+            echo "has_report=false" >> "$GITHUB_OUTPUT"
+          else
+            REPORT_PATH=$(git diff --name-only -- .planning/qa-reports/ | head -1)
+            echo "report_path=${REPORT_PATH}" >> "$GITHUB_OUTPUT"
+            echo "has_report=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open PR with the report
+        if: steps.report.outputs.has_report == 'true'
+        working-directory: ${{ github.workspace }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          BRANCH="qa/icp-${DATE}"
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add .planning/qa-reports/
+          git commit -m "report(qa): nightly ICP funnel simulation — ${DATE}"
+          git push -u origin "$BRANCH"
+          gh pr create \
+            --title "QA · ICP funnel sim — ${DATE}" \
+            --body "Auto-generated nightly ICP simulation report. Advisory only — never blocks merges. See \`${{ steps.report.outputs.report_path }}\`." \
+            --label "qa,advisory"

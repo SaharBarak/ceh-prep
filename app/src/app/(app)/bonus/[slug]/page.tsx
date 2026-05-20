@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { getBonusItem, getBonusItems } from "@/lib/content/bonus";
-import { requireSession } from "@/lib/auth/session";
+import { getSession } from "@/lib/auth/session";
 import { connectDB } from "@/lib/db/mongo";
 import { UserModel } from "@/lib/db/models/user";
 import type { Tier } from "@/lib/billing/entitlements";
@@ -20,24 +20,30 @@ export default async function BonusItemPage({
   const item = getBonusItem(slug);
   if (!item) notFound();
 
-  // Tier gate — same single-source-of-truth pattern as course/[day].
-  const session = await requireSession();
-  await connectDB();
+  // Same public-default policy as the /bonus index. Unauthenticated visitors
+  // can read the first FREE_PREVIEW_COUNT items; locked items redirect them
+  // to /signup (not /pricing) since the funnel-correct next step is "create
+  // an account and start the 3-day trial."
+  const session = await getSession();
+  const isAuthed = Boolean(session.userId);
+
   let tier: Tier = "free";
-  try {
-    const user = await UserModel.findOne({ _id: { $eq: session.userId } })
-      .select("tier")
-      .lean();
-    if (user?.tier === "pro") tier = "pro";
-  } catch {
-    tier = "free";
+  if (isAuthed) {
+    await connectDB();
+    try {
+      const user = await UserModel.findOne({ _id: { $eq: session.userId } })
+        .select("tier")
+        .lean();
+      if (user?.tier === "pro") tier = "pro";
+    } catch {
+      tier = "free";
+    }
   }
 
-  // Free preview: first N items only.
   const allItems = getBonusItems();
   const indexInList = allItems.findIndex((it) => it.slug === slug);
   if (tier === "free" && indexInList >= FREE_PREVIEW_COUNT) {
-    redirect(`/pricing?from=bonus-${slug}`);
+    redirect(isAuthed ? `/pricing?from=bonus-${slug}` : `/signup?from=bonus-${slug}`);
   }
 
   return (
