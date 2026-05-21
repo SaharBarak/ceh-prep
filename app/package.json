@@ -9,7 +9,9 @@
     "lint": "next lint --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
-    "qa:icp": "tsx scripts/qa/icp-funnel-sim.ts"
+    "qa:icp": "tsx scripts/qa/icp-funnel-sim.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@node-rs/argon2": "^2.0.2",
@@ -41,14 +43,17 @@
     "@types/zxcvbn": "^4.4.5",
     "@typescript-eslint/eslint-plugin": "^8.19.1",
     "@typescript-eslint/parser": "^8.19.1",
+    "@vitest/coverage-v8": "^4.1.7",
     "eslint": "^9.18.0",
     "eslint-config-next": "15.1.4",
+    "jsdom": "^29.1.1",
     "mongodb-memory-server": "^11.0.1",
     "playwright": "^1.60.0",
     "prettier": "^3.4.2",
     "tailwindcss": "^4.0.0",
     "tsx": "^4.22.3",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "vitest": "^4.1.7"
   },
   "engines": {
     "node": ">=20.0.0"
