@@ -4,6 +4,7 @@ import { getSession } from "@/lib/auth/session";
 import { connectDB } from "@/lib/db/mongo";
 import { UserModel } from "@/lib/db/models/user";
 import type { Tier } from "@/lib/billing/entitlements";
+import { TrackOnMount } from "@/components/track";
 
 export const dynamic = "force-dynamic";
 
@@ -42,6 +43,10 @@ export default async function BonusLibraryPage() {
 
   return (
     <>
+      <TrackOnMount
+        event="bonus_view"
+        params={{ tier, authed: isAuthed, items: items.length }}
+      />
       {isAuthed && (
         <nav className="mb-10">
           <Link href="/dashboard" className="mono-tag hover:text-[var(--color-accent)]">

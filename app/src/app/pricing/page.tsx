@@ -1,6 +1,16 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { DAYS } from "@/lib/content";
 import { getBonusItems } from "@/lib/content/bonus";
+import { TrackOnMount } from "@/components/track";
+import { CheckoutButton } from "@/components/checkout-button";
+import { getSession } from "@/lib/auth/session";
+import { connectDB } from "@/lib/db/mongo";
+import { UserModel } from "@/lib/db/models/user";
+import { isPaddleConfigured } from "@/lib/infra/paddle";
+import { env } from "@/lib/env";
+
+export const dynamic = "force-dynamic";
 
 /**
  * Pricing page — sells via the same receipts the landing does.
@@ -11,7 +21,7 @@ import { getBonusItems } from "@/lib/content/bonus";
  * manually via the admin CLI. The page says all this out loud rather
  * than faking a checkout that doesn't exist.
  */
-export default function PricingPage() {
+export default async function PricingPage() {
   const bonus = getBonusItems();
   const totalDays = DAYS.length;
   const totalQuestions = DAYS.reduce((s, d) => s + d.quiz.length, 0);
@@ -21,8 +31,28 @@ export default function PricingPage() {
     0,
   );
 
+  // Session-aware Pro CTA — render the live Paddle checkout button if the
+  // user is signed in, free-tier, AND Paddle is configured. Otherwise fall
+  // back to the honest "sign up first / billing not yet live" link.
+  const session = await getSession();
+  const paddleReady = isPaddleConfigured();
+  let proUser: { userId: string; email: string; tier: "free" | "pro" } | null = null;
+  if (session.userId && session.email) {
+    await connectDB();
+    const u = await UserModel.findOne({ _id: { $eq: session.userId } })
+      .select("tier")
+      .lean();
+    proUser = {
+      userId: session.userId,
+      email: session.email,
+      tier: u?.tier === "pro" ? "pro" : "free",
+    };
+  }
+  const renderProCheckout = paddleReady && proUser && proUser.tier === "free";
+
   return (
     <>
+      <TrackOnMount event="pricing_view" />
       <header className="mb-20 grid grid-cols-1 gap-6 md:grid-cols-12">
         <div className="md:col-span-7">
           <p className="mono-tag mb-6">Pricing</p>
@@ -72,11 +102,35 @@ export default function PricingPage() {
             "In-browser Debian lab — nmap, sqlmap, hydra, john, gobuster, gdb pre-loaded",
             "Domain-weighted timed exam simulator (125 q · 4 h · mirrors real v13)",
           ]}
-          cta={{
-            label: "Start free first →",
-            href: "/signup?intent=pro",
-            note: "Billing opens once Paddle integration ships (Phase 4). Sign up free now; we'll email when Pro checkout is live.",
-          }}
+          cta={
+            renderProCheckout
+              ? {
+                  custom: (
+                    <CheckoutButton
+                      enabled={true}
+                      clientToken={env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN!}
+                      environment={env.NEXT_PUBLIC_PADDLE_ENV}
+                      priceId={env.PADDLE_PRO_PRICE_ID!}
+                      userId={proUser!.userId}
+                      email={proUser!.email}
+                    />
+                  ),
+                }
+              : proUser?.tier === "pro"
+                ? {
+                    label: "You're on Pro →",
+                    href: "/dashboard",
+                  }
+                : {
+                    label: paddleReady
+                      ? "Sign up to upgrade →"
+                      : "Start free first →",
+                    href: "/signup?intent=pro",
+                    note: paddleReady
+                      ? "Sign up + verify email, then return here to start Pro."
+                      : "Billing opens once Paddle integration ships (Phase 4). Sign up free now; we'll email when Pro checkout is live.",
+                  }
+          }
         />
       </section>
 
@@ -128,6 +182,10 @@ export default function PricingPage() {
   );
 }
 
+type TierCta =
+  | { label: string; href: string; note?: string; custom?: never }
+  | { custom: ReactNode; label?: never; href?: never; note?: never };
+
 const Tier = ({
   name,
   tag,
@@ -142,7 +200,7 @@ const Tier = ({
   price: string;
   priceSub: string;
   features: string[];
-  cta: { label: string; href: string; note?: string };
+  cta: TierCta;
   accent: boolean;
 }) => (
   <article
@@ -180,9 +238,13 @@ const Tier = ({
       ))}
     </ul>
 
-    <Link href={cta.href} className={accent ? "btn-primary" : "btn-ghost"}>
-      {cta.label}
-    </Link>
+    {"custom" in cta && cta.custom ? (
+      cta.custom
+    ) : "href" in cta && cta.href ? (
+      <Link href={cta.href} className={accent ? "btn-primary" : "btn-ghost"}>
+        {cta.label}
+      </Link>
+    ) : null}
     {cta.note && (
       <p className="mt-4 text-xs text-[var(--color-ink-faint)]">{cta.note}</p>
     )}

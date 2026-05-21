@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { SiteNav } from "@/components/site-nav";
+import { GA4Script } from "@/components/ga4-script";
 
 export const metadata: Metadata = {
   title: "CEH Prep — 14 days to certified",
@@ -16,6 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <GA4Script />
         <SiteNav />
         <main className="mx-auto max-w-6xl px-6 py-10 md:px-10 md:py-16">
           {children}

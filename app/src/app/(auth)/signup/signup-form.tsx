@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useState } from "react";
 import { signup } from "@/lib/actions/auth";
 import type { ActionState } from "@/lib/actions/shared";
+import { track, EVENTS } from "@/lib/analytics/ga4";
 
 const initial: ActionState = {};
 
@@ -46,7 +47,11 @@ export const SignupForm = () => {
   const errorMessage = state.error ? (ERROR_COPY[state.error] ?? state.error) : null;
 
   return (
-    <form action={formAction} className="space-y-5">
+    <form
+      action={formAction}
+      onSubmit={() => track(EVENTS.SIGNUP_START)}
+      className="space-y-5"
+    >
       <input type="hidden" name="timezone" value={tz} />
       <label className="block">
         <span className="mono-tag mb-2 block">Name (optional)</span>

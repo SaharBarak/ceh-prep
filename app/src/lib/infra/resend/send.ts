@@ -6,11 +6,19 @@ import { VerifyEmail } from "./templates/VerifyEmail";
 import { ResetPassword } from "./templates/ResetPassword";
 import { Welcome } from "./templates/Welcome";
 import { Drip } from "./templates/Drip";
+import { Winback } from "./templates/Winback";
+import { Streak } from "./templates/Streak";
 import { unsubUrl } from "./unsub";
 import { audit, type ClientMeta } from "@/lib/actions/shared";
 import type { Day } from "@/lib/content";
 
-export type SendKind = "verify" | "reset" | "welcome" | "drip";
+export type SendKind =
+  | "verify"
+  | "reset"
+  | "welcome"
+  | "drip"
+  | "winback"
+  | "streak";
 
 export type SendOutcome =
   | { readonly ok: true; readonly id: string }
@@ -161,3 +169,58 @@ export const sendDripEmail = async (
     args,
   );
 };
+
+/**
+ * Winback — fired after ~7 days of inactivity (no lesson views, no quiz
+ * submissions). Idempotent at the dispatch-table level so we never spam.
+ */
+export const sendWinbackEmail = async (
+  args: SendArgs & {
+    readonly userId: string;
+    readonly displayName: string;
+    readonly lastDay: number;
+    readonly resumeUrl: string;
+  },
+): Promise<SendOutcome> =>
+  sendWithAudit(
+    "winback",
+    "The sprint paused. Pick it back up?",
+    Winback({
+      displayName: args.displayName,
+      lastDay: args.lastDay,
+      resumeUrl: args.resumeUrl,
+      unsubscribeUrl: unsubUrl(args.userId),
+    }),
+    args,
+  );
+
+/**
+ * Streak — celebrate Day-3 completion. Single-fire per lifetime (per
+ * EmailDispatch unique index). Free-tier variant nudges toward upgrade
+ * in a footnote, not a hard sell.
+ */
+export const sendStreakEmail = async (
+  args: SendArgs & {
+    readonly userId: string;
+    readonly displayName: string;
+    readonly daysCompleted: number;
+    readonly nextDay: number;
+    readonly nextDayUrl: string;
+    readonly upgradeUrl: string;
+    readonly tier: "free" | "pro";
+  },
+): Promise<SendOutcome> =>
+  sendWithAudit(
+    "streak",
+    `${args.daysCompleted} days down. ${14 - args.daysCompleted} to exam day.`,
+    Streak({
+      displayName: args.displayName,
+      daysCompleted: args.daysCompleted,
+      nextDay: args.nextDay,
+      nextDayUrl: args.nextDayUrl,
+      upgradeUrl: args.upgradeUrl,
+      tier: args.tier,
+      unsubscribeUrl: unsubUrl(args.userId),
+    }),
+    args,
+  );

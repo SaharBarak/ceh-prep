@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { login } from "@/lib/actions/auth";
 import type { ActionState } from "@/lib/actions/shared";
+import { track, EVENTS } from "@/lib/analytics/ga4";
 
 const initial: ActionState = {};
 
@@ -23,7 +24,11 @@ export const LoginForm = () => {
   const errorMessage = state.error ? (ERROR_COPY[state.error] ?? state.error) : null;
 
   return (
-    <form action={formAction} className="space-y-5">
+    <form
+      action={formAction}
+      onSubmit={() => track(EVENTS.LOGIN_COMPLETE)}
+      className="space-y-5"
+    >
       <label className="block">
         <span className="mono-tag mb-2 block">Email</span>
         <input

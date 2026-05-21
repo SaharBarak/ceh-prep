@@ -23,7 +23,7 @@ const emailDispatchSchema = new Schema(
     kind: {
       type: String,
       required: true,
-      enum: ["drip", "broadcast", "reengage_7d", "reengage_21d"],
+      enum: ["drip", "broadcast", "reengage_7d", "reengage_21d", "streak_3"],
     },
     day: { type: Number, default: null, min: 1, max: 14 },
     articleSlug: { type: String, default: null },
@@ -44,8 +44,9 @@ const emailDispatchSchema = new Schema(
 // Uniqueness contract:
 //   (userId, "drip", N, null)         — exactly one Day-N drip per user
 //   (userId, "broadcast", null, slug) — exactly one broadcast per article per user
-//   (userId, "reengage_7d", null, null)  — exactly one 7-day nudge per user lifetime
+//   (userId, "reengage_7d", null, null)  — exactly one 7-day winback per user lifetime
 //   (userId, "reengage_21d", null, null) — exactly one 21-day nudge per user lifetime
+//   (userId, "streak_3", null, null)     — exactly one 3-day-completion celebration per user lifetime
 //
 // Mongo treats null as a value for unique indexes, which is what we want
 // here — the (userId, kind, null, null) tuple is unique per user.

@@ -9,6 +9,8 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { DAYS } from "@/lib/content";
 import { getBonusItems, type BonusItem } from "@/lib/content/bonus";
+import { TrackClick } from "@/components/track";
+import { NewsletterForm } from "@/components/newsletter-form";
 import {
   Reveal,
   StatGrid,
@@ -84,22 +86,28 @@ export default function LandingPage() {
             explained quiz questions per day. Not a slide deck.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-3">
-            <Link href="/signup" className="btn-primary">
-              Start free — 3 days
-              <ArrowUpRight size={16} weight="bold" />
-            </Link>
-            <Link href="/pricing" className="btn-ghost">
-              $30/mo · see pricing
-            </Link>
-            <a
-              href="https://saharbarak.github.io/ceh-webvm/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mono-tag flex items-center gap-1.5 hover:text-[var(--color-accent)]"
-            >
-              <Terminal size={12} weight="bold" />
-              peek the terminal
-            </a>
+            <TrackClick event="cta_click" params={{ location: "hero", target: "signup" }}>
+              <Link href="/signup" className="btn-primary">
+                Start free — 3 days
+                <ArrowUpRight size={16} weight="bold" />
+              </Link>
+            </TrackClick>
+            <TrackClick event="cta_click" params={{ location: "hero", target: "pricing" }}>
+              <Link href="/pricing" className="btn-ghost">
+                $30/mo · see pricing
+              </Link>
+            </TrackClick>
+            <TrackClick event="lab_peek" params={{ location: "hero" }}>
+              <a
+                href="https://saharbarak.github.io/ceh-webvm/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mono-tag flex items-center gap-1.5 hover:text-[var(--color-accent)]"
+              >
+                <Terminal size={12} weight="bold" />
+                peek the terminal
+              </a>
+            </TrackClick>
           </div>
           <p className="mt-4 font-mono text-[12px] leading-relaxed text-[var(--color-ink-dim)]">
             <strong className="font-semibold text-[var(--color-accent)]">no card to start</strong>
@@ -172,7 +180,7 @@ export default function LandingPage() {
           3. The terminal — sells the WebVM with a fake-prompt block.
          ────────────────────────────────────────────────────────────── */}
       <section id="lab" className="mb-28 scroll-mt-24 grid grid-cols-1 items-start gap-10 md:grid-cols-12">
-        <div className="md:col-span-5">
+        <div id="lab-copy" className="md:col-span-5">
           <p className="mono-tag mb-4 text-[var(--color-accent)]">
             The lab · {totalDrills} graded drills
           </p>
@@ -199,19 +207,23 @@ export default function LandingPage() {
             machine stays untouched — it&apos;s all WebAssembly client-side.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/signup" className="btn-primary">
-              Start free
-              <ArrowUpRight size={16} weight="bold" />
-            </Link>
-            <a
-              href="https://saharbarak.github.io/ceh-webvm/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-ghost"
-            >
-              <Terminal size={14} weight="bold" />
-              Open the live terminal
-            </a>
+            <TrackClick event="cta_click" params={{ location: "lab_section", target: "signup" }}>
+              <Link href="/signup" className="btn-primary">
+                Start free
+                <ArrowUpRight size={16} weight="bold" />
+              </Link>
+            </TrackClick>
+            <TrackClick event="lab_peek" params={{ location: "lab_section" }}>
+              <a
+                href="https://saharbarak.github.io/ceh-webvm/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-ghost"
+              >
+                <Terminal size={14} weight="bold" />
+                Open the live terminal
+              </a>
+            </TrackClick>
           </div>
         </div>
 
@@ -433,19 +445,33 @@ export default function LandingPage() {
           </p>
         </div>
         <div className="flex flex-col gap-3 md:col-span-4 md:items-end">
-          <Link href="/signup" className="btn-primary w-full justify-center md:w-auto">
-            Start free
-            <ArrowUpRight size={16} weight="bold" />
-          </Link>
-          <Link href="/pricing" className="btn-ghost w-full justify-center md:w-auto">
-            <ShieldCheck size={14} weight="bold" />
-            See pricing
-          </Link>
+          <TrackClick event="cta_click" params={{ location: "closing", target: "signup" }}>
+            <Link href="/signup" className="btn-primary w-full justify-center md:w-auto">
+              Start free
+              <ArrowUpRight size={16} weight="bold" />
+            </Link>
+          </TrackClick>
+          <TrackClick event="cta_click" params={{ location: "closing", target: "pricing" }}>
+            <Link href="/pricing" className="btn-ghost w-full justify-center md:w-auto">
+              <ShieldCheck size={14} weight="bold" />
+              See pricing
+            </Link>
+          </TrackClick>
         </div>
       </section>
 
       <footer className="border-t border-[var(--color-line)] pt-10 text-xs text-[var(--color-ink-faint)]">
-        <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="mb-10 grid grid-cols-1 gap-6 md:grid-cols-2 md:items-end">
+          <div>
+            <p className="mono-tag mb-2">The newsletter</p>
+            <p className="text-[13px] leading-relaxed text-[var(--color-ink-dim)]">
+              Roughly weekly. Practitioner writeups, new bonus repos, what
+              shipped. No drip, no upsell — drop your address if you want it.
+            </p>
+          </div>
+          <NewsletterForm source="footer" />
+        </div>
+        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-[var(--color-line)] pt-8">
           <span>© CEH Prep · 14-day sprint · CEH v13 aligned · not affiliated with EC-Council</span>
           <div className="flex gap-5">
             <Link href="/bonus" className="hover:text-[var(--color-ink-dim)]">

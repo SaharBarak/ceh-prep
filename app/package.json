@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "@node-rs/argon2": "^2.0.2",
+    "@paddle/paddle-js": "^1.6.4",
+    "@paddle/paddle-node-sdk": "^3.8.0",
     "@phosphor-icons/react": "^2.1.7",
     "@react-email/components": "^0.5.7",
     "@react-email/render": "^1.4.0",

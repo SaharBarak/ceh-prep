@@ -59,6 +59,48 @@ const EnvSchema = z.object({
     .string()
     .min(16, "UNSUB_SECRET must be at least 16 characters")
     .default("dev-unsub-secret-do-not-use-in-prod"),
+
+  // ── Analytics (GA4) ────────────────────────────────────
+  // Public — embedded in client bundles. Falsy disables tracking entirely
+  // (CI / preview builds run without it). Format: G-XXXXXXXXXX.
+  NEXT_PUBLIC_GA4_MEASUREMENT_ID: z
+    .string()
+    .regex(/^G-[A-Z0-9]+$/, "Must look like G-XXXXXXXX")
+    .optional(),
+
+  // ── Newsletter (Phase 11.5 — separate from product drip) ──
+  // Resend Audience ID for the public marketing list. If unset the newsletter
+  // form persists subscribers to Mongo only; with this set we sync to Resend
+  // for broadcast campaigns. Format: aud_xxxxxxxx-xxxx-... (Resend UUID).
+  RESEND_AUDIENCE_ID: z.string().optional(),
+
+  // ── Billing (Phase 4 — Paddle) ──────────────────────────
+  // Three secrets. All optional in dev — pricing page falls back to the
+  // honest "billing rolls out with Phase 4" state when any is missing.
+  // Production refinement: if any one is set, all three must be set
+  // (partial Paddle config is worse than none — it produces dead checkouts).
+  PADDLE_API_KEY: z.string().optional(),
+  PADDLE_WEBHOOK_SECRET: z.string().optional(),
+  PADDLE_PRO_PRICE_ID: z.string().optional(),
+  NEXT_PUBLIC_PADDLE_CLIENT_TOKEN: z.string().optional(),
+  NEXT_PUBLIC_PADDLE_ENV: z.enum(["sandbox", "production"]).default("sandbox"),
+}).superRefine((env, ctx) => {
+  const paddleKeys = [
+    env.PADDLE_API_KEY,
+    env.PADDLE_WEBHOOK_SECRET,
+    env.PADDLE_PRO_PRICE_ID,
+    env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN,
+  ];
+  const anySet = paddleKeys.some(Boolean);
+  const allSet = paddleKeys.every(Boolean);
+  if (anySet && !allSet) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message:
+        "Paddle config is partial — set all four (PADDLE_API_KEY, PADDLE_WEBHOOK_SECRET, PADDLE_PRO_PRICE_ID, NEXT_PUBLIC_PADDLE_CLIENT_TOKEN) or none.",
+      path: ["PADDLE_API_KEY"],
+    });
+  }
 });
 
 export type Env = z.infer<typeof EnvSchema>;
@@ -73,6 +115,13 @@ const parsed = EnvSchema.safeParse({
   RESEND_FROM_ADDRESS: process.env.RESEND_FROM_ADDRESS,
   CRON_SECRET: process.env.CRON_SECRET,
   UNSUB_SECRET: process.env.UNSUB_SECRET,
+  NEXT_PUBLIC_GA4_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID,
+  RESEND_AUDIENCE_ID: process.env.RESEND_AUDIENCE_ID,
+  PADDLE_API_KEY: process.env.PADDLE_API_KEY,
+  PADDLE_WEBHOOK_SECRET: process.env.PADDLE_WEBHOOK_SECRET,
+  PADDLE_PRO_PRICE_ID: process.env.PADDLE_PRO_PRICE_ID,
+  NEXT_PUBLIC_PADDLE_CLIENT_TOKEN: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN,
+  NEXT_PUBLIC_PADDLE_ENV: process.env.NEXT_PUBLIC_PADDLE_ENV,
 });
 
 if (!parsed.success) {
