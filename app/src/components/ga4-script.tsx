@@ -2,8 +2,9 @@
 
 import Script from "next/script";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { isEnabled, measurementId, trackPageview } from "@/lib/analytics/ga4";
+import { readConsent, onConsentChange, type ConsentState } from "@/lib/analytics/consent";
 
 /**
  * GA4 script + SPA pageview tracker.
@@ -21,7 +22,14 @@ import { isEnabled, measurementId, trackPageview } from "@/lib/analytics/ga4";
  * downstream track() call is a no-op too (see lib/analytics/ga4.ts).
  */
 export function GA4Script() {
+  const [consent, setConsent] = useState<ConsentState>(undefined);
+  useEffect(() => {
+    setConsent(readConsent());
+    return onConsentChange(setConsent);
+  }, []);
+
   if (!isEnabled()) return null;
+  if (consent !== "granted") return null;
   const id = measurementId();
   return (
     <>

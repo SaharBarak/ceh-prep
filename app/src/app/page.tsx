@@ -11,6 +11,7 @@ import { DAYS } from "@/lib/content";
 import { getBonusItems, type BonusItem } from "@/lib/content/bonus";
 import { TrackClick } from "@/components/track";
 import { NewsletterForm } from "@/components/newsletter-form";
+import { CookieChip } from "@/components/cookie-banner";
 import {
   Reveal,
   StatGrid,
@@ -492,6 +493,7 @@ export default function LandingPage() {
             <Link href="/login" className="hover:text-[var(--color-ink-dim)]">
               Log in
             </Link>
+            <CookieChip />
           </div>
         </div>
         <div className="mt-8 flex flex-wrap items-center gap-2 border-t border-[var(--color-line)] pt-6 text-[12px] leading-relaxed text-[var(--color-ink-faint)]">

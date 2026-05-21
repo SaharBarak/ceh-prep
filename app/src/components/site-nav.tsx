@@ -35,6 +35,7 @@ export function SiteNav() {
           <NavLink href="/#lab">Lab</NavLink>
           <NavLink href="/bonus">Library</NavLink>
           <NavLink href="/pricing">Pricing</NavLink>
+          <NavLink href="/about">About</NavLink>
           <span aria-hidden className="mx-1 hidden h-4 w-px bg-[var(--color-line)] md:inline-block" />
           <Link
             href="/login"

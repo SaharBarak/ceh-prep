@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SiteNav } from "@/components/site-nav";
 import { GA4Script } from "@/components/ga4-script";
+import { CookieBanner } from "@/components/cookie-banner";
 
 export const metadata: Metadata = {
   title: "CEH Prep — 14 days to certified",
@@ -18,6 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <GA4Script />
+        <CookieBanner />
         <SiteNav />
         <main className="mx-auto max-w-6xl px-6 py-10 md:px-10 md:py-16">
           {children}
