@@ -473,18 +473,24 @@ export default function LandingPage() {
         </div>
         <div className="flex flex-wrap items-center justify-between gap-4 border-t border-[var(--color-line)] pt-8">
           <span>© CEH Prep · 14-day sprint · CEH v13 aligned · not affiliated with EC-Council</span>
-          <div className="flex gap-5">
+          <div className="flex flex-wrap gap-5">
             <Link href="/bonus" className="hover:text-[var(--color-ink-dim)]">
               Bonus
             </Link>
             <Link href="/pricing" className="hover:text-[var(--color-ink-dim)]">
               Pricing
             </Link>
+            <Link href="/about" className="hover:text-[var(--color-ink-dim)]">
+              About
+            </Link>
+            <Link href="/privacy" className="hover:text-[var(--color-ink-dim)]">
+              Privacy
+            </Link>
+            <Link href="/terms" className="hover:text-[var(--color-ink-dim)]">
+              Terms
+            </Link>
             <Link href="/login" className="hover:text-[var(--color-ink-dim)]">
               Log in
-            </Link>
-            <Link href="/signup" className="hover:text-[var(--color-ink-dim)]">
-              Sign up
             </Link>
           </div>
         </div>
