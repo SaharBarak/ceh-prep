@@ -185,12 +185,36 @@ export default async function CourseDayPage({
         <div className="relative">
           <CopyCmd cmd={day.exercise.cmd} />
         </div>
-        <WebVMPanel
-          drillSlug={day.exercise.drillSlug}
-          canRun={userTier === "pro"}
-          day={n}
-          initiallyComplete={drillComplete}
-        />
+        {n === 14 ? (
+          <div className="mt-6">
+            {userTier === "pro" ? (
+              <Link href="/exam" className="btn-primary inline-flex">
+                Open exam simulator →
+              </Link>
+            ) : (
+              <div className="rounded-lg border border-dashed border-[var(--color-line-strong)] bg-[var(--color-surface)] p-4">
+                <p className="mb-3 text-sm text-[var(--color-ink-dim)]">
+                  🔒 The exam simulator is part of Pro — full-bank timed
+                  practice with 70% pass threshold and per-module
+                  readiness breakdown.
+                </p>
+                <Link
+                  href="/pricing?from=exam"
+                  className="btn-primary inline-flex"
+                >
+                  Upgrade to Pro →
+                </Link>
+              </div>
+            )}
+          </div>
+        ) : (
+          <WebVMPanel
+            drillSlug={day.exercise.drillSlug}
+            canRun={userTier === "pro"}
+            day={n}
+            initiallyComplete={drillComplete}
+          />
+        )}
       </section>
 
       <CoursePlayer day={day} initialAnswers={answers} />

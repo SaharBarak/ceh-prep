@@ -1110,13 +1110,15 @@ const DAY_14: Day = {
   n: 14,
   title: "Exam Simulator & Review",
   blurb:
-    "The 125-question timed exam simulator, an answer-explanation walkthrough mode, and a domain-weighted readiness report.",
+    "The full-bank timed exam simulator, a per-module readiness report, and exam-day tactics drawn from the prior 13 modules.",
   lesson: `
 <p>Day 14 is the integration day. By now you've worked through 13 modules of CEH v13 content. This day is about <strong>exam stamina</strong> and <strong>weak-spot triage</strong>.</p>
 
 <p>The real CEH v13 exam is 125 questions in 4 hours. ~31 questions per hour, ~115 seconds per question. The questions are multiple-choice, often with two plausible answers — read carefully, eliminate the obvious wrong.</p>
 
-<p>The simulator in this app pulls from the full quiz bank across days 1-13, weighted by CEH v13 domain percentages. After submission you see per-domain performance, with links back to the specific quiz questions you missed.</p>
+<p>The simulator in this app pulls from the full quiz bank across days 1-13 and randomizes per attempt. The 4-hour timer is enforced and the pass threshold is the same 70% as the real exam. After submission you see per-module performance with links back to the specific module where each missed question came from.</p>
+
+<p><strong>Note:</strong> the question bank grows as the curriculum does — today's simulator uses every question we've published, not yet the full 125-question count of the real exam. Treat it as exam-format pacing practice; the real exam volume comes later as more content lands.</p>
 
 <p><strong>Exam-day tactics:</strong></p>
 <ul>
@@ -1126,7 +1128,7 @@ const DAY_14: Day = {
   <li>Trust the first instinct unless you find concrete evidence against it.</li>
 </ul>
 
-<p>The Pro tier unlocks unlimited simulator runs, a per-domain weak-spot dashboard, and the answer-explanation review mode.</p>
+<p>The Pro tier unlocks unlimited simulator runs and the per-module readiness report.</p>
   `.trim(),
   concepts: [
     {
@@ -1146,9 +1148,9 @@ const DAY_14: Day = {
     },
   ],
   exercise: {
-    title: "Lab 14 — Take a full 125-question timed run",
-    body: "Set a 4-hour timer. Open the exam simulator. Do not pause. After submission, review every wrong answer — the explanation field links back to the lesson where the concept first appears.",
-    cmd: "# In-app: navigate to /exam (Pro tier) and start the timed simulator.",
+    title: "Lab 14 — Take a timed exam-format run",
+    body: "Set aside a clean session. Open the exam simulator from /exam (Pro tier). The 4-hour timer enforces real exam pacing. After submission the per-module breakdown links you back to the day where each missed question came from — that's your weak-spot triage map.",
+    cmd: "# Visit /exam in this browser tab (Pro tier required).",
   },
   quiz: [
     {

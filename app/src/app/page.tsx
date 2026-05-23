@@ -172,7 +172,7 @@ export default function LandingPage() {
             icon={<ListChecks size={22} weight="duotone" />}
             kicker="REAL EXAM PREP"
             title={`${totalQuestions} questions, every one explained.`}
-            body="Every quiz answer ships with a `why` field — not just A/B/C/D. Day 14 runs a domain-weighted 125-question simulator that mirrors the real CEH v13 exam pacing."
+            body="Every quiz answer ships with a `why` field — not just A/B/C/D. Day 14 unlocks a timed, full-bank exam simulator that mirrors the real CEH v13 pacing — 4-hour ceiling, 70% pass threshold."
           />
         </StaggerGrid>
       </section>
