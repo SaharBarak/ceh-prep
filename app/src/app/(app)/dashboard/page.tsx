@@ -54,7 +54,15 @@ export default async function DashboardPage() {
       {isUnverified ? <UnverifiedBanner /> : null}
       <section className="mb-16 grid grid-cols-1 gap-10 border-b border-[var(--color-line)] pb-14 md:grid-cols-12">
         <div className="md:col-span-7">
-          <p className="mono-tag mb-4">Your sprint</p>
+          <div className="mb-4 flex items-center justify-between gap-4">
+            <p className="mono-tag">Your sprint</p>
+            <Link
+              href="/account/settings"
+              className="font-mono text-[11px] uppercase tracking-wider text-[var(--color-ink-faint)] transition-colors hover:text-[var(--color-ink)]"
+            >
+              Settings →
+            </Link>
+          </div>
           <h1 className="display text-5xl md:text-7xl">
             {daysCompleted === 14
               ? "You did it."

@@ -34,7 +34,7 @@ export type ActionErrorCode =
   | "token_expired"
   | "already_verified";
 
-export type ActionState = { error?: ActionErrorCode };
+export type ActionState = { error?: ActionErrorCode; ok?: boolean };
 
 /**
  * Request-scoped client metadata captured once at the entry point of every

@@ -2,7 +2,11 @@ import mongoose, { Schema, type InferSchemaType, type Model } from "mongoose";
 
 const auditSchema = new Schema(
   {
-    at: { type: Date, default: Date.now, expires: "90d" },
+    // 12mo retention aligns with /privacy contract ("retained for 12 months
+    // for security forensics"). Production cluster needs a one-time
+    // `db.audit.dropIndex({at: 1})` + recreate after deploy — Mongoose won't
+    // mutate `expireAfterSeconds` on an existing TTL index in place.
+    at: { type: Date, default: Date.now, expires: "365d" },
     event: { type: String, required: true, maxlength: 64 },
     outcome: { type: String, enum: ["ok", "deny", "error"], required: true },
     userId: { type: Schema.Types.ObjectId, ref: "User", default: null, index: true },

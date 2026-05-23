@@ -163,7 +163,11 @@ export default function PrivacyPage() {
         <ul className="mt-3 list-disc space-y-2 pl-6 text-sm">
           <li>
             <strong className="text-[var(--color-ink)]">Access</strong> your data
-            via the Settings page (every field we store on you).
+            via the{" "}
+            <a href="/account/settings" className="underline">
+              Settings page
+            </a>{" "}
+            (every field we store on you).
           </li>
           <li>
             <strong className="text-[var(--color-ink)]">Export</strong> it as a
@@ -176,7 +180,11 @@ export default function PrivacyPage() {
           </li>
           <li>
             <strong className="text-[var(--color-ink)]">Delete</strong> your
-            account via the Settings page or{" "}
+            account via the{" "}
+            <a href="/account/settings" className="underline">
+              Settings page
+            </a>{" "}
+            or{" "}
             <code className="font-mono text-[var(--color-accent)]">
               POST /api/account/delete
             </code>
