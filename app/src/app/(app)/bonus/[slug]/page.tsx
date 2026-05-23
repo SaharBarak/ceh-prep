@@ -5,8 +5,38 @@ import { getSession } from "@/lib/auth/session";
 import { connectDB } from "@/lib/db/mongo";
 import { UserModel } from "@/lib/db/models/user";
 import type { Tier } from "@/lib/billing/entitlements";
+import { JsonLd, articleSchema } from "@/components/json-ld";
+import { env } from "@/lib/env";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const item = getBonusItem(slug);
+  if (!item) return { title: "Bonus library · CEH Prep" };
+
+  const title = `${item.title} · CEH Prep`;
+  return {
+    title,
+    description: item.teaser,
+    openGraph: {
+      title,
+      description: item.teaser,
+      url: `${env.NEXT_PUBLIC_APP_URL.replace(/\/$/, "")}/bonus/${item.slug}`,
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: item.teaser,
+    },
+  };
+}
 
 const FREE_PREVIEW_COUNT = 3;
 
@@ -48,6 +78,13 @@ export default async function BonusItemPage({
 
   return (
     <>
+      <JsonLd
+        data={articleSchema({
+          title: item.title,
+          description: item.teaser,
+          url: `${env.NEXT_PUBLIC_APP_URL.replace(/\/$/, "")}/bonus/${item.slug}`,
+        })}
+      />
       <nav className="mb-10 flex items-center justify-between">
         <Link href="/bonus" className="mono-tag hover:text-[var(--color-accent)]">
           ← Bonus library

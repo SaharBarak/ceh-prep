@@ -11,6 +11,37 @@ import { ReaderToolbar } from "./reader-toolbar";
 import { ProgressStrip } from "./progress-strip";
 import { CopyCmd } from "./copy-cmd";
 import { WebVMPanel } from "./webvm-panel";
+import { JsonLd, courseSchema } from "@/components/json-ld";
+import { env } from "@/lib/env";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ day: string }>;
+}): Promise<Metadata> {
+  const { day: dayParam } = await params;
+  const n = Number.parseInt(dayParam, 10);
+  const day = Number.isFinite(n) ? getDay(n) : undefined;
+  if (!day) return { title: "CEH Prep" };
+
+  const title = `Day ${day.n} — ${day.title} · CEH Prep`;
+  return {
+    title,
+    description: day.blurb,
+    openGraph: {
+      title,
+      description: day.blurb,
+      url: `${env.NEXT_PUBLIC_APP_URL.replace(/\/$/, "")}/course/${day.n}`,
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: day.blurb,
+    },
+  };
+}
 
 export default async function CourseDayPage({
   params,
@@ -72,6 +103,14 @@ export default async function CourseDayPage({
 
   return (
     <>
+      <JsonLd
+        data={courseSchema({
+          dayNumber: day.n,
+          title: day.title,
+          description: day.blurb,
+          url: `${env.NEXT_PUBLIC_APP_URL.replace(/\/$/, "")}/course/${day.n}`,
+        })}
+      />
       <ReaderToolbar
         day={n}
         totalDays={DAYS.length}
