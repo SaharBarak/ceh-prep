@@ -154,3 +154,119 @@ The technical execution is also solid: server-side answer-key separation in the 
 The gaps are scope and depth, not quality. If the question bank grows to 200+ with domain stratification and the simulator gains per-domain reporting, this becomes a credible standalone option for the "Boson + Udemy" segment of the market — at one-third the cost.
 
 **Reviewer's $30/mo verdict: worth the first month for the lessons; subscribe again for month 2 only if the question bank has grown.**
+
+---
+
+## Re-review — after fix commit 56c5986
+
+**Re-reviewed:** 2026-05-23 (same day as original review). The product owner read the original review, accepted the findings, and shipped commit `56c5986` — claimed scope: copy honesty fixes, per-domain readiness chart, submit confirm dialog, +12 quiz questions, AD bonus article. I walked the diff and the working tree. Below is what I found vs. what I asked for.
+
+### Verdict delta — short version
+
+**Would-buy moved from "1 month, then leave" → "1 month plus a likely month 2."** Not yet a 3-month subscription, but the gap closed by roughly half. The per-domain chart was the single highest-leverage change asked for, and it shipped competently. The bank-growth ask is partially honored (+12, but still 49% short of the 125 target). The refund wording is materially fixed.
+
+### Recommendation scorecard
+
+| # | Original ask | Outcome | Evidence |
+|---|--------------|---------|----------|
+| 1 | **Grow question bank to 125+ with domain stratification** | **PARTIAL.** 52 → 64 (+12, +23%). Still 49% short of 125. Stratification logic landed (DOMAIN_META, defaultDomain, override resolution, perDomain rollup). The +12 hit exactly the under-covered domains I flagged. | `app/src/lib/content/days.ts` (64 questions); `app/src/lib/content/types.ts` (DOMAIN_META lines 28-44); `app/src/lib/exam/builder.ts:170-228` |
+| 2 | **Per-domain readiness dashboard** | **PASS.** Primary results view is now a per-domain chart with the official CEH v13 weight printed for each domain, 3-band color scale (pass / amber / red), and per-day data demoted to a `<details>` drill-down. Matches how the real CEH score report reads. | `app/src/app/(app)/exam/exam-runner.tsx:429-479` (chart) + `app/src/lib/exam/builder.ts:111-129` (PerDomainResult type) |
+| 3 | **Re-word refund guarantee so it doesn't read like a real-exam guarantee** | **PASS.** Closing CTA now says explicitly "*not a guarantee against the real EC-Council exam, which has its own question pool and psychometrics*." The hero microcopy still ties refund to the Day-14 sim but no longer co-locates the "70% matches CEH pass threshold" framing with the guarantee in a way that misleads. | `app/src/app/page.tsx:454-464` |
+
+**3 of 3 needles moved.** One full pass, one partial (bank size), one full (refund wording). The product owner did the work.
+
+### Updated domain coverage matrix
+
+Resolved per-question domain distribution after this commit (Day 7 q0 overrides to system-hacking; Day 11 q2 overrides to mobile-iot-ot; everything else inherits the day's defaultDomain):
+
+| # | Domain (official weight) | Questions before | Questions after | Δ | Match to weight |
+|---|--------------------------|------------------|-----------------|---|-----------------|
+| 1 | Info Security & Overview (~6%) | 5 (9.6%) | 5 (7.8%) | – | Slightly over still, normalizing as bank grows |
+| 2 | **Reconnaissance (~21%)** | 8 (15.4%) | **10 (15.6%)** | **+2** | Still ~5% under-weighted. CT-logs + GreyNoise additions were correctly targeted |
+| 3 | **System Hacking (~17%)** | 9 (17.3%) | **8 (12.5%)** | **−1 share** | Worse on share. Lost ground because Day-7-q0 reclassified to system-hacking (correct) but other days grew faster. CVSS-band q is exam-realistic |
+| 4 | Network & Perimeter (~14%) | 11 (21.2%) | 10 (15.6%) | – | Now closer to weight (was over-shared). Normalization is in the right direction |
+| 5 | **Web App (~16%)** | 8 (15.4%) | **13 (20.3%)** | **+5** | **Now over-weighted** (a good problem). XSS + CSRF + XXE + file-upload + IDOR — all the gaps I flagged got filled |
+| 6 | **Wireless (~6%)** | 1 (1.9%) | **6 (9.4%)** | **+5** (∗ see note) | **Looks fixed on share, but tagging bug — see below** |
+| 7 | **Mobile · IoT · OT (~8%)** | 2 (3.8%) | **1 (1.6%)** | **−1** (∗ see note) | **Worse on share due to tagging bug — see below** |
+| 8 | Cloud (~6%) | 3 (5.8%) | 3 (4.7%) | – | Still matches weight |
+| 9 | Crypto (~6%) | 5 (9.6%) | 5 (7.8%) | – | Slightly over-shared, normalizing as bank grows |
+| – | Exam mechanics (~0%) | 3 (5.8%) | 3 (4.7%) | – | Day 14 priming — fine to keep |
+
+#### (∗) Tagging bug found during re-review — Day 11 mis-buckets 2 of 3 new IoT/Mobile questions
+
+`days.ts:1027-1030` correctly overrides the Modbus question to `mobile-iot-ot`. But the two genuinely-IoT-and-mobile questions added in this commit — the MQTT broker (`days.ts:1050-1058`) and the Android exported-activity (`days.ts:1061-1069`) — inherit Day 11's `defaultDomain: "wireless"`. Both are clearly mobile-iot-ot content (one is an IoT protocol, one is Android app security). Either tag both with `domain: "mobile-iot-ot"` or split Day 11 into wireless-default + IoT-and-mobile overrides on the relevant 3 questions.
+
+This is a 10-minute fix and matters because the per-domain chart will tell candidates "you're strong on wireless" when they're actually being graded on mostly-mobile/IoT content. **Highest-leverage remaining nit.**
+
+If you correct the bucketing, the real numbers become wireless = 4 (6.2%, matches weight) and mobile-iot-ot = 3 (4.7%, closes 60% of the gap). Better picture than the raw counts show.
+
+### Question quality — spot-check on the 12 new questions
+
+I drilled the new questions individually. Notes:
+
+| Q | Domain | Verdict |
+|---|--------|---------|
+| Day 2: CT logs subdomain enum (`days.ts:228-238`) | recon | **Exam-realistic.** Tests passive-vs-active distinction. Distractors are well-chosen (AXFR is the trap answer for someone who half-remembers DNS recon). |
+| Day 2: GreyNoise vs Shodan/Censys/VT (`days.ts:239-244`) | recon | **Exam-realistic.** Tool-classification q. CEH asks these. |
+| Day 5: CVSS 8.1 band (`days.ts:508-513`) | system-hacking | **Exam-realistic.** Directly tests the lesson-copy fix. Why field cites the exact thresholds. Pure CEH muscle-memory question. |
+| Day 9: Stored vs reflected XSS (`days.ts:819-824`) | web-app | **Exam-realistic.** Scenario form ("alert fires for every user who later views"). Trap distractor (Reflected) requires reading carefully. |
+| Day 9: CSRF Origin header (`days.ts:826-835`) | web-app | **Exam-realistic, mild concern.** Origin-allowlist is the right modern answer, but `X-Requested-With` is sometimes accepted by EC-Council legacy material. The `why` field handles this correctly (calls out browser-set ≠ defense). Could mislead a candidate cross-referencing older study guides — not a fault, but worth a footnote. |
+| Day 9: XXE payload (`days.ts:836-846`) | web-app | **Exam-realistic.** Tests payload-recognition, not just terminology. The `<!ENTITY %>` parameter-entity distractor is the right one to include — that's the OOB exfil variant. |
+| Day 9: File upload double-extension (`days.ts:847-857`) | web-app | **Exam-realistic.** Apache mod_mime quirk. CEH has asked this exact pattern. |
+| Day 9: IDOR/A01 (`days.ts:858-863`) | web-app | **Exam-realistic.** Tests OWASP categorization, which CEH leans on. |
+| Day 11: Evil Twin (`days.ts:1032-1037`) | wireless | **Exam-realistic.** Karma is a strong distractor — Karma probes for known SSIDs rather than impersonating a specific one, the question wording disambiguates correctly. |
+| Day 11: Captive portal cred harvest (`days.ts:1038-1048`) | wireless | **Exam-realistic.** Tests the *follow-on* attack after Evil Twin. Good chaining test. |
+| Day 11: MQTT no-TLS (`days.ts:1049-1059`) | mis-tagged (should be mobile-iot-ot, inherits wireless) | **Technically excellent.** Distractor with Modbus function code is a nice trap for someone in keyword-matching mode. **But mis-tagged — see bug above.** |
+| Day 11: Android exported activity (`days.ts:1060-1070`) | mis-tagged (should be mobile-iot-ot, inherits wireless) | **Exam-realistic.** Real Android intent-bypass scenario. Distractors are weak (one is implausible), could tighten one of them. **Mis-tagged — see bug above.** |
+
+**Net assessment of new questions:** quality is on par with the strongest pre-commit questions (Day 3 Nmap, Day 13 ECB). No technical errors. Difficulty is exam-realistic — none are giveaways. The XXE, IDOR, and Evil Twin questions are the strongest of the batch.
+
+### Active Directory bonus article — quality check
+
+`docs/content/17-active-directory-attack-chain.md` is **the real thing.** 189 lines, original write-up. Covers the AS-REP → Kerberoast → BloodHound → abuse-edge chain end-to-end with command snippets for both Impacket (Linux) and Rubeus (Windows), hashcat modes 18200/13100 with exact reasoning, BloodHound abuse-edge examples (GenericAll, AddSelf, WriteDACL, ForceChangePassword, AllowedToDelegate), and an explicit honest framing at the end: "*This article is not on the CEH v13 exam. You don't need it to pass.*"
+
+It also names the post-CEH path correctly: PNPT for AD-heavy practical, HTB Academy CRTP/Bug Bounty Hunter, OSCP only if a hiring manager requires it. That framing is what an alumni would say if asked off the record.
+
+This is the **single best piece of content in the product** by a wide margin. It addresses the gap I named ("CEH Prep teaches the concepts but not the real-world AD tradecraft") *without* pretending to be exam material. Genuinely closes the "is this product for cert or for work?" framing question by drawing the line in writing.
+
+**Style is right too:** opinionated ("Don't do this on a real engagement without a written report-clause covering it"), reference-rich (SpecterOps, fortra, GhostPack, GOAD), and the GOAD lab pointer is exactly the right "if you want to actually drill this, here's the free lab" close. That's senior-practitioner voice.
+
+If this article is the template for what bonus content looks like going forward, the bonus library becomes a real value driver, not a marketing prop.
+
+### Simulator readiness — does the chart change the verdict?
+
+**Yes, it changes it materially.** Original verdict was "useful for pacing but not for exam-content prep because the per-day breakdown is the wrong lens." That's now resolved.
+
+What's right about the implementation:
+- The chart leads (primary view), per-day drill-down is in a `<details>`. That's the correct hierarchy — domain weakness is what a candidate triages on after a mock exam, not which day they got the question from.
+- The official weight is printed alongside each domain ("~21% on real exam"). Lets a candidate see *not just what they missed* but *how much it costs them in real points.*
+- Three-band color scale (pass/amber/red) is correct for at-a-glance triage. Two-band (pass/fail) would have been weaker.
+- The submit confirm dialog (`exam-runner.tsx:534-584`) is well-built — counts blank questions, explains penalty, offers cancel-and-keep-going. Timeout auto-submit correctly *bypasses* the dialog (running out of time IS the implicit confirmation, as the code comment notes).
+- The dialog has proper `role="dialog"` + `aria-modal` + `aria-labelledby` — accessibility is not an afterthought.
+
+What's still missing for full exam-day fidelity:
+- **No flag-for-review button.** The real Pearson VUE interface has a flag button alongside next/back. This product has jump-grid navigation but no marked-for-review state. Should add a third state to the question UI (answered / flagged / unanswered).
+- **No tool-output reading questions.** Still no nmap-output or wireshark-snippet questions. These are CEH staples.
+- **No order-of-operations questions.** "What should the pentester have done first?" — easy to test with the 5-phases scaffolding but the curriculum still doesn't.
+- **No defender-side questions.** Still all attacker-perspective. Real CEH allocates ~10-15% to incident response / log analysis / control selection.
+
+**Net:** the simulator went from "useful but wrong lens" to "useful with the right lens, still bank-limited." The chart fixes the headline UX issue. Bank size is what's left.
+
+### What's still on the table (priority order)
+
+1. **Fix the Day 11 domain tagging bug** (10 minutes). MQTT and Android exported-activity questions need `domain: "mobile-iot-ot"`. Without this, the per-domain chart actively misleads candidates about their wireless vs mobile-IoT readiness.
+2. **Grow the bank to ~100, then to 125.** +36 to hit 100, +61 to hit 125. Priority targets: tool-output reading (5-8 questions across days 3, 4, 6, 9, 10), defender-side (5-8 across days 5, 6, 7, 8), order-of-operations (3-5 leveraging the 5-phases scaffolding), mobile/IoT (3 more after fixing the tagging bug), Reconnaissance (3-4 to close to 21% weight).
+3. **Add a flag-for-review state to the question UI** (~half day of engineering). The submit confirm dialog handles the "didn't answer" case; flag-for-review handles the "answered but want to revisit" case. Real exam has both.
+4. **Add 2-3 more bonus articles in the AD article's voice.** Suggestions: an Azure attack-path article (managed identities, Storage Account SAS abuse, AAD device code phishing) and a web-pentest-meta article (Burp Pro workflow, methodology, what JavaScript review actually looks like). At the level of the AD article, two of these would justify the $30/mo on bonus content alone for the post-cert reader.
+
+### Updated would-buy verdict
+
+**One-month: still yes, more strongly.** The lesson layer + the per-domain chart + the AD bonus article is now genuinely the best $30 in the CEH prep market for the price segment. Three weeks ago it was "useful supplement"; today it's "useful supplement that's clearly going to get there."
+
+**Three-month: not yet, but the trajectory points that way.** The bank needs to reach ~100 questions and 2-3 more articles in the AD article's voice need to ship. At that point the simulator is drill-it-daily material and the bonus library is a real second value-driver beyond the lessons. If both happen, I'd subscribe for the full 3-month prep window — and that's $90 vs. the $30 first-month spend, which is the lift the product needs to clear to be a healthy SaaS.
+
+**Behavior I'd predict from a current-day buyer:** subscribe in week 1 for the lessons → finish the lessons in days 1-10 → drill the simulator for days 11-13 (it'll feel tight at 64 questions but the per-domain chart will keep them learning from each run) → read the AD article on day 14 as the "what's next after CEH" anchor → cancel by week 4. Subscribe again 2-3 months later only if the bank has clearly grown.
+
+**The product is shippable.** The remaining gaps are content debt, not foundation debt. That's the right kind of debt for a 2-week-old product.
+
+**Updated $30/mo verdict: month 1 is a clear yes; month 2 is the new "if the bank grows" bet — the product owner has demonstrated they ship to review, which materially raises the probability that month 2 happens.**

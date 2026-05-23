@@ -61,9 +61,9 @@ export const NewsletterConfirm = ({
         <Heading style={styles.heading}>Confirm the subscription.</Heading>
         <Text style={styles.text}>
           You&apos;re one click from joining the CEH Prep newsletter &mdash;
-          a roughly-weekly digest of practitioner writeups, new bonus repos,
-          and what we shipped. No fluff, no upsell, no &ldquo;hot off the
-          press&rdquo; manipulation.
+          a roughly-weekly digest of curated tool walkthroughs, new bonus
+          repos, and what we shipped. No fluff, no upsell, no &ldquo;hot off
+          the press&rdquo; manipulation.
         </Text>
         <Section style={{ margin: "28px 0" }}>
           <Button href={confirmUrl} style={styles.button}>

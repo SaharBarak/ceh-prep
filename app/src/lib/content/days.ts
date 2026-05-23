@@ -1056,6 +1056,7 @@ const DAY_11: Day = {
       ],
       c: 0,
       why: "Unauth'd MQTT brokers — Shodan finds tens of thousands — let anyone subscribe to any topic. Reads device telemetry + commands in cleartext. Defense: TLS + per-device auth + per-topic ACLs.",
+      domain: "mobile-iot-ot",
     },
     {
       q: "On Android, an exported activity with `android:exported=\"true\"` and no permission gate exposes what?",
@@ -1067,6 +1068,7 @@ const DAY_11: Day = {
       ],
       c: 0,
       why: "Misconfigured exported activities are the dominant Android client-side bug class. Any installed app can craft an intent to invoke it, bypassing the app's auth UI.",
+      domain: "mobile-iot-ot",
     },
   ],
 };

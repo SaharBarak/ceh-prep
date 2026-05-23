@@ -198,3 +198,122 @@ In priority order:
 ---
 
 **Reviewer's final note:** The product is more honest than 80% of the "$30/mo become a hacker" market. The author is clearly a working practitioner, not a course-mill operator. That's the moat. The fixes above are mostly trim-and-correct work, not rewrites. The single product decision that matters is whether to position as "CEH pass aid" (current shape is fine) or "bridge to red-teaming" (then close the AD/EDR/LOLBin gaps before launch). Pick one.
+
+---
+
+## Re-review — after fix commit `56c5986`
+
+**Delta verdict: improved — soft yes for CEH-pass positioning.** The product owner pulled every priority-1 lever and shipped the single hardest one (a credible AD article) on top. The marketing-vs-reality gap is now small enough that I'd let this product go to external launch as **CEH v13 prep with a curated post-cert track**. The "bridge to red-teaming" framing is no longer in the copy — it's been replaced with explicit scope-drawing on `/about`, which is the right call.
+
+### Scorecard against the prior "What I'd change before launching" list
+
+| # | Prior recommendation | Status | Evidence |
+|---|---|---|---|
+| 1 | Strip `hashcat` from landing hero | **PASS** | `page.tsx:80-82` now reads `nmap, sqlmap, john`. `hashcat` no longer appears anywhere in `app/src/app/page.tsx`. Live curl confirms. |
+| 2 | Fix the pricing-page "125 q · 4 h" claim | **PASS** | `pricing/page.tsx:99,103` now reads `${totalQuestions}` (resolves to 64 today) followed by `bank growing toward 125` and `questions today (target: 125)`. Honest and ambition-signaling. |
+| 3 | Edit `14-bug-bounty-...sqli-cheatsheet.md` whisper artifact | **PASS** | The off-topic "ID notification … parents to sign it" sentence is gone. The edit goes further than asked — adds a transparent disclosure note at line 18 explaining the trim. Reader confidence intact. |
+| 4 | Add one Active Directory bonus article | **PASS** | `docs/content/17-active-directory-attack-chain.md` (190 lines). Original write-up by the product owner, not OCR. Technically sharp — see section below. Auto-indexed via `bonus.ts`'s filesystem-driven loader; live on `/bonus`. |
+| 5 | Soften "strongest predictor" → "closest practice" | **PASS** | `page.tsx:454-464` rewritten end-to-end. The guarantee is now explicit: "if you finish the 14-day sprint and don't score at least 70% on our internal Day-14 simulator, email us and we'll refund the month." Followed by an inline disclaimer that this is "not a guarantee against the real EC-Council exam, which has its own question pool and psychometrics." That's exactly the right amount of honesty. |
+| 6 | Reframe "practitioner writeups" → "curated tool walkthroughs" | **PARTIAL** | Landing (`page.tsx:337-340`) and pricing (`pricing/page.tsx:101`) both rewritten. **Residual:** newsletter confirmation email template `app/src/lib/infra/resend/templates/NewsletterConfirm.tsx:64` still says "a roughly-weekly digest of practitioner writeups." Minor, low-volume surface, but should be unified for consistency. |
+| 7 | Optional — "what you're not getting" footnote | **PASS** | `about/page.tsx:105-133` ships a full "What this is not" section. Names OSCP, PNPT, PEN-200 as different products; explicitly states "no live exploitation, no Active Directory attack chain, no Cobalt Strike / Sliver / Mythic C2 content." This is the strongest fix in the commit. It draws the scope line in writing rather than relying on the reader to infer it. |
+
+**Net: 6 PASS, 1 PARTIAL, 0 NO.** Every priority-1 fix landed.
+
+### New Active Directory article (`17-active-directory-attack-chain.md`) — technical review
+
+Read end-to-end. This is original, practitioner-grade content. Specific checks:
+
+- **The 4-step chain framing (lines 25-42)** — AS-REP → Kerberoast → BloodHound → abuse-edge. This is the load-bearing modern internal-pentest chain. Sequencing is correct.
+- **AS-REP roast (Step 1, lines 46-70)** — `UF_DONT_REQUIRE_PREAUTH` flag is correctly named. `GetNPUsers.py` unauth'd-with-userlist is correctly described. `hashcat -m 18200` is the correct mode for AS-REP etype 23 (RC4). The legacy-app-compat framing for *why* this exists is honest practitioner context, not textbook-stuff.
+- **Kerberoast (Step 2, lines 74-94)** — `GetUserSPNs.py` with `-request` flag is correct. `hashcat -m 13100` with `best64.rule` is the correct mode and the right rule-file choice for SPN cracking. "Service accounts notorious for weak passwords because they're set once and forgotten" — accurate field truth.
+- **BloodHound (Step 3, lines 98-127)** — `bloodhound-python -c All` for Linux + `SharpHound.exe -c All` for Windows is the correct collector pair. The shortest-path Cypher query is real BloodHound syntax. The 5 abuse-edge examples (GenericAll on OU, AddSelf, WriteDACL, ForceChangePassword, AllowedToDelegate) are the right top-5 to highlight — they cover the bulk of post-collection attack paths.
+- **DCSync caveat (line 153)** — "Don't do this on a real engagement without a written report-clause covering it." Good ethics framing for a junior reader; matches what a senior would say.
+- **The "what this opens up" list (lines 161-165)** — names AD CS (Certipy, ESC1-ESC11), S4U2Self/S4U2Proxy, ntlmrelayx, PetitPotam/DFSCoerce/PrinterBug, RBCD. This is exactly the right "where to go next" list for a junior. The ordering — AD CS first as "highest-frequency internal finding industry-wide" — matches what every red-team team I've worked with has said since 2022.
+- **Post-CEH path (lines 167-171)** — PNPT first, HTB Academy second, OSCP only-if-required. Same recommendation I'd give a junior. Good.
+- **GOAD as a local lab (line 179)** — correct project name (Orange-Cyberdefense/GOAD), correct framing as a free local AD lab.
+- **The honest framing (lines 187-189)** — "This article is not on the CEH v13 exam. You don't need it to pass." Excellent scope-drawing.
+
+**Verdict on the AD article:** I'd put my name on this. It's not a watered-down summary — it's the chain as practitioners actually run it. One nit: the article mentions `pwsafe.py` (line 137) but the canonical Impacket name is `samrdump.py` for SAM enumeration; `net rpc password` from Linux is correct via `samba-tool`/`rpcclient`. The shown `net rpc password` invocation is the right shape but typically requires `samba-common-bin`. Minor — a reader copy-pasting will figure it out from the error. Not a ship-blocker.
+
+### Spot-check of the 12 new questions
+
+Read each new question end-to-end against current exam blueprint and real engagement reality.
+
+**Day 9 web-app (+5) — all PASS:**
+- **Stored XSS classification** (line 820-823) — "alert fires for every user who later views" is a textbook-correct stored-vs-reflected discriminator.
+- **CSRF Origin header** (line 825-834) — distractors are the right red herrings (X-Requested-With is a 2010-era pattern not a defense; HSTS protects transport, not CSRF). The `why` correctly bundles Origin + SameSite=Strict + token as the modern combo.
+- **XXE payload** (line 836-845) — the correct answer is a real working external-entity payload. The wrong-answer entity declaration (line 842) is syntactically malformed in a recognizably wrong way (the `PUBLIC "yes"` form is parameter-entity syntax with bad placement) — that's the right kind of distractor for an exam question because a student who has seen real DTDs can spot it.
+- **File-upload double-extension** (line 847-856) — `shell.php.jpg`/`shell.jpg.php` is the canonical mod_mime bypass. The `why` correctly diagnoses "extension-based allowlist vs handler resolution gap."
+- **IDOR/A01** (line 858-862) — IDOR mapping to A01 Broken Access Control is the current OWASP Top 10 2021 placement. Correctly framed.
+
+**Day 11 wireless/mobile-IoT (+4) — all PASS:**
+- **Evil Twin** (line 1032-1036) — "same SSID + higher transmit power → clients auto-roam" is the canonical Evil Twin definition. Distractor list (WPS PIN, Karma, Deauth) is the right pool — Karma is the close-but-wrong distractor because it's the rogue-AP-with-arbitrary-SSID variant, not the same-SSID-impersonation case.
+- **Captive portal credential type** (line 1038-1047) — correctly nails that the captured creds are typically AD domain creds (because the fake portal mimics corporate SSO), not the WPA2 PSK. This is a thing students get wrong.
+- **MQTT without TLS** (line 1049-1058) — "subscribe to the device's topic" is the most direct attack. The `why` mentions Shodan finding tens of thousands of unauth'd brokers — real number, real attack pattern.
+- **Android exported activity** (line 1060-1069) — `android:exported="true"` without permission gating IS the dominant Android client-side bug class. "Callable via intent from any other app" is the right answer.
+
+**Day 2 recon (+2) — both PASS:**
+- **Certificate Transparency for subdomain enum** (line 228-237) — correctly described as "purely passive" (no packet to target). Names crt.sh. Distractors include nmap (touches target) and AXFR (usually fails on hardened DNS) — accurate framing.
+- **GreyNoise classification** (line 239-243) — correctly distinguishes GreyNoise (mass-scanning classification) from Shodan/Censys (banner search) and VirusTotal (file hash reputation). The `why` is precise.
+
+**Day 5 system-hacking (+1) — PASS:**
+- **CVSS 8.1 band** (line 508-513) — correct answer "High". The `why` lists the exact CVSS v3 band thresholds (0.1-3.9 / 4.0-6.9 / 7.0-8.9 / 9.0-10.0) and names EternalBlue as the canonical example. This question directly tests the lesson copy fix flagged in the original review.
+
+**All 12 new questions are exam-realistic, technically correct, and distractor-engineered properly.** A junior who learns to answer these will read better on the real CEH.
+
+### Exam simulator domain readiness — quality of the new UX
+
+The per-domain readiness chart (`exam-runner.tsx:429-479`) and the `ConfirmSubmitDialog` (`exam-runner.tsx:534-584`) are the right shape:
+
+- The official CEH v13 domain weights (`types.ts:62-73`) match the EC-Council blueprint reasonably (~6/21/17/14/16/6/8/6/6 = 100). The Reconnaissance domain is correctly the biggest at 21% — that aligns with the published v13 blueprint.
+- The 3-band color scale (green ≥ 70%, amber 50-69%, red < 50%) matches how the real CEH score report visualizes domain performance.
+- The per-day breakdown is now collapsed into a `<details>` element rather than being the primary view — a small but right UX call.
+- The `ConfirmSubmitDialog` honestly tells the user "blank answers grade as wrong — the real CEH penalizes them the same way" before letting them submit with blanks. That's correct exam behavior, taught at submit time.
+- Test coverage: `builder.test.ts:181-194` specifically asserts the domain-resolution logic (`question.domain ?? day.defaultDomain ?? "meta"`) and validates the Day-7 mixed-day per-question override case. 59/59 tests pass.
+
+This isn't a band-aid fix — it's a structural feature shipped at production quality.
+
+### CVSS lesson fix (Day 5)
+
+`days.ts:453` was rewritten:
+
+> Before: "CVE-2017-0144 (EternalBlue) is still 8.1 critical even though it's old."
+> After: "CVE-2017-0144 (EternalBlue) is still rated 8.1 High in CVSS v3 — Critical is the 9.0+ band."
+
+Correct fix. The new copy explicitly teaches the band threshold (which is exam material) and is paired with the matching new quiz question on line 509-513. Clean cross-reference.
+
+### New issues introduced by the fixes
+
+Reviewed end-to-end for regressions and copy drift:
+
+1. **NewsletterConfirm.tsx still says "practitioner writeups"** — `app/src/lib/infra/resend/templates/NewsletterConfirm.tsx:64`. The landing and pricing copy was updated; the email template wasn't. Minor inconsistency. **Fix:** swap "practitioner writeups" → "curated tool walkthroughs" or "shipped writeups" to match the rest of the surface.
+2. **AD article line 137 — `pwsafe.py`** isn't a canonical Impacket script name. The `net rpc password` shown is real (via Samba) but a reader pasting it without the surrounding context might wonder what tool `pwsafe.py` refers to. **Fix:** either drop the `pwsafe.py` reference or replace with the correct `rpcclient` / `samba-tool user setpassword` invocation. Not a ship-blocker; readability nit.
+3. **Bonus library teaser strip — opportunity not taken** — the homepage bonus section (`page.tsx:328-346`) still picks the same three highest-signal items by hash order. The new AD article (#17) is genuinely the strongest item in the library now. **Optional improvement:** feature it explicitly on the landing as the "post-cert path" anchor, since the `/about` page's "What this is not" now points readers toward it.
+4. **No regressions detected** — all 59 unit tests pass; landing/about/pricing render with the new copy; `/bonus` indexes the AD article correctly via the filesystem-driven loader.
+
+### Remaining gaps (carried from prior review, unaddressed by this commit — by design)
+
+These were in the curriculum-gap section of the prior review but were **not** in the "fix before launching" list because they're tier-2/3 enhancements, not ship-blockers. The product owner left them as future work, which is correct for a "ship CEH prep that's honest" launch:
+
+- LOLBins / living-off-the-land binaries (no curriculum content) — could close with one bonus article like #17.
+- EDR / behavioral detection awareness (no content) — same, one bonus article.
+- C2 framework primer (no content, but explicitly named in `/about` as not-included).
+- Modern web-auth bypasses (JWT alg-confusion, OAuth open-redirect, SAML wrapping, HTTP request smuggling) — not in the curriculum proper.
+
+The `/about` "What this is not" section now explicitly closes the framing question on all of these. The product is honest about its scope; the gaps are documented rather than hidden. That's the right call for launch.
+
+### Final delta verdict
+
+**From "soft no for the red-team aspirant framing" → "soft yes for the CEH-pass-with-honest-post-cert-track framing."**
+
+The product owner did the harder thing — instead of papering over the gaps, they **moved the positioning** to match what's actually shipping. The hashcat lie is gone. The 125-question lie is gone. The "strongest predictor" lie is gone. The "practitioner writeups" framing is mostly gone (one residual surface). The largest single curriculum gap (AD) is partially closed with a genuinely good bonus article. The exam simulator now mirrors how the real CEH reports score — by domain, not by lesson day. The "what this is not" section draws the scope line in writing.
+
+**Top remaining gap before external launch:**
+
+1. **Sweep "practitioner writeups" out of the newsletter template** (5-minute fix) — last surface where the language is inconsistent with the rest of the product.
+
+Everything else on the original list is closed. If the product owner is shipping this week, I'd let it go.
+
+**One forward-looking note:** the differentiator between this product and the rest of the $30/mo CEH-prep market is now demonstrable honesty + a credible post-cert article. That's a defensible product position. Lean into it in marketing — the "every number on this page traces to a file in the repo" line in the hero (`page.tsx:131-133`) is the right voice. More of that, less feature-list copy.
+
+— Re-reviewer, 2026-05-23 (same day, post-fix)
