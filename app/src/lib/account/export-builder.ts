@@ -101,13 +101,13 @@ export const buildAccountExport = async (
         completedDrills?: string[];
         lastActiveAt?: Date;
       } | null>(),
-    ProgressModel.find({ userId })
+    ProgressModel.find({ userId: { $eq: userId } })
       .select("day correctCount completedAt updatedAt answers")
       .lean(),
-    EmailDispatchModel.find({ userId })
+    EmailDispatchModel.find({ userId: { $eq: userId } })
       .select("kind day articleSlug sentAt outcome")
       .lean(),
-    AuditModel.find({ userId: userOid })
+    AuditModel.find({ userId: { $eq: userOid } })
       .select("at event outcome ip ua meta")
       .lean(),
   ]);

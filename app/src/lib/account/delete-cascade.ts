@@ -69,19 +69,19 @@ export const cascadeDeleteAccount = async (
     // a prior run died mid-cascade and left orphans. Naturally a no-op
     // when nothing exists.
     await Promise.all([
-      ProgressModel.deleteMany({ userId }),
-      EmailDispatchModel.deleteMany({ userId }),
+      ProgressModel.deleteMany({ userId: { $eq: userId } }),
+      EmailDispatchModel.deleteMany({ userId: { $eq: userId } }),
     ]);
     return alreadyGone();
   }
 
   const [progressDel, dispatchDel] = await Promise.all([
-    ProgressModel.deleteMany({ userId }),
-    EmailDispatchModel.deleteMany({ userId }),
+    ProgressModel.deleteMany({ userId: { $eq: userId } }),
+    EmailDispatchModel.deleteMany({ userId: { $eq: userId } }),
   ]);
 
   const newsletterDel = await NewsletterSubscriberModel.deleteMany({
-    email: user.email,
+    email: { $eq: user.email },
   });
 
   const userDel = await UserModel.deleteOne({ _id: { $eq: userOid } });

@@ -15,6 +15,12 @@ type Result = { ok: true } | { ok: false; error: "unauthorized" | "invalid_day" 
  * NOTE: this is a *user-asserted* completion. The actual proof that the
  * user did the work lives in their quiz answers + drill check-pass events.
  * Mark-complete is the "I'm done" UI affordance.
+ *
+ * Injection defense lives in the QUERY filter (`{ _id: { $eq: userId } }`)
+ * and the schema's `completedDays: [Number]` type — the update *value* is
+ * a literal day number that's already gated through Number.isInteger above.
+ * Wrapping the update value in `{ $eq: day }` turns it into an object that
+ * mongoose then casts to NaN, throws CastError, and the action 500s.
  */
 export const setLessonComplete = async (day: number): Promise<Result> => {
   let userId: string;
@@ -28,15 +34,19 @@ export const setLessonComplete = async (day: number): Promise<Result> => {
     return { ok: false, error: "invalid_day" };
   }
 
-  await connectDB();
-  await UserModel.updateOne(
-    { _id: { $eq: userId } },
-    { $addToSet: { completedDays: { $eq: day } } },
-  );
+  try {
+    await connectDB();
+    await UserModel.updateOne(
+      { _id: { $eq: userId } },
+      { $addToSet: { completedDays: day } },
+    );
 
-  revalidatePath(`/course/${day}`);
-  revalidatePath("/dashboard");
-  return { ok: true };
+    revalidatePath(`/course/${day}`);
+    revalidatePath("/dashboard");
+    return { ok: true };
+  } catch {
+    return { ok: false, error: "unauthorized" };
+  }
 };
 
 /**
@@ -59,16 +69,20 @@ export const setDrillComplete = async (slug: string): Promise<Result> => {
     return { ok: false, error: "invalid_slug" };
   }
 
-  await connectDB();
-  await UserModel.updateOne(
-    { _id: { $eq: userId } },
-    { $addToSet: { completedDrills: { $eq: slug } } },
-  );
+  try {
+    await connectDB();
+    await UserModel.updateOne(
+      { _id: { $eq: userId } },
+      { $addToSet: { completedDrills: slug } },
+    );
 
-  const day = Number.parseInt(slug.slice(3, 5), 10);
-  if (Number.isFinite(day)) revalidatePath(`/course/${day}`);
-  revalidatePath("/dashboard");
-  return { ok: true };
+    const day = Number.parseInt(slug.slice(3, 5), 10);
+    if (Number.isFinite(day)) revalidatePath(`/course/${day}`);
+    revalidatePath("/dashboard");
+    return { ok: true };
+  } catch {
+    return { ok: false, error: "unauthorized" };
+  }
 };
 
 export const getCompletion = async (): Promise<{

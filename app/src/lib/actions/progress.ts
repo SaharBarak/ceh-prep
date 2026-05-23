@@ -77,6 +77,20 @@ export const saveAnswer = async (input: {
     { upsert: true },
   );
 
+  // Bridge ProgressModel.completedAt → User.completedDays. The streak +
+  // winback crons in api/cron/engagement read User.completedDays as their
+  // source of truth, and the dashboard's "Day N done" badge reads
+  // ProgressModel.completedAt — these need to agree, or finishing a quiz
+  // looks done on the dashboard but the streak email never fires.
+  // $addToSet is idempotent, so re-answering questions on a completed
+  // day is a no-op.
+  if (completed) {
+    await UserModel.updateOne(
+      { _id: { $eq: userId } },
+      { $addToSet: { completedDays: day } },
+    );
+  }
+
   revalidatePath(`/course/${day}`);
   revalidatePath("/dashboard");
 
