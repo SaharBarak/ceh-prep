@@ -16,6 +16,7 @@ import type { Day } from "./types";
 
 const DAY_01: Day = {
   n: 1,
+  defaultDomain: "info-sec",
   title: "Foundations & Lab Setup",
   blurb:
     "What ethical hacking is, what it isn't, the five phases of a hack, and how to build a safe lab in your browser tab.",
@@ -124,6 +125,7 @@ const DAY_01: Day = {
 
 const DAY_02: Day = {
   n: 2,
+  defaultDomain: "recon",
   title: "Footprinting & Reconnaissance",
   blurb:
     "Building a target profile from public sources. WHOIS, DNS, certificate transparency, Google dorks, Shodan, and 28 other search engines that don't show up in Google.",
@@ -223,11 +225,29 @@ const DAY_02: Day = {
       c: 2,
       why: "dig MX example.com queries MX, +short trims to value-only. The last option works in nslookup, not dig.",
     },
+    {
+      q: "You want to enumerate every subdomain of a target without sending a single packet to the target. Which data source is most efficient?",
+      choices: [
+        "Run `nmap -sV` against the apex",
+        "Query Certificate Transparency logs (crt.sh) for all certs containing the apex domain",
+        "Send DNS AXFR to every public DNS server",
+        "Use `whois` recursively",
+      ],
+      c: 1,
+      why: "CT logs are append-only and contain every cert issued. Querying crt.sh pulls subdomains the target's own CA published — purely passive. AXFR (zone transfer) usually fails on hardened DNS; nmap touches the target.",
+    },
+    {
+      q: "You receive scan logs from an internet-exposed honeypot. To distinguish 'opportunistic noise' (mass scanners) from 'targeted recon,' which service classifies the source?",
+      choices: ["VirusTotal", "GreyNoise", "Shodan", "Censys"],
+      c: 1,
+      why: "GreyNoise specifically classifies sources as malicious / benign / noise based on internet-wide background scanning. Shodan/Censys are search-by-banner; VT is file hash reputation.",
+    },
   ],
 };
 
 const DAY_03: Day = {
   n: 3,
+  defaultDomain: "network",
   title: "Scanning Networks (Nmap)",
   blurb:
     "Going from a list of IPs to a list of services. Host discovery, port scanning, version detection, and the flags that decide whether you're stealthy or noisy.",
@@ -337,6 +357,7 @@ const DAY_03: Day = {
 
 const DAY_04: Day = {
   n: 4,
+  defaultDomain: "recon",
   title: "Enumeration",
   blurb:
     "Pulling structured data out of services you've already discovered. Users, shares, SNMP MIBs, LDAP entries, SMB null sessions.",
@@ -414,6 +435,7 @@ const DAY_04: Day = {
 
 const DAY_05: Day = {
   n: 5,
+  defaultDomain: "system-hacking",
   title: "Vulnerability Analysis",
   blurb:
     "Turning a service inventory into a list of ranked exploitables. CVSS scoring, scanner output triage, false-positive culling, and risk-vs-effort ranking.",
@@ -428,7 +450,7 @@ const DAY_05: Day = {
 <ul>
   <li>Internet-exposed > internal — same CVE, different blast radius.</li>
   <li>Patched-but-not-restarted services lie about version. Check uptime.</li>
-  <li>CVSS scores age. CVE-2017-0144 (EternalBlue) is still 8.1 critical even though it's old; the score does not decay.</li>
+  <li>CVSS base scores don't decay by design. CVE-2017-0144 (EternalBlue) is still rated 8.1 High in CVSS v3 — Critical is the 9.0+ band. Temporal + Environmental scores exist precisely to capture decay (exploit maturity, remediation level, your own asset criticality).</li>
   <li>Chains beat singles. Two CVSS-7 vulns chained sometimes equal a CVSS-10 path.</li>
 </ul>
   `.trim(),
@@ -483,11 +505,18 @@ const DAY_05: Day = {
       c: 1,
       why: "Manual verification of the worst few catches false positives before they go in your report and embarrass you.",
     },
+    {
+      q: "A CVE has a CVSS v3 base score of 8.1. Which severity band is that?",
+      choices: ["Low", "Medium", "High", "Critical"],
+      c: 2,
+      why: "CVSS v3 bands: 0.1-3.9 Low · 4.0-6.9 Medium · 7.0-8.9 High · 9.0-10.0 Critical. 8.1 sits in High. CVE-2017-0144 (EternalBlue) is the canonical example.",
+    },
   ],
 };
 
 const DAY_06: Day = {
   n: 6,
+  defaultDomain: "system-hacking",
   title: "System Hacking",
   blurb:
     "From 'I have a vuln' to 'I have a shell'. Password attacks, privilege escalation on Linux and Windows, lateral movement, hash dumping.",
@@ -560,6 +589,7 @@ const DAY_06: Day = {
 
 const DAY_07: Day = {
   n: 7,
+  defaultDomain: "network",
   title: "Malware Threats & Sniffing",
   blurb:
     "Trojans, worms, ransomware classification + Wireshark fundamentals, ARP spoofing, MITM positioning.",
@@ -607,6 +637,7 @@ const DAY_07: Day = {
       choices: ["Virus", "Worm", "Trojan", "Spyware"],
       c: 1,
       why: "Worms scan for vulnerable hosts and exploit them automatically. Viruses need a host file; trojans need a user; spyware is passive.",
+      domain: "system-hacking",
     },
     {
       q: "On a switched LAN, you put your NIC in promiscuous mode. You see broadcast traffic but no unicast traffic between two other hosts. Why?",
@@ -635,6 +666,7 @@ const DAY_07: Day = {
 
 const DAY_08: Day = {
   n: 8,
+  defaultDomain: "network",
   title: "Social Engineering, DoS, Session Hijacking",
   blurb:
     "Phishing taxonomy, SET / GoPhish, DoS amplification factors, session token theft, session fixation.",
@@ -703,6 +735,7 @@ const DAY_08: Day = {
 
 const DAY_09: Day = {
   n: 9,
+  defaultDomain: "web-app",
   title: "Hacking Web Servers & Web Apps",
   blurb:
     "Apache/Nginx/IIS misconfig classes, OWASP Top 10 mapping, Burp Suite as proxy, directory busting, parameter tampering.",
@@ -783,11 +816,57 @@ const DAY_09: Day = {
       c: 1,
       why: "Repeater for crafting one request at a time; Intruder for fuzzing/sweeping with payload sets.",
     },
+    {
+      q: "An attacker injects <script>alert(1)</script> into a search box and the alert fires for every user who later views that search. This is which XSS class?",
+      choices: ["Reflected XSS", "Stored XSS", "DOM-based XSS", "Self-XSS"],
+      c: 1,
+      why: "Stored (persistent) XSS — payload lives in the database / cache and triggers for every viewer. Reflected fires only for the victim who clicks the crafted link.",
+    },
+    {
+      q: "Which HTTP request header most reliably mitigates CSRF on a state-changing POST endpoint?",
+      choices: [
+        "X-Requested-With",
+        "Origin (combined with allowlist check)",
+        "Cache-Control: no-store",
+        "Strict-Transport-Security",
+      ],
+      c: 1,
+      why: "Origin / Referer allowlist + SameSite=Strict cookies + a CSRF token is the modern combo. X-Requested-With is browser-set and not a real defense; HSTS protects transport, not CSRF.",
+    },
+    {
+      q: "An app accepts XML uploads and resolves DTDs. What's the minimum payload to trigger XXE → file disclosure on Linux?",
+      choices: [
+        "<!DOCTYPE foo [<!ENTITY x SYSTEM \"file:///etc/passwd\">]> <foo>&x;</foo>",
+        "<?xml version=\"1.0\" external=\"yes\"?>",
+        "<foo><xxe>/etc/passwd</xxe></foo>",
+        "<!ENTITY % remote PUBLIC \"yes\" \"file:///etc/passwd\">",
+      ],
+      c: 0,
+      why: "Classic external entity declaration that resolves at parse-time. Modern parsers disable external entities by default (libxml2 / Python defusedxml). Legacy and Java parsers still bite.",
+    },
+    {
+      q: "An image-upload form accepts `.jpg` and `.png` by extension. What's the most common bypass to land a webshell?",
+      choices: [
+        "Rename `shell.php` → `shell.png` and re-upload",
+        "Use `shell.php.jpg` or `shell.jpg.php` and rely on Apache's mod_mime double-extension handling",
+        "Add a comment to the JPEG EXIF",
+        "Compress the PHP to gzip",
+      ],
+      c: 1,
+      why: "Double-extension and trailing-extension bypasses exploit the gap between extension-based allowlist checks and the actual handler resolution. Defense: validate MIME on the server, store outside webroot, never serve user uploads from the same origin.",
+    },
+    {
+      q: "A logged-in user changes their order URL from `/orders/100` to `/orders/101` and sees another user's order. Which OWASP Top 10 category?",
+      choices: ["A01 Broken Access Control (IDOR)", "A03 Injection", "A02 Crypto Failure", "A04 Insecure Design"],
+      c: 0,
+      why: "IDOR — Insecure Direct Object Reference — is the canonical A01 case. Object IDs are exposed and the app fails to check ownership server-side.",
+    },
   ],
 };
 
 const DAY_10: Day = {
   n: 10,
+  defaultDomain: "web-app",
   title: "SQL Injection",
   blurb:
     "Detection, exploitation, dumping, blind techniques, second-order injection, and when SQLMap is the right tool versus when you should hand-craft.",
@@ -888,6 +967,7 @@ const DAY_10: Day = {
 
 const DAY_11: Day = {
   n: 11,
+  defaultDomain: "wireless",
   title: "Wireless, Mobile, and IoT/OT",
   blurb:
     "WEP/WPA2/WPA3 cracking workflow, mobile platform sandboxing, IoT default credentials, OT/SCADA realities.",
@@ -947,12 +1027,53 @@ const DAY_11: Day = {
       choices: ["TLS 1.3", "Modbus TCP", "OPC UA", "MQTT-S"],
       c: 1,
       why: "Modbus dates to the 1970s and has no auth at all. The defense is network segmentation.",
+      domain: "mobile-iot-ot",
+    },
+    {
+      q: "An attacker stands up an open Wi-Fi access point with the same SSID as a corporate network at higher transmit power. Connected devices roam to the attacker's AP. What's the attack name?",
+      choices: ["WPS PIN attack", "Evil Twin", "Karma", "Deauth flood"],
+      c: 1,
+      why: "Evil Twin — same SSID + stronger signal + open auth tricks clients into auto-roaming. Combine with a captive portal to harvest creds.",
+    },
+    {
+      q: "A captive-portal attack on an Evil Twin commonly captures which credential type?",
+      choices: [
+        "WPA2 PSK handshake (the user types the network password)",
+        "Active Directory domain creds (the user types corporate creds into a fake login page)",
+        "TLS client certificate",
+        "SSH host key",
+      ],
+      c: 1,
+      why: "Captive portal flow shows a 'sign in to continue' page that mimics the corporate SSO. Users type domain creds into the attacker's webserver.",
+    },
+    {
+      q: "An IoT device communicates over MQTT to a broker on the internet without TLS. What's the most direct attack?",
+      choices: [
+        "Subscribe to the device's topic on the broker and read all traffic",
+        "Brute-force WPA2",
+        "Replay TCP SYNs",
+        "Inject Modbus function code 0x05",
+      ],
+      c: 0,
+      why: "Unauth'd MQTT brokers — Shodan finds tens of thousands — let anyone subscribe to any topic. Reads device telemetry + commands in cleartext. Defense: TLS + per-device auth + per-topic ACLs.",
+    },
+    {
+      q: "On Android, an exported activity with `android:exported=\"true\"` and no permission gate exposes what?",
+      choices: [
+        "The activity is callable via intent from any other app — common privilege-escalation vector",
+        "The activity runs in a sandbox isolated from system services",
+        "Only system apps can launch it",
+        "It cannot accept extras",
+      ],
+      c: 0,
+      why: "Misconfigured exported activities are the dominant Android client-side bug class. Any installed app can craft an intent to invoke it, bypassing the app's auth UI.",
     },
   ],
 };
 
 const DAY_12: Day = {
   n: 12,
+  defaultDomain: "cloud",
   title: "Cloud Computing",
   blurb:
     "Shared-responsibility model, IAM as the new perimeter, S3 misconfig, IMDS abuse, container/Kubernetes attack surface.",
@@ -1028,6 +1149,7 @@ const DAY_12: Day = {
 
 const DAY_13: Day = {
   n: 13,
+  defaultDomain: "crypto",
   title: "Cryptography",
   blurb:
     "Symmetric vs asymmetric, hashes vs ciphers, PKI, TLS handshake, and the encoding/transform classics you'll see on CTFs and the exam.",
@@ -1108,6 +1230,7 @@ const DAY_13: Day = {
 
 const DAY_14: Day = {
   n: 14,
+  defaultDomain: "meta",
   title: "Exam Simulator & Review",
   blurb:
     "The full-bank timed exam simulator, a per-module readiness report, and exam-day tactics drawn from the prior 13 modules.",

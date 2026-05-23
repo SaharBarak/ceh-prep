@@ -102,6 +102,36 @@ export default function AboutPage() {
         </p>
       </Section>
 
+      <Section heading="What this is not">
+        <p>
+          Being clear about scope is part of the deal. CEH Prep is{" "}
+          <strong className="text-[var(--color-ink)]">
+            CEH v13 certification prep
+          </strong>{" "}
+          — exam vocabulary, concept reinforcement, ~7 hours of focused
+          lessons, a timed simulator at the end. That&apos;s the product.
+        </p>
+        <p>
+          It is{" "}
+          <strong className="text-[var(--color-ink)]">not</strong> an OSCP
+          replacement, not a PNPT or PEN-200 prep track, not a red-team
+          bootcamp. There&apos;s no live exploitation, no Active Directory
+          attack chain, no Cobalt Strike / Sliver / Mythic C2 content. The
+          WebVM lab gives you real{" "}
+          <code className="font-mono text-[var(--color-accent)]">nmap</code>{" "}
+          and{" "}
+          <code className="font-mono text-[var(--color-accent)]">sqlmap</code>{" "}
+          for flag-fluency drills, not vulnerable services to break into.
+        </p>
+        <p>
+          After CEH, the natural next stops are TCM&apos;s PNPT (AD-heavy,
+          ~$300 with a real engagement-style exam), HackTheBox Academy
+          (CRTP / Bug Bounty Hunter paths), or OffSec PEN-200 if a hiring
+          manager specifically requires OSCP. CEH Prep gets you through the
+          first gate; those are the next ones.
+        </p>
+      </Section>
+
       <Section heading="What's under the hood">
         <p>
           Next.js 15 (App Router, RSC) on Vercel. MongoDB Atlas for the data

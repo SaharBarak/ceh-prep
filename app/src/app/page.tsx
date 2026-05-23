@@ -79,7 +79,7 @@ export default function LandingPage() {
             module-for-module. A graded Debian shell in a browser tab — real{" "}
             <code className="font-mono text-[var(--color-accent)]">nmap</code>,{" "}
             <code className="font-mono text-[var(--color-accent)]">sqlmap</code>,{" "}
-            <code className="font-mono text-[var(--color-accent)]">hashcat</code>, not
+            <code className="font-mono text-[var(--color-accent)]">john</code>, not
             screenshots. A ~30-minute lesson and{" "}
             <strong className="font-semibold text-[var(--color-ink)]">
               {Math.round(totalQuestions / totalDays)}
@@ -116,6 +116,21 @@ export default function LandingPage() {
             cancel anytime
             <span className="mx-2 text-[var(--color-line-strong)]">·</span>
             hit 70&nbsp;% on the Day-14 sim or we refund the month
+          </p>
+          <p className="mt-8 max-w-[58ch] border-l-2 border-[var(--color-line-strong)] pl-4 text-sm leading-relaxed text-[var(--color-ink-dim)]">
+            Built solo by{" "}
+            <Link
+              href="/about"
+              className="text-[var(--color-ink)] underline decoration-[var(--color-line-strong)] underline-offset-4 hover:decoration-[var(--color-accent)]"
+            >
+              Sahar Barak
+            </Link>
+            {" "}— an engineer who got back into security and couldn&apos;t
+            find a prep product that respected his time. So I wrote the one
+            I wanted.{" "}
+            <em className="not-italic text-[var(--color-ink)]">
+              Every number on this page traces to a file in the repo.
+            </em>
           </p>
         </div>
 
@@ -319,9 +334,10 @@ export default function LandingPage() {
                 bonus repos.
               </h2>
               <p className="mt-4 max-w-[52ch] text-sm text-[var(--color-ink-dim)]">
-                Practitioner writeups linked to real GitHub projects. The
-                advanced track for anyone who clears the sprint and wants to
-                keep going.
+                Curated tool walkthroughs + practitioner content from the
+                broader cybersec community, mapped back to the day where each
+                concept lands. The post-sprint track for anyone who finishes
+                the 14 days and wants to keep going.
               </p>
             </div>
             <Link href="/bonus" className="btn-ghost shrink-0">
@@ -435,14 +451,16 @@ export default function LandingPage() {
             Open the tab and start.
           </h2>
           <p className="mt-5 max-w-[60ch] text-[var(--color-ink-dim)]">
-            Pro is $30/mo. Cancel anytime. If you don&apos;t score at least{" "}
+            Pro is $30/mo. Cancel anytime. The guarantee:{" "}
             <strong className="font-semibold text-[var(--color-ink)]">
-              70&nbsp;%
+              if you finish the 14-day sprint and don&apos;t score at least 70%
+              on our internal Day-14 simulator, email us and we&apos;ll refund
+              the month.
             </strong>{" "}
-            on the Day-14 simulator after running the full 14-day sprint, email
-            us and we&apos;ll refund the month. 70&nbsp;% is the CEH v13 pass
-            threshold for the most common exam form — clearing it on our
-            simulator is the strongest predictor of clearing it for real.
+            70% matches the CEH v13 pass threshold for the most common exam
+            form. The simulator is the closest practice you can do against the
+            same material the lessons teach — not a guarantee against the real
+            EC-Council exam, which has its own question pool and psychometrics.
           </p>
         </div>
         <div className="flex flex-col gap-3 md:col-span-4 md:items-end">

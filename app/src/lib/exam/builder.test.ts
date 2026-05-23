@@ -160,4 +160,36 @@ describe("gradeExam", () => {
       expect(typeof a.correct).toBe("boolean");
     }
   });
+
+  it("emits a per-domain breakdown with official CEH v13 weights", () => {
+    const exam = buildExam(undefined, 4);
+    const choices: Record<string, number> = {};
+    for (const q of exam.questions) choices[q.id] = q.c;
+
+    const result = gradeExam(exam, choices);
+    expect(result.perDomain.length).toBeGreaterThan(0);
+
+    for (const d of result.perDomain) {
+      expect(typeof d.domain).toBe("string");
+      expect(typeof d.label).toBe("string");
+      expect(typeof d.weightPct).toBe("number");
+      expect(d.total).toBeGreaterThan(0);
+      expect(d.correct).toBe(d.total); // perfect grade above
+    }
+  });
+
+  it("resolves question domain via question.domain → day.defaultDomain → meta", () => {
+    const exam = buildExam();
+    // Every question must have a resolved domain (no undefined)
+    for (const q of exam.questions) {
+      expect(q.domain).toBeDefined();
+    }
+    // The Day-7 first question is tagged system-hacking (override),
+    // remaining Day-7 questions inherit network (defaultDomain).
+    const day7 = exam.questions.filter((q) => q.day === 7);
+    const day7Q0 = day7.find((q) => q.qIndex === 0);
+    const day7Others = day7.filter((q) => q.qIndex > 0);
+    expect(day7Q0?.domain).toBe("system-hacking");
+    for (const q of day7Others) expect(q.domain).toBe("network");
+  });
 });

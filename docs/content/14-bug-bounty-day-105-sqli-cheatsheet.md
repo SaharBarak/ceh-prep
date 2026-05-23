@@ -13,9 +13,9 @@
 
 ## Audio transcript (whisper, lightly cleaned)
 
-> Day 105 of doing bug bounty. I found this insane bug-bounty cheatsheet made by this guy "Cyrex Maximus" — the cheatsheet is super detailed. If you want to know about SQL injection you can see they also provide types of SQL and how to find it — it's really useful. So today I found another vulnerability in a blockchain company by using this AI prompt that I have made — you can check it out in my GitHub. I did a lot of finance stuff so… in the ID notification, if you're on the 18 you don't have to do it, you just need your parents to sign it. But tomorrow I'm going to explain the bug in the blockchain company — in another blockchain company — so you can learn from it maybe. So yeah, see you guys in day 106.
+> Day 105 of doing bug bounty. I found this insane bug-bounty cheatsheet made by this guy "Cyrex Maximus" — the cheatsheet is super detailed. If you want to know about SQL injection you can see they also provide types of SQL and how to find it — it's really useful. So today I found another vulnerability in a blockchain company by using this AI prompt that I have made — you can check it out in my GitHub. Tomorrow I'm going to explain the bug in another blockchain company so you can learn from it. See you guys in day 106.
 
-Whisper transcribed "Cyrex Maximus" — likely a community-maintained pentest/SQLi cheatsheet author (no canonical mapping confirmed in this content alone).
+Whisper transcribed "Cyrex Maximus" — likely a community-maintained pentest/SQLi cheatsheet author (no canonical mapping confirmed in this content alone). A short unrelated fragment in the middle of the original transcript (an off-topic aside about ID notifications) has been trimmed for relevance.
 
 ## On-screen content (OCR)
 

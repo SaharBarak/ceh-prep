@@ -70,6 +70,7 @@ const initial: RunnerState = {
  */
 export const ExamRunner = ({ exam }: Props) => {
   const [state, dispatch] = useReducer(reducer, initial);
+  const [confirmingSubmit, setConfirmingSubmit] = useState(false);
 
   const total = exam.questions.length;
   const currentQ = exam.questions[state.currentIndex];
@@ -81,8 +82,10 @@ export const ExamRunner = ({ exam }: Props) => {
   );
   const remainingSeconds = Math.max(0, exam.totalSeconds - state.elapsedSeconds);
   const timedOut = remainingSeconds === 0 && state.phase === "running";
+  const unansweredCount = total - answered;
 
-  const handleSubmit = async () => {
+  const performSubmit = async () => {
+    setConfirmingSubmit(false);
     dispatch({ type: "submit_pending" });
     const result = await submitExam({
       questionIds: exam.questions.map((q) => q.id),
@@ -92,6 +95,20 @@ export const ExamRunner = ({ exam }: Props) => {
     dispatch({ type: "submit_done", result });
   };
 
+  /**
+   * Submit guard: if any questions are unanswered, surface a confirm
+   * dialog so a fast submit-click doesn't strand answers the user might
+   * have meant to fill. Auto-submit on timeout bypasses this — running
+   * out of time IS the implicit confirmation.
+   */
+  const handleSubmit = () => {
+    if (unansweredCount > 0) {
+      setConfirmingSubmit(true);
+      return;
+    }
+    performSubmit();
+  };
+
   // Tick the timer once per second while running.
   useEffect(() => {
     if (state.phase !== "running") return;
@@ -99,9 +116,10 @@ export const ExamRunner = ({ exam }: Props) => {
     return () => window.clearInterval(id);
   }, [state.phase]);
 
-  // Auto-submit when the timer reaches zero.
+  // Auto-submit when the timer reaches zero — bypass the unanswered
+  // confirm dialog because running out of time IS the confirmation.
   useEffect(() => {
-    if (timedOut) handleSubmit();
+    if (timedOut) performSubmit();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timedOut]);
 
@@ -204,6 +222,15 @@ export const ExamRunner = ({ exam }: Props) => {
           </button>
         </div>
       </nav>
+
+      {confirmingSubmit && (
+        <ConfirmSubmitDialog
+          unansweredCount={unansweredCount}
+          total={total}
+          onCancel={() => setConfirmingSubmit(false)}
+          onConfirm={performSubmit}
+        />
+      )}
 
       <QuestionGrid
         total={total}
@@ -400,8 +427,62 @@ const ResultsScreen = ({
     </header>
 
     <section>
-      <p className="mono-tag mb-4">By module</p>
-      <div className="grid grid-cols-1 gap-px bg-[var(--color-line)] md:grid-cols-2">
+      <p className="mono-tag mb-2">Readiness by CEH v13 domain</p>
+      <p className="mb-5 max-w-[60ch] text-xs text-[var(--color-ink-faint)]">
+        The real exam scores against 9 official domains with the weights
+        shown. Use this to triage what to study next.
+      </p>
+      <div className="space-y-2">
+        {result.perDomain.map((d) => {
+          const pct = d.total > 0 ? Math.round((d.correct / d.total) * 100) : 0;
+          const tone =
+            pct >= PASS_PCT
+              ? "text-[var(--color-accent)]"
+              : pct >= 50
+                ? "text-amber-300"
+                : "text-red-300";
+          const barTone =
+            pct >= PASS_PCT
+              ? "bg-[var(--color-accent)]"
+              : pct >= 50
+                ? "bg-amber-400/80"
+                : "bg-red-400/70";
+          return (
+            <article
+              key={d.domain}
+              className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4"
+            >
+              <div className="flex items-baseline justify-between gap-3">
+                <h3 className="text-sm text-[var(--color-ink)]">
+                  {d.label}
+                  {d.weightPct > 0 && (
+                    <span className="ml-2 font-mono text-[10px] uppercase tracking-wider text-[var(--color-ink-faint)]">
+                      ~{d.weightPct}% on real exam
+                    </span>
+                  )}
+                </h3>
+                <span className={`font-mono text-sm tabular-nums ${tone}`}>{pct}%</span>
+              </div>
+              <div className="mt-2 h-[3px] w-full overflow-hidden rounded-full bg-[var(--color-line)]">
+                <div
+                  className={`h-full ${barTone} transition-all`}
+                  style={{ width: `${pct}%` }}
+                />
+              </div>
+              <p className="mt-2 font-mono text-[10px] uppercase tracking-wider text-[var(--color-ink-faint)]">
+                {d.correct} / {d.total} correct ({d.answered} answered)
+              </p>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+
+    <details className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+      <summary className="cursor-pointer font-mono text-xs uppercase tracking-wider text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]">
+        Drill-down by day · review links
+      </summary>
+      <div className="mt-4 grid grid-cols-1 gap-px bg-[var(--color-line)] md:grid-cols-2">
         {result.perDay.map((d) => {
           const pct = d.total > 0 ? Math.round((d.correct / d.total) * 100) : 0;
           const tone =
@@ -411,28 +492,28 @@ const ResultsScreen = ({
           return (
             <article
               key={d.day}
-              className="bg-[var(--color-bg)] p-5"
+              className="bg-[var(--color-bg)] p-4"
             >
-              <div className="flex items-baseline justify-between">
-                <h3 className="display text-base text-[var(--color-ink)]">
+              <div className="flex items-baseline justify-between gap-3">
+                <h3 className="text-sm text-[var(--color-ink)]">
                   Day {String(d.day).padStart(2, "0")} — {d.title}
                 </h3>
-                <span className={`font-mono text-sm ${tone}`}>{pct}%</span>
+                <span className={`font-mono text-xs ${tone}`}>{pct}%</span>
               </div>
-              <p className="mt-2 font-mono text-[11px] uppercase tracking-wider text-[var(--color-ink-faint)]">
-                {d.correct} / {d.total} correct ({d.answered} answered)
+              <p className="mt-1 font-mono text-[10px] uppercase tracking-wider text-[var(--color-ink-faint)]">
+                {d.correct} / {d.total} correct
               </p>
               <Link
                 href={`/course/${d.day}`}
-                className="mono-tag mt-3 inline-block hover:text-[var(--color-accent)]"
+                className="mono-tag mt-2 inline-block hover:text-[var(--color-accent)]"
               >
-                Review Day {d.day} →
+                Review →
               </Link>
             </article>
           );
         })}
       </div>
-    </section>
+    </details>
 
     <footer className="flex flex-wrap items-center justify-between gap-4 border-t border-[var(--color-line)] pt-6">
       <p className="font-mono text-[11px] uppercase tracking-wider text-[var(--color-ink-faint)]">
@@ -448,6 +529,58 @@ const ResultsScreen = ({
       </div>
     </footer>
   </section>
+);
+
+const ConfirmSubmitDialog = ({
+  unansweredCount,
+  total,
+  onCancel,
+  onConfirm,
+}: {
+  unansweredCount: number;
+  total: number;
+  onCancel: () => void;
+  onConfirm: () => void;
+}) => (
+  <div
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="confirm-submit-title"
+    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm"
+  >
+    <div className="w-full max-w-[480px] rounded-2xl border border-amber-500/40 bg-[var(--color-bg)] p-6 md:p-8">
+      <p
+        id="confirm-submit-title"
+        className="mono-tag mb-3 text-amber-300"
+      >
+        Hold on
+      </p>
+      <h2 className="display text-2xl text-[var(--color-ink)]">
+        {unansweredCount} of {total} questions still blank.
+      </h2>
+      <p className="mt-3 text-sm text-[var(--color-ink-dim)]">
+        Blank answers grade as wrong — the real CEH penalizes them the same
+        way. If you meant to flag-and-return on some, hit cancel and use the
+        jump-grid to find them.
+      </p>
+      <div className="mt-6 flex flex-wrap items-center justify-end gap-3">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="btn-ghost text-xs"
+        >
+          Cancel · keep going
+        </button>
+        <button
+          type="button"
+          onClick={onConfirm}
+          className="rounded-md border border-amber-500/40 bg-amber-500/10 px-4 py-2 font-mono text-xs uppercase tracking-wider text-amber-200 transition-opacity hover:bg-amber-500/20"
+        >
+          Submit anyway →
+        </button>
+      </div>
+    </div>
+  </div>
 );
 
 /** Format seconds as H:MM:SS (or M:SS once under an hour). */

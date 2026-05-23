@@ -95,12 +95,12 @@ export default async function PricingPage() {
           priceSub="per month, USD"
           accent
           features={[
-            `All ${totalDays} days — Foundations through 125-question exam simulator`,
-            `${totalQuestions} explained quiz questions across every CEH v13 domain`,
+            `All ${totalDays} days — Foundations through Day-14 exam simulator`,
+            `${totalQuestions} explained quiz questions across CEH v13 domains (bank growing toward 125)`,
             `${totalDrills} graded WebVM drills (Day 1 grep, Day 3 nmap, Day 10 SQLi, Day 13 crypto) — more shipping`,
-            `${bonus.length} curated bonus articles with real GitHub repos surfaced`,
+            `${bonus.length} curated tool walkthroughs + curated practitioner content`,
             "In-browser Debian lab — nmap, sqlmap, hydra, john, gobuster, gdb pre-loaded",
-            "Domain-weighted timed exam simulator (125 q · 4 h · mirrors real v13)",
+            `Timed exam simulator — full-bank, 4-hour timer, 70% pass threshold, ${totalQuestions} questions today (target: 125)`,
           ]}
           cta={
             renderProCheckout

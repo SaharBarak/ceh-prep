@@ -1,5 +1,6 @@
 import { DAYS } from "@/lib/content";
-import type { QuizQuestion } from "@/lib/content";
+import type { QuizQuestion, CehDomain } from "@/lib/content/types";
+import { DOMAIN_META } from "@/lib/content/types";
 
 /**
  * Pure exam builder.
@@ -25,6 +26,8 @@ export type ExamQuestion = {
   day: number;
   /** Original index within that day's quiz array. */
   qIndex: number;
+  /** Resolved CEH v13 domain: question.domain ?? day.defaultDomain ?? "meta". */
+  domain: CehDomain;
   /** The question + choices, copied through verbatim. */
   q: string;
   choices: readonly string[];
@@ -67,6 +70,7 @@ export const buildExam = (
         id: `${day.n}-${i}`,
         day: day.n,
         qIndex: i,
+        domain: q.domain ?? day.defaultDomain ?? "meta",
         q: q.q,
         choices: q.choices,
         c: q.c,
@@ -100,6 +104,7 @@ export const stripAnswerKey = (exam: Exam): ClientExam => ({
     id: q.id,
     day: q.day,
     qIndex: q.qIndex,
+    domain: q.domain,
     q: q.q,
     choices: q.choices,
   })),
@@ -115,8 +120,18 @@ export type GradedAnswer = {
   id: string;
   day: number;
   qIndex: number;
+  domain: CehDomain;
   choice: number | null;
   correct: boolean;
+};
+
+export type PerDomainResult = {
+  domain: CehDomain;
+  label: string;
+  weightPct: number;
+  answered: number;
+  correct: number;
+  total: number;
 };
 
 export type ExamResult = {
@@ -124,6 +139,15 @@ export type ExamResult = {
   correct: number;
   scorePct: number;
   passed: boolean;
+  /**
+   * Score broken down by CEH v13 official domain. Drives the readiness
+   * chart on the results screen — mirrors how the real exam reports back.
+   */
+  perDomain: ReadonlyArray<PerDomainResult>;
+  /**
+   * Per-day breakdown kept for backward-compat. Drives the secondary
+   * "review by day" navigation block on the results screen.
+   */
   perDay: ReadonlyArray<{
     day: number;
     title: string;
@@ -146,7 +170,14 @@ export const gradeExam = (
     const choiceN =
       typeof choice === "number" && Number.isInteger(choice) ? choice : null;
     const correct = choiceN !== null && choiceN === q.c;
-    return { id: q.id, day: q.day, qIndex: q.qIndex, choice: choiceN, correct };
+    return {
+      id: q.id,
+      day: q.day,
+      qIndex: q.qIndex,
+      domain: q.domain,
+      choice: choiceN,
+      correct,
+    };
   });
 
   const correct = answers.filter((a) => a.correct).length;
@@ -154,6 +185,7 @@ export const gradeExam = (
   const scorePct = total > 0 ? Math.round((correct / total) * 100) : 0;
   const passed = scorePct >= PASS_PCT;
 
+  // Per-day rollup
   const byDay = new Map<number, { answered: number; correct: number; total: number }>();
   for (const a of answers) {
     const slot = byDay.get(a.day) ?? { answered: 0, correct: 0, total: 0 };
@@ -162,7 +194,6 @@ export const gradeExam = (
     if (a.correct) slot.correct += 1;
     byDay.set(a.day, slot);
   }
-
   const perDay = DAYS.filter((d) => byDay.has(d.n)).map((d) => {
     const slot = byDay.get(d.n)!;
     return {
@@ -174,7 +205,29 @@ export const gradeExam = (
     };
   });
 
-  return { total, correct, scorePct, passed, perDay, answers };
+  // Per-domain rollup — drives the readiness chart that mirrors how the
+  // real exam reports score against the official blueprint.
+  const byDomain = new Map<CehDomain, { answered: number; correct: number; total: number }>();
+  for (const a of answers) {
+    const slot = byDomain.get(a.domain) ?? { answered: 0, correct: 0, total: 0 };
+    slot.total += 1;
+    if (a.choice !== null) slot.answered += 1;
+    if (a.correct) slot.correct += 1;
+    byDomain.set(a.domain, slot);
+  }
+  const perDomain: PerDomainResult[] = DOMAIN_META.filter((m) => byDomain.has(m.id)).map((m) => {
+    const slot = byDomain.get(m.id)!;
+    return {
+      domain: m.id,
+      label: m.label,
+      weightPct: m.weightPct,
+      answered: slot.answered,
+      correct: slot.correct,
+      total: slot.total,
+    };
+  });
+
+  return { total, correct, scorePct, passed, perDomain, perDay, answers };
 };
 
 /**

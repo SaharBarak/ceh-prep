@@ -36,6 +36,9 @@ const examRunSchema = new Schema(
             id: { type: String, required: true },
             day: { type: Number, required: true },
             qIndex: { type: Number, required: true },
+            // domain optional for backward compat with pre-domain-tagging runs;
+            // new runs always supply it via the builder's resolved value.
+            domain: { type: String, default: null },
             choice: { type: Number, default: null },
             correct: { type: Boolean, required: true },
           },
