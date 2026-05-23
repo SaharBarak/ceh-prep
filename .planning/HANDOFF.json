@@ -1,63 +1,292 @@
 {
   "version": "1.0",
-  "timestamp": "2026-05-20T17:15:00.000Z",
-  "phase": "12",
-  "phase_name": "Testing + LLM Quality Review",
-  "phase_dir": ".planning/phases/12-testing-and-llm-quality-review",
-  "plan": null,
-  "task": null,
-  "total_tasks": 8,
-  "status": "track_b_validated_through_two_runs",
-  "completed_tasks": [
-    {"id": "phase-6", "name": "Curriculum content module + paused-phase scaffolding", "status": "done", "commit": "832d1f5"},
-    {"id": "phase-7", "name": "Reader toolbar + progress strip + mark-complete", "status": "done", "commit": "022c541"},
-    {"id": "phase-8", "name": "WebVM iframe lab panel + postMessage", "status": "done", "commit": "31a4a85"},
-    {"id": "phase-9", "name": "Premium bonus library + landing redesign by octo agent", "status": "done", "commit": "ce4985a"},
-    {"id": "signup", "name": "/signup page + signup-form client", "status": "done", "commit": "a157450"},
-    {"id": "pricing", "name": "/pricing rewrite to match $30/mo Pro reality", "status": "done", "commit": "6f1cddf"},
-    {"id": "roadmap-10-11", "name": "Roadmap phases 10+11 added (email engagement)", "status": "done", "commit": "59f2633"},
-    {"id": "phase-10", "name": "Drip email MVP: EmailDispatch + Drip.tsx + /api/cron/drip + /api/unsubscribe", "status": "done", "commit": "135b113"},
-    {"id": "phase-10-gaps", "name": "Phase 10 gaps closed: signup timezone + requireSession lastActiveAt", "status": "done", "commit": "43e0e75"},
-    {"id": "roadmap-12", "name": "Phase 12 added scope-gated", "status": "done", "commit": "4c934c3"},
-    {"id": "phase-12-scope", "name": "Phase 12 scope locked from user Q&A", "status": "done", "commit": "309e01e"},
-    {"id": "phase-12-track-b-mvp", "name": "Track B MVP: personas.json + playwright/sdk deps + icp-funnel-sim.ts harness + npm run qa:icp + README", "status": "done", "commit": "fd948bf"},
-    {"id": "phase-12-run-1", "name": "First ICP report (Sarah/Alex/Priya) — 3/3 would_consider; surfaced harness capture bug + microline opportunity", "status": "done", "commit": "3703a50"},
-    {"id": "phase-12-run-2-and-fixes", "name": "Run 2 (Sarah-delta + Marcus + Dave; Marcus converted) + harness 5-capture refactor + landing fixes (microline visibility bump + v13 in subhead + ~30-min lesson + bolded 4)", "status": "done", "commit": "PENDING"}
+  "timestamp": "2026-05-23T00:00:00.000Z",
+  "session_handoff": true,
+  "phase": "post-12",
+  "phase_name": "Production-readiness sprint",
+  "git": {
+    "branch": "main",
+    "head": "93c9b3a",
+    "ahead_of_origin": 0,
+    "working_tree": "clean",
+    "build": "green",
+    "typecheck": "green",
+    "tests": "8/8 passing (vitest)"
+  },
+  "session_commits": [
+    {"sha": "fd948bf", "msg": "Track B MVP harness (personas + playwright + sdk + tsx)"},
+    {"sha": "9197eef", "msg": "HANDOFF commit-hash backfill"},
+    {"sha": "3703a50", "msg": "Run 1 ICP landing review — 3/3 would_consider"},
+    {"sha": "119efa9", "msg": "Run 2 + landing fixes (v13 inline / ~30-min / microline / 5-capture)"},
+    {"sha": "75498ea", "msg": "Honest founder signature in footer"},
+    {"sha": "34a62d8", "msg": "Run 3 surface expansion + 2 real bugs caught + 5 landing improvements"},
+    {"sha": "868a138", "msg": "Homepage mature voice — declarative chips, no // citations"},
+    {"sha": "426b250", "msg": "Real top nav — landing → homepage structural shift"},
+    {"sha": "052b80f", "msg": "Perpetual motion + tactile feedback — live, not noisy"},
+    {"sha": "c21faee", "msg": "GA4 + newsletter + Phase 11 engagement + Phase 4 Paddle"},
+    {"sha": "7f5ccfa", "msg": "/privacy + /terms (Paddle merchant prerequisite)"},
+    {"sha": "42a86ac", "msg": "Cookie consent + /about"},
+    {"sha": "93c9b3a", "msg": "Track A starter — Vitest + newsletter-token tests + CI"}
   ],
-  "remaining_tasks": [
-    {"id": "p12-named-human", "name": "Landing: add one named human + credential (closes Sarah's #1 across both runs + Dave's hobbyist worry)", "status": "blocked_on_user_input", "blocker": "needs founder name + credential to claim (OSCP/CEH/OSWE/etc.) and whether to add /about page or footer signature"},
-    {"id": "p12-field-notes-rename", "name": "Landing: rename 'Field-notes from people doing the work' to 'From the lab notebook' or repurpose for real practitioner notes (Sarah misframed it in both runs; Dave + Alex agreed)", "status": "not_started"},
-    {"id": "p12-refund-threshold", "name": "Landing: tighten refund threshold language — '80% of CEH v13 pass mark' is ~56% raw which is a low refund bar (Priya + Sarah-v2 caught)", "status": "not_started"},
-    {"id": "p12-sample-snippet", "name": "Landing: add a code snippet pull-quote on bonus cards so depth is visible without clicking through (Sarah both runs + Priya run 1)", "status": "not_started"},
-    {"id": "p12-cron-wire", "name": "Wire nightly cron at 03:00 UTC for icp-funnel-sim (decision logged in run-1 scope)", "status": "not_started"},
-    {"id": "p12-track-a", "name": "Track A: Vitest + Playwright + MSW + supertest deterministic suite", "status": "deferred_until_track_b_proven_in_production"}
+  "what_shipped_this_session": {
+    "phase_12_track_b_complete": {
+      "harness": "app/scripts/qa/icp-funnel-sim.ts (production nightly path, budget-capped, 5-capture spec)",
+      "alt_harnesses": [
+        "app/scripts/qa/_capture-once.ts (single-page 5-capture helper for orchestrator-fan-out)",
+        "app/scripts/qa/_capture-funnel.ts (multi-page funnel: landing+signup+pricing+bonus)"
+      ],
+      "personas": "app/scripts/qa/personas.json (5 ICPs: Sarah/Marcus/Alex/Priya/Dave)",
+      "reports": [
+        ".planning/qa-reports/2026-05-20-landing.md (run 1: 3 personas, landing only)",
+        ".planning/qa-reports/2026-05-20-landing-run2.md (run 2: Sarah delta + Marcus + Dave; Marcus converted high-confidence)",
+        ".planning/qa-reports/2026-05-20-funnel-run3.md (run 3: 4-page funnel, caught 2 real bugs + applied 5 landing improvements)"
+      ],
+      "nightly_cron": ".github/workflows/qa-icp-nightly.yml (03:00 UTC; advisory PR with new report)"
+    },
+    "landing_to_homepage_transformation": {
+      "structural": "Top nav (CEH Prep v13 | CURRICULUM · LAB · LIBRARY · PRICING · ABOUT · LOG IN · [START FREE]) in root layout via app/src/components/site-nav.tsx; anchor IDs (#curriculum, #lab) on relevant home sections",
+      "voice": "All // mono prefixes replaced with declarative phrases; removed 'Three things a Udemy CEH course can't do' (replaced with 'What a video course can't do. This does.'); hero subhead tightened; bonus section reframed from defensive 'Not testimonials —' to positive graduation framing; closing CTA mono-tag becomes 'Three days free. No card to start.'",
+      "motion": "MOTION_INTENSITY 6 per taste-skill — BreathingDot on hero status indicator, TerminalTypewriter on first viewport intersect of mock terminal, BreathingIcon on drill chips + curriculum lightning bolts (phase-offset so they breathe out of sync), ScrollProgress bar at top of viewport, StaggerGrid/StaggerList for cascade reveals on 3 proof cards + 14 curriculum tiles + bonus preview cards, .card-lift + .btn tactile feedback. Hardware-accelerated, prefers-reduced-motion respected.",
+      "applied_qa_findings": "v13 bolded inline in subhead, ~30-min lesson estimate, bolded 4 in receipts copy, microline visibility bump (lime accent on 'no card to start'), refund threshold tightened from 80% of pass-mark (~56% raw) to explicit 70% raw, stat-block label visibility bumped from mono-tag to text-[10px] uppercase ink-dim"
+    },
+    "ga4_analytics": {
+      "foundation": "app/src/lib/analytics/ga4.ts (track/trackPageview helpers + EVENTS enum); app/src/components/ga4-script.tsx (gtag loader + SPA pageview tracker)",
+      "events_wired": "cta_click (hero / lab_section / closing), lab_peek, signup_start, login_complete, pricing_view, bonus_view (with tier+authed params)",
+      "consent_gated": "GA4Script reads readConsent() reactively (CustomEvent broadcast); banner via app/src/components/cookie-banner.tsx; footer CookieChip lets users flip decision later"
+    },
+    "newsletter": {
+      "model": "app/src/lib/db/models/newsletter.ts (4-state lifecycle: pending → confirmed → unsubscribed)",
+      "routes": [
+        "POST /api/newsletter (DOI: stores pending row + sends confirmation email)",
+        "GET /api/newsletter/confirm (validates token, syncs to Resend audience if configured)",
+        "GET|POST /api/newsletter/unsubscribe (RFC-8058 one-click)"
+      ],
+      "tokens": "app/src/lib/infra/resend/newsletter-token.ts (purpose-namespaced HMAC: confirm/unsubscribe tokens cross-purpose-rejected)",
+      "audience_sync": "app/src/lib/infra/resend/audience.ts (Resend audience upsert; no-op when RESEND_AUDIENCE_ID unset; failures swallowed so user flow isn't blocked)",
+      "form": "app/src/components/newsletter-form.tsx (footer placement, fires newsletter_subscribe event)",
+      "template": "app/src/lib/infra/resend/templates/NewsletterConfirm.tsx"
+    },
+    "phase_11_post_engagement": {
+      "templates": [
+        "app/src/lib/infra/resend/templates/Winback.tsx (7d-inactive nudge)",
+        "app/src/lib/infra/resend/templates/Streak.tsx (Day-3 completion with tier-aware upgrade footnote)"
+      ],
+      "send_wrappers": "sendWinbackEmail + sendStreakEmail in app/src/lib/infra/resend/send.ts",
+      "cron": "app/src/app/api/cron/engagement/route.ts (single sweep: winback + streak in one pass; both single-fire-per-lifetime via EmailDispatch unique-index)",
+      "schedule": "0 9 * * * UTC in app/vercel.json (alongside existing /api/cron/drip hourly)",
+      "dispatch_kinds": "Added 'streak_3' to EmailDispatch enum (alongside existing 'reengage_7d' and 'reengage_21d')"
+    },
+    "phase_4_paddle_billing": {
+      "sdk": "@paddle/paddle-node-sdk + @paddle/paddle-js installed",
+      "client_boundary": "app/src/lib/infra/paddle.ts (isPaddleConfigured() gate; client returns null if config partial)",
+      "webhook": "app/src/app/api/paddle/webhook/route.ts (HMAC verification via paddle.webhooks.unmarshal; dispatches subscription.created/activated/canceled/updated → User.tier sync; idempotent)",
+      "checkout_button": "app/src/components/checkout-button.tsx (paddle-js initializePaddle + Checkout.open with customData.userId; fires checkout_start event)",
+      "wired_into": "/pricing renders CheckoutButton when (paddleConfigured && authed && tier=free); otherwise falls back to existing honest 'sign up first / billing not yet live' link"
+    },
+    "legal_pages": {
+      "privacy": "app/src/app/privacy/page.tsx (7 data classes, 6-processor list with linked privacy policies, retention windows pinned, GDPR rights surface including PROMISED /api/account/export + /api/account/delete endpoints)",
+      "terms": "app/src/app/terms/page.tsx (12 sections English prose; refund clause pinned to 70% raw threshold; Paddle as merchant-of-record disclosure; liability cap; governing law Israel/Tel Aviv with consumer-protection statutory-rights carve-out)",
+      "warning": "Privacy policy references endpoints that DO NOT YET EXIST — see open_tasks #11"
+    },
+    "about_page": {
+      "file": "app/src/app/about/page.tsx",
+      "addresses": "Sarah/Alex/Dave's persistent 'no named human' friction across all 3 QA simulation runs",
+      "structure": "Founder bio + why-this-exists + 4-stat receipts (days/questions/bonus/drills) + stack receipt + CTA"
+    },
+    "track_a_starter": {
+      "vitest_config": "app/vitest.config.ts",
+      "server_only_stub": "app/src/test/server-only-stub.ts (alias so server-only imports don't blow up under Vitest)",
+      "tests": "8/8 passing — app/src/lib/infra/resend/newsletter-token.test.ts (cross-purpose token rejection, tampered MAC, malformed tokens, swapped email)",
+      "ci": ".github/workflows/ci.yml (typecheck + test + build on every push/PR)",
+      "scripts": "npm test + npm run test:watch added to package.json"
+    },
+    "env_layer_additions": {
+      "file": "app/src/lib/env.ts",
+      "added_vars": [
+        "NEXT_PUBLIC_GA4_MEASUREMENT_ID (optional)",
+        "RESEND_AUDIENCE_ID (optional)",
+        "PADDLE_API_KEY (optional)",
+        "PADDLE_WEBHOOK_SECRET (optional)",
+        "PADDLE_PRO_PRICE_ID (optional)",
+        "NEXT_PUBLIC_PADDLE_CLIENT_TOKEN (optional)",
+        "NEXT_PUBLIC_PADDLE_ENV (sandbox/production, default sandbox)"
+      ],
+      "guard": "superRefine enforces all-or-none on the 4-key Paddle quartet so partial config can't produce a dead checkout"
+    },
+    "curriculum_updates": {
+      "day_7_malware": "Added AI-AUG concept card (adversarial LLM use: polymorphic payloads, AI-authored phishing, paraphrase evasion)",
+      "day_9_webapps": "Added LLM-INJ concept card (prompt injection direct + indirect, defense-in-depth framing)",
+      "rationale": "Closes Priya's run-1 catch that CEH v13 added AI/ML attack content as a domain"
+    },
+    "bonus_library_fix": {
+      "filter": "isPlaceholderTitle() in app/src/lib/content/bonus.ts hides 3 cards with raw IG/FB permalink hashes as titles (Sarah/Priya/Dave all caught this in run 3)",
+      "files_remaining": "docs/content/05-ig-post-DWX1Jk1k-UK.md, 06-ig-post-DXqo18qlCRm.md, 12-fb-server-hardening.md remain on disk for future content completion"
+    },
+    "bonus_auth_bug_fix": {
+      "what": "/bonus and /bonus/[slug] were calling requireSession() which threw UNAUTHORIZED for unauthenticated visitors — but the landing's 'All N →' CTA points there",
+      "fix": "Both pages now use getSession() (returns null when unauth) + FREE_PREVIEW_COUNT gating + unauth visitors get a Start free CTA pair in the header",
+      "caught_by": "Run 3 — the funnel-walk capture hit the error page on the second screenshot"
+    }
+  },
+  "open_tasks": [
+    {
+      "id": 11,
+      "priority": "HIGHEST",
+      "subject": "/api/account/export + /api/account/delete + /account/settings",
+      "rationale": "Privacy policy at /privacy explicitly promises both endpoints — they currently 404. Credibility gap and Paddle merchant deep-review risk.",
+      "scope": [
+        "GET /api/account/export — auth-gated, returns application/json archive of: user (sans secrets) + progress + email-dispatch ledger + audit log entries. Use Content-Disposition: attachment.",
+        "POST /api/account/delete — auth-gated, hard-deletes user + progress + email-dispatch + newsletter rows; RETAINS audit log per privacy policy (12mo). Clears session cookie. Returns 200 with 'Account deleted' page or redirects to /.",
+        "/account/settings page — auth-gated. Sections: account (email + display name + verify status), security (password change, session revoke-all), email (marketingOptOut + marketingNudgeOptOut + newsletter status with manage link), data (Export button → /api/account/export, Delete button → confirmation modal → POST /api/account/delete)."
+      ],
+      "estimated_effort": "2-3 hours including tests",
+      "tests_to_add": "Vitest: round-trip the export shape against a Mongo-memory-server. Idempotency of delete (calling twice doesn't blow up)."
+    },
+    {
+      "id": 12,
+      "priority": "HIGH",
+      "subject": "SEO basics: OG images + sitemap + robots + structured data",
+      "rationale": "Sharing any URL produces an unbranded default card. No sitemap means slow Google indexing. Schema.org Course on /course/[day] unlocks rich results for 'CEH prep' queries.",
+      "scope": [
+        "app/opengraph-image.tsx (default homepage OG) — use Next 15's ImageResponse, render the hero headline + lime accent over zinc-950, JetBrains-Mono detail line",
+        "app/course/[day]/opengraph-image.tsx (per-day variants with the day title + module name)",
+        "app/bonus/[slug]/opengraph-image.tsx (per-article variants with the article title)",
+        "app/sitemap.ts (14 day pages + N bonus articles + landing + pricing + about + signup + privacy + terms)",
+        "app/robots.ts (allow all, sitemap reference)",
+        "Schema.org Course on /course/[day] + Article on /bonus/[slug] via <Script type='application/ld+json'> in respective layouts"
+      ],
+      "estimated_effort": "1-2 hours, all small mechanical files"
+    },
+    {
+      "id": 13,
+      "priority": "HIGH",
+      "subject": "Audit: verify marketing promises actually work end-to-end",
+      "rationale": "Landing copy claims things I haven't verified: Day 14 timed exam simulator UI, day-completion submission flow, WebVM postMessage drill-pass appending to user.completedDrills.",
+      "scope": [
+        "Open /course/14 — is there a real interactive timed 125-question simulator UI, or just the lesson + quiz like other days?",
+        "Open /course/1 — submit the quiz — does user.completedDays append? (Phase 11 streak email depends on this firing)",
+        "Open /course/1 with WebVM iframe — does the drill check postMessage append to user.completedDrills? (Phase 8 supposedly wired this)",
+        "If any are broken: fix in this same session if simple, or open an issue and document"
+      ],
+      "estimated_effort": "1-2 hours of verification, potentially significant if regressions found"
+    }
   ],
-  "v2_roadmap_items_from_qa": [
-    {"id": "v2-team-seats", "source": "Dave (run 2)", "summary": "No team/seats purchase path. Triggers v2 billing scope. Dave is correctly priced but can't buy 6 seats. CEH is largely compliance/audit-driven so the buyer is often not the user — this is real B2B money on the table.", "blocking_phase": "phase 4 billing"},
-    {"id": "v2-enterprise-signals", "source": "Dave (run 2)", "summary": "Hobbyist-vs-real-product. No about-the-company, no team-behind-it, no enterprise signals. CISO defense ammunition missing. Triggers v2 brand work + customer logos / pass-rate data once available."},
-    {"id": "v2-advanced-track", "source": "Priya (run 1)", "summary": "No advanced/post-cert track visible. The bonus library (HexStrike-AI, sqlmap workflows) hints at depth but the curriculum grid doesn't reference it. Engineer-tier ICP wants a 'Pro+' or 'post-cert CTF lane' tease."},
-    {"id": "v2-ceh-v13-ai-module", "source": "Priya (run 1)", "summary": "CEH v13 specifically added AI/ML attack content as a domain. Curriculum source check needed: either fold under another module + label explicitly, or add it. For a v13-marketed product in 2026, the absence is a v13-specific liability."}
+  "deferred_workstreams": [
+    {
+      "id": "track_a_expansion",
+      "subject": "Track A expansion — API route tests + MSW + Playwright E2E",
+      "rationale": "Starter ships 8/8 passing on the HMAC-signing security surface. Natural follow-up: MSW for Resend/Paddle mocking, supertest for /api/newsletter+/api/paddle/webhook+/api/cron/engagement integration tests, Playwright E2E for signup→verify→day-1-complete, mongodb-memory-server for engagement cron eligibility logic.",
+      "effort": "half-day"
+    },
+    {
+      "id": "observability",
+      "subject": "Sentry + cron heartbeat + Resend bounce webhook",
+      "rationale": "Currently failures just console.warn. Production needs alerting on webhook signature failures, cron run errors, Resend bounces, Paddle subscription state mismatches.",
+      "effort": "half-day"
+    },
+    {
+      "id": "v2_team_seats",
+      "subject": "Team / seats purchase path (Dave's persistent friction)",
+      "rationale": "QA-validated B2B revenue gap. Dave hit this in every run. v2 billing milestone — depends on Paddle multi-seat product setup.",
+      "blocking": "Paddle account + product configuration"
+    },
+    {
+      "id": "v2_enterprise_signals",
+      "subject": "Enterprise signals for CISO defense (Dave)",
+      "rationale": "Customer logos / pass-rate claim / 'trained N analysts'. Needs real B2B customer data before it's honest.",
+      "blocking": "real customer data"
+    },
+    {
+      "id": "v2_outcome_proof",
+      "subject": "Real testimonials + pass rates (Sarah / Alex's #1 friction)",
+      "rationale": "Universal across QA runs. The current founder-signature line is a partial substitute, but social-proof receipts only work once real cohort completes the sprint.",
+      "blocking": "first cohort completion"
+    },
+    {
+      "id": "passkeys_github_oauth",
+      "subject": "GitHub OAuth + passkeys (Priya's run-3 catch)",
+      "rationale": "Engineer-tier ICP wants HTB-style minimal auth. Conversion lift ~5% per Priya's note.",
+      "effort": "1 day"
+    },
+    {
+      "id": "referral_system",
+      "subject": "Referral — refer-a-friend, both get a month",
+      "rationale": "Sarah/Alex are price-sensitive ICPs; this lowers their effective cost. Growth lever.",
+      "effort": "1-2 days"
+    },
+    {
+      "id": "completion_certificate",
+      "subject": "Day-14 PDF certificate + LinkedIn share card",
+      "rationale": "Viral hook. Free distribution channel once cohort completes.",
+      "effort": "half-day"
+    }
   ],
-  "blockers": [],
-  "human_actions_pending": [
-    {"action": "Decide founder credential + page placement for Sarah/Dave's 'no named human' friction", "context": "Highest-leverage still-open landing fix. Needs OSCP/CEH/OSWE/etc. credential + LinkedIn or /about page decision.", "blocking": false},
-    {"action": "Provide ANTHROPIC_API_KEY in CI environment to wire up nightly cron", "context": "icp-funnel-sim.ts harness reads process.env.ANTHROPIC_API_KEY directly; exits cleanly without it (CI-safe). Both report runs so far used the host Claude Code session's API path (orchestrator-fan-out) at $0 cost. The standalone harness is shipped and tested but never run with a real key.", "blocking": false}
+  "production_go_live_checklist": [
+    {"action": "Set NEXT_PUBLIC_GA4_MEASUREMENT_ID in Vercel env", "blocking_for": "analytics activation"},
+    {"action": "Create Resend Audience + set RESEND_AUDIENCE_ID in Vercel env", "blocking_for": "newsletter Resend sync (Mongo persists either way)"},
+    {"action": "Set 4 Paddle env vars in Vercel: PADDLE_API_KEY + PADDLE_WEBHOOK_SECRET + PADDLE_PRO_PRICE_ID + NEXT_PUBLIC_PADDLE_CLIENT_TOKEN (+ optionally NEXT_PUBLIC_PADDLE_ENV=production)", "blocking_for": "live checkout (currently falls back to honest 'Phase 4' copy)"},
+    {"action": "Configure Paddle webhook URL in Paddle dashboard → https://<deploy>/api/paddle/webhook", "blocking_for": "tier sync from subscription events"},
+    {"action": "Submit Privacy + Terms URLs to Paddle for merchant approval", "blocking_for": "Paddle account activation"},
+    {"action": "Verify Resend sender domain (SPF/DKIM/DMARC DNS records)", "blocking_for": "production email deliverability"},
+    {"action": "Set ANTHROPIC_API_KEY in GitHub Actions secrets", "blocking_for": "nightly QA cron actually running (currently exits clean CI-safe)"},
+    {"action": "Set production SESSION_SECRET (32+ chars random)", "blocking_for": "production auth"},
+    {"action": "Set production CRON_SECRET (32+ chars random)", "blocking_for": "cron route authorization"},
+    {"action": "Set production UNSUB_SECRET (32+ chars random)", "blocking_for": "marketing email unsubscribe token integrity"},
+    {"action": "Set MONGO_URI to real Atlas connection string", "blocking_for": "production data persistence"}
   ],
-  "decisions": [
-    {"decision": "Phase 12 split into Track A (deterministic) + Track B (ICP simulation); Track B first", "rationale": "User's detailed answers made Track B the headline; Track A defers until B proves valuable", "phase": "12"},
-    {"decision": "Test stack with mocking: Vitest + Playwright + MSW + supertest", "rationale": "User chose 'with mocking' over leaner Vitest+Playwright only", "phase": "12"},
-    {"decision": "Sonnet 4.6 for per-step ICP vision pass; Haiku 4.5 for chain-of-critique synthesis", "rationale": "Vision needs Sonnet; re-reading notes is cheap, Haiku is sufficient", "phase": "12"},
-    {"decision": "Advisory only — never blocks merges", "rationale": "User explicit choice; safer for v1, humans own merge call", "phase": "12"},
-    {"decision": "Chain-of-critique: 3 passes (notes / re-read for missed observations / aggregate)", "rationale": "User chose chain over single-pass to catch second-order issues", "phase": "12"},
-    {"decision": "Whole-repo nightly cron (03:00 UTC), not per-PR", "rationale": "User picked nightly for whole-funnel coverage", "phase": "12"},
-    {"decision": "MVP shape: landing-page-only first; expand surface phase-by-phase", "rationale": "Avoid building wrong abstraction before knowing what good critique looks like", "phase": "12"},
-    {"decision": "Budget cap CLAUDE_QA_MAX_USD default $2/run", "rationale": "Prevents runaway loops; ~$30/mo at 3 personas nightly is acceptable", "phase": "12"},
-    {"decision": "tsx as TypeScript runner for scripts/", "rationale": "Modern, no ts-node config burden; aligns with Node 20+ engines field", "phase": "12"},
-    {"decision": "5-capture spec for landing screenshots (4 viewport + 1 fullpage), not 3", "rationale": "Run-1 found that 3 captures at scrollY=0/0.5/1.0 missed the mock-terminal section entirely — all 3 agents independently surfaced 'lab told not shown' which was a CAPTURE artifact, not a page bug. Verified by full-page in run 2. Both harness paths updated.", "phase": "12"},
-    {"decision": "Numeric findings from agent vision require source cross-reference", "rationale": "Run 1 & 2 reproduced numeric drift across multiple agents: '4' read as 'x'/'a', '80%' read as '60%'/'80%'. Small grey monospace numerals are unreliable through vision. Future runs should validate any quoted number against rendered HTML or repo source.", "phase": "12"},
-    {"decision": "Team/seats path deferred to v2 billing milestone", "rationale": "Dave's #1 friction is real B2B money on the table but adding marketing copy for infrastructure that doesn't exist (Phase 4 billing) would over-promise. Captured in v2_roadmap_items_from_qa for future scope.", "phase": "12"}
+  "decisions_log_session": [
+    {"decision": "Phase 12 Track B harness uses orchestrator-Claude fan-out path for $0 cost during dev", "rationale": "Standalone icp-funnel-sim.ts is shipped + budget-capped but never run with a real key in this session — that's the first nightly-cron job's responsibility"},
+    {"decision": "5-capture spec (4 viewport + 1 fullpage) for landing screenshots", "rationale": "Run 1 found 3 captures missed entire mock-terminal section — false 'lab told not shown' finding"},
+    {"decision": "Numeric findings from agent vision require source cross-reference", "rationale": "Run 1+2+3 reproduced misreads of small grey monospace numerals (4 as x/a, 80% as 60%/80%, OSINT engines as '33967 engines'). Methodology rule baked in."},
+    {"decision": "Cookie consent gates GA4 by user grant rather than running GA4 unconditionally", "rationale": "GDPR/UK-GDPR/CCPA compliance. localStorage-backed state machine with CustomEvent broadcast keeps GA4Script reactive without reload."},
+    {"decision": "Paddle config is all-or-none via env.ts superRefine", "rationale": "Partial Paddle config produces a dead checkout — worse than no checkout. Honest 'Phase 4' fallback in pricing page makes this safe."},
+    {"decision": "Newsletter is decoupled from User.marketingOptOut", "rationale": "Subscriber may not be a registered user; registered user may opt into newsletter independently of product drip opt-out. Separate model + separate purpose-namespaced unsub tokens."},
+    {"decision": "Track A scoped to 8 newsletter-token tests + CI workflow for the starter", "rationale": "Context constraint at session end — security-critical HMAC path is the highest-leverage subset. Expansion (MSW + supertest + Playwright) deferred."},
+    {"decision": "Account self-service (export/delete/settings) DEFERRED to fresh session", "rationale": "Privacy policy already references the endpoints — half-broken implementation worse than the current 404. Estimated ~2-3 hours; needs full session."}
   ],
-  "uncommitted_files": [],
-  "next_action": "Decide on the highest-leverage still-open landing fix (named human + credential, from Sarah/Dave). Then either wire nightly cron, or move to Phase 11 (post-engagement email — winback/streak), or close milestone via /gsd:audit-milestone.",
-  "context_notes": "Track B MVP complete and validated through 2 ICP simulation runs (Sarah/Alex/Priya in run 1, Sarah-delta/Marcus/Dave in run 2). All 5 ICPs in personas.json have been exercised. Marcus converted with HIGH confidence in run 2 — first proof the harness loop produces actionable persona-distinct verdicts. Landing fixes shipped this session: (1) microline visibility bump with 'no card to start' in lime accent, (2) CEH v13 bolded inline in hero subhead, (3) ~30-min lesson per-day estimate, (4) bolded `4` in subhead to kill numeric vision misread. Harness fixes: 5-capture spec (4 viewport + 1 fullpage) in both icp-funnel-sim.ts and _capture-once.ts. Reports at .planning/qa-reports/2026-05-20-landing.md (run 1) + .planning/qa-reports/2026-05-20-landing-run2.md (run 2). Build green. Typecheck green. Cost so far: $0 — both runs used orchestrator-Claude fan-out, not direct API. Phase 12 ready to either expand (named-human, surface-expansion to signup/curriculum/exam) or close."
+  "key_file_locations": {
+    "homepage": "app/src/app/page.tsx",
+    "homepage_client_primitives": "app/src/app/page.client.tsx (Reveal, StatGrid, BlinkCaret, BreathingDot, BreathingIcon, TerminalTypewriter, ScrollProgress, StaggerGrid/List/Item)",
+    "design_tokens": "app/src/app/globals.css",
+    "root_layout": "app/src/app/layout.tsx (GA4Script + CookieBanner + SiteNav)",
+    "env_validation": "app/src/lib/env.ts",
+    "ga4_helper": "app/src/lib/analytics/ga4.ts",
+    "consent_state_machine": "app/src/lib/analytics/consent.ts",
+    "site_nav": "app/src/components/site-nav.tsx",
+    "track_components": "app/src/components/track.tsx (TrackClick, TrackOnMount)",
+    "cookie_banner_components": "app/src/components/cookie-banner.tsx (CookieBanner, CookieChip)",
+    "newsletter_form": "app/src/components/newsletter-form.tsx",
+    "checkout_button": "app/src/components/checkout-button.tsx",
+    "paddle_client": "app/src/lib/infra/paddle.ts (getPaddle + isPaddleConfigured)",
+    "newsletter_model": "app/src/lib/db/models/newsletter.ts",
+    "newsletter_token": "app/src/lib/infra/resend/newsletter-token.ts",
+    "newsletter_audience": "app/src/lib/infra/resend/audience.ts",
+    "send_wrappers": "app/src/lib/infra/resend/send.ts (sendVerify, sendReset, sendWelcome, sendDrip, sendWinback, sendStreak)",
+    "email_templates": "app/src/lib/infra/resend/templates/ (VerifyEmail, ResetPassword, Welcome, Drip, NewsletterConfirm, Winback, Streak)",
+    "cron_routes": "app/src/app/api/cron/drip/route.ts + app/src/app/api/cron/engagement/route.ts",
+    "newsletter_routes": "app/src/app/api/newsletter/{route,confirm/route,unsubscribe/route}.ts",
+    "paddle_webhook": "app/src/app/api/paddle/webhook/route.ts",
+    "user_account_unsub": "app/src/app/api/unsubscribe/route.ts (User-keyed, distinct from /api/newsletter/unsubscribe)",
+    "vitest_config": "app/vitest.config.ts",
+    "test_stub": "app/src/test/server-only-stub.ts",
+    "ci_workflow": ".github/workflows/ci.yml",
+    "nightly_qa_workflow": ".github/workflows/qa-icp-nightly.yml",
+    "qa_harness": "app/scripts/qa/icp-funnel-sim.ts",
+    "qa_personas": "app/scripts/qa/personas.json",
+    "qa_capture_helpers": "app/scripts/qa/_capture-{once,funnel}.ts",
+    "qa_reports": ".planning/qa-reports/ (3 reports from this session)",
+    "vercel_cron_config": "app/vercel.json (drip hourly + engagement 09:00 UTC)"
+  },
+  "patterns_established": {
+    "purpose_namespaced_hmac_tokens": "app/src/lib/infra/resend/newsletter-token.ts — purpose prefix (confirm/unsubscribe) inside the signed payload prevents cross-purpose token reuse. Pattern reusable for any future token type.",
+    "soft_optional_env_with_isConfigured_gate": "Paddle quartet — getPaddle() throws if not configured; isPaddleConfigured() gate at every callsite (CheckoutButton SSR, webhook, billing portal). Same pattern for RESEND_AUDIENCE_ID + NEXT_PUBLIC_GA4_MEASUREMENT_ID. Lets the app boot + render honest copy when feature is half-set-up.",
+    "consent_gated_third_party_scripts": "GA4Script reads readConsent() reactively via onConsentChange(setConsent). Pattern reusable for any future third-party JS that needs consent (Hotjar, Intercom, etc.)",
+    "declarative_event_wrappers": "TrackClick + TrackOnMount in app/src/components/track.tsx. Keeps event firing out of business-logic components. Add new events to EVENTS enum in ga4.ts, never raw strings.",
+    "memoized_perpetual_motion": "BreathingDot, BreathingIcon, BlinkCaret, TerminalTypewriter, ScrollProgress all React.memo'd + CSS-keyframe-based where possible (no React render-cycle involvement). Pattern reusable for any new ambient loop per the taste-skill §9 PERFORMANCE CRITICAL.",
+    "stagger_orchestration": "StaggerGrid/StaggerList wraps server-rendered children; child uses <StaggerItem>. Both in same client tree per Framer's staggerChildren requirement. Pattern for any cascade-reveal-on-scroll surface.",
+    "idempotent_dispatch_ledger": "EmailDispatch unique-index on (userId, kind, day, articleSlug) — every send tries insert first; duplicate-key (Mongo 11000) means already-sent. Pattern protects drip + winback + streak from retry storms.",
+    "qa_methodology_rules": "Numeric findings cross-referenced against source HTML; 5-capture spec (4 viewport + 1 fullpage) for any screenshot-based QA; persona context cached at the system-prompt level (no leakage between personas)."
+  },
+  "where_to_start_next_session": "Read this HANDOFF.json first. Then pick from open_tasks based on priority: #11 (account self-service — credibility gap from privacy promises) is highest priority. After that #12 (SEO basics — fast, mechanical) and #13 (audit existing flows — investigation, potentially surfaces bugs). If user wants to skip those and go straight to production, work the production_go_live_checklist instead.",
+  "context_state": "Previous session ended at ~81% context usage. Account self-service was scoped but explicitly deferred to a fresh session because half-broken GDPR endpoints would be worse than the current 404 (privacy policy already promises them). Work in this session was 13 commits + 25-commit-ahead delta from session start; all pushed to origin/main; working tree clean; build green; typecheck green; 8/8 vitest passing."
 }
