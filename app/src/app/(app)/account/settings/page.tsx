@@ -4,6 +4,7 @@ import { requireSession } from "@/lib/auth/session";
 import { connectDB } from "@/lib/db/mongo";
 import { UserModel } from "@/lib/db/models/user";
 import { NewsletterSubscriberModel } from "@/lib/db/models/newsletter";
+import { getRecentExamRuns } from "@/lib/actions/exam";
 import {
   DisplayNameForm,
   ChangePasswordForm,
@@ -66,6 +67,8 @@ export default async function SettingsPage() {
       </div>
     );
   }
+
+  const recentRuns = await getRecentExamRuns(5);
 
   const newsletter = await NewsletterSubscriberModel.findOne({ email: me.email })
     .select("status confirmedAt unsubscribedAt")
@@ -148,6 +151,59 @@ export default async function SettingsPage() {
             Reset via email →
           </Link>
         </p>
+      </Section>
+
+      {/* ─────────────── Exam attempts ─────────────── */}
+      <Section
+        title="Past exam attempts"
+        description="Every Day-14 simulator run lands here. Click any to walk the per-question review with explanations."
+      >
+        {recentRuns.length === 0 ? (
+          <p className="text-sm">
+            You haven&apos;t taken the simulator yet.{" "}
+            <Link href="/exam" className="underline">
+              Start a run →
+            </Link>
+          </p>
+        ) : (
+          <ul className="divide-y divide-[var(--color-line)]">
+            {recentRuns.map((run) => {
+              const date = new Date(run.submittedAt)
+                .toISOString()
+                .slice(0, 16)
+                .replace("T", " ");
+              const tone = run.passed
+                ? "text-[var(--color-accent)]"
+                : "text-amber-300";
+              return (
+                <li key={run.id}>
+                  <Link
+                    href={`/exam/runs/${run.id}`}
+                    className="-mx-2 flex items-center justify-between gap-4 rounded-md px-2 py-3 transition-colors hover:bg-[var(--color-bg)]"
+                  >
+                    <div>
+                      <p className="font-mono text-xs text-[var(--color-ink-faint)]">
+                        {date} UTC
+                      </p>
+                      <p className="mt-1 text-sm text-[var(--color-ink-dim)]">
+                        {run.correctCount} / {run.totalQuestions} correct ·{" "}
+                        {Math.round(run.durationSeconds / 60)} min
+                      </p>
+                    </div>
+                    <div className="flex items-baseline gap-2">
+                      <span className={`display text-2xl ${tone}`}>
+                        {run.scorePct}%
+                      </span>
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--color-ink-faint)]">
+                        {run.passed ? "pass" : "below"}
+                      </span>
+                    </div>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </Section>
 
       {/* ─────────────── Email ─────────────── */}

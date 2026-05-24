@@ -1,5 +1,6 @@
 "use server";
 
+import { Types } from "mongoose";
 import { connectDB } from "@/lib/db/mongo";
 import { ExamRunModel } from "@/lib/db/models/exam-run";
 import { UserModel } from "@/lib/db/models/user";
@@ -12,6 +13,7 @@ import {
   type Exam,
   type ExamResult,
 } from "@/lib/exam/builder";
+import type { CehDomain } from "@/lib/content/types";
 import {
   captureClientMeta,
   audit,
@@ -140,4 +142,149 @@ const rebuildExamFromIds = (ids: string[]): Exam | null => {
     out.push(q);
   }
   return { questions: out, totalSeconds: full.totalSeconds };
+};
+
+/* ─────────────────────────────────────────────────────────────────
+   Past attempts — list + detail queries
+   ───────────────────────────────────────────────────────────────── */
+
+/**
+ * Summary row for the Past Attempts list (settings page + future
+ * cohort dashboard). Pure shape — no per-answer detail; that ships
+ * via getExamRunById below.
+ */
+export type ExamRunSummary = {
+  id: string;
+  submittedAt: string;
+  durationSeconds: number;
+  scorePct: number;
+  passed: boolean;
+  totalQuestions: number;
+  correctCount: number;
+};
+
+export const getRecentExamRuns = async (
+  limit: number = 10,
+): Promise<ExamRunSummary[]> => {
+  let userId: string;
+  try {
+    ({ userId } = await requireSession());
+  } catch {
+    return [];
+  }
+  await connectDB();
+  const docs = await ExamRunModel.find({ userId: { $eq: userId } })
+    .sort({ completedAt: -1 })
+    .limit(Math.max(1, Math.min(50, limit)))
+    .select("_id completedAt durationSeconds scorePct passed totalQuestions correctCount")
+    .lean();
+
+  return docs.map((d) => ({
+    id: d._id.toString(),
+    submittedAt: (d.completedAt ?? new Date()).toISOString(),
+    durationSeconds: d.durationSeconds ?? 0,
+    scorePct: d.scorePct ?? 0,
+    passed: Boolean(d.passed),
+    totalQuestions: d.totalQuestions ?? 0,
+    correctCount: d.correctCount ?? 0,
+  }));
+};
+
+/**
+ * Full detail of a past run for the review page.
+ *
+ * Returns the per-answer detail merged with each question's text +
+ * choices + the correct index + `why` explanation, so the page can
+ * render the wrong-answer walk without re-fetching the content layer.
+ * The merge happens on the server via rebuildExamFromIds — the same
+ * trust boundary submitExam uses.
+ */
+export type ExamRunReviewAnswer = {
+  id: string;
+  day: number;
+  qIndex: number;
+  domain: CehDomain;
+  q: string;
+  choices: readonly string[];
+  correctChoice: number;
+  userChoice: number | null;
+  correct: boolean;
+  why?: string;
+};
+
+export type ExamRunDetail = {
+  id: string;
+  submittedAt: string;
+  durationSeconds: number;
+  scorePct: number;
+  passed: boolean;
+  totalQuestions: number;
+  correctCount: number;
+  perDomain: ExamResult["perDomain"];
+  answers: ExamRunReviewAnswer[];
+};
+
+export const getExamRunById = async (
+  runId: string,
+): Promise<ExamRunDetail | null> => {
+  let userId: string;
+  try {
+    ({ userId } = await requireSession());
+  } catch {
+    return null;
+  }
+  if (!Types.ObjectId.isValid(runId)) return null;
+  await connectDB();
+  const doc = await ExamRunModel.findOne({
+    _id: { $eq: new Types.ObjectId(runId) },
+    userId: { $eq: userId },
+  }).lean();
+  if (!doc) return null;
+
+  // Reconstruct the exam shape from the stored question ids so we can
+  // render the canonical question text + the per-domain breakdown.
+  const ids = doc.answers.map((a) => a.id);
+  const exam = rebuildExamFromIds(ids);
+
+  // Choices map: {questionId → userChoice} from the persisted attempt.
+  const choices: Record<string, number | null> = {};
+  for (const a of doc.answers) {
+    choices[a.id] = a.choice ?? null;
+  }
+  const result = exam ? gradeExam(exam, choices) : null;
+
+  const byId = new Map(
+    (exam?.questions ?? []).map((q) => [q.id, q]),
+  );
+
+  const answers: ExamRunReviewAnswer[] = doc.answers.map((a) => {
+    const q = byId.get(a.id);
+    return {
+      id: a.id,
+      day: a.day,
+      qIndex: a.qIndex,
+      // Trust the stored domain when present (handles content edits that
+      // re-tag domains post-run); fall back to the rebuilt question's
+      // resolved domain. Coerce to CehDomain — schema is string-typed.
+      domain: ((a.domain ?? q?.domain) as CehDomain) ?? "meta",
+      q: q?.q ?? "(question text not found — content may have changed)",
+      choices: q?.choices ?? [],
+      correctChoice: q?.c ?? -1,
+      userChoice: a.choice ?? null,
+      correct: Boolean(a.correct),
+      why: q?.why,
+    };
+  });
+
+  return {
+    id: doc._id.toString(),
+    submittedAt: (doc.completedAt ?? new Date()).toISOString(),
+    durationSeconds: doc.durationSeconds ?? 0,
+    scorePct: doc.scorePct ?? 0,
+    passed: Boolean(doc.passed),
+    totalQuestions: doc.totalQuestions ?? 0,
+    correctCount: doc.correctCount ?? 0,
+    perDomain: result?.perDomain ?? [],
+    answers,
+  };
 };

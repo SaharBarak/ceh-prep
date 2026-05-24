@@ -606,6 +606,12 @@ const ResultsScreen = ({
         <Link href="/dashboard" className="btn-ghost text-xs">
           ← Dashboard
         </Link>
+        <Link
+          href={`/exam/runs/${examRunId}`}
+          className="btn-ghost text-xs"
+        >
+          Review wrong answers →
+        </Link>
         <a href="/exam" className="btn-primary text-xs">
           Take another run →
         </a>
