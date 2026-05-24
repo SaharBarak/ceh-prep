@@ -184,12 +184,21 @@ describe("gradeExam", () => {
     for (const q of exam.questions) {
       expect(q.domain).toBeDefined();
     }
-    // The Day-7 first question is tagged system-hacking (override),
-    // remaining Day-7 questions inherit network (defaultDomain).
+    // Day 7's defaultDomain is "network" (sniffing/MITM); selected questions
+    // override to system-hacking (malware classification, LOLBin). Verify
+    // the resolution mechanic: the Day-7 sniffing questions (promiscuous
+    // mode + ARP spoofing — qIndex 1, 2) inherit network, and at least one
+    // Day-7 question (the worm/virus classification at qIndex 0) overrides
+    // to system-hacking.
     const day7 = exam.questions.filter((q) => q.day === 7);
     const day7Q0 = day7.find((q) => q.qIndex === 0);
-    const day7Others = day7.filter((q) => q.qIndex > 0);
     expect(day7Q0?.domain).toBe("system-hacking");
-    for (const q of day7Others) expect(q.domain).toBe("network");
+
+    const promiscuousQ = day7.find((q) =>
+      q.q.includes("promiscuous mode"),
+    );
+    const arpQ = day7.find((q) => q.q.includes("ARP spoofing"));
+    expect(promiscuousQ?.domain).toBe("network");
+    expect(arpQ?.domain).toBe("network");
   });
 });

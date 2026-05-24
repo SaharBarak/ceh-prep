@@ -14,6 +14,10 @@ type RunnerState = {
   currentIndex: number;
   /** questionId → chosen index (or null = explicitly skipped). */
   answers: Record<string, number | null>;
+  /** questionId → true when the user has marked it for review. The flag is
+   *  client-only — it never goes back to the server. Mirrors the real
+   *  Pearson VUE "flag for review" button on the CEH exam. */
+  flagged: Record<string, boolean>;
   /** Seconds elapsed since the run started. Drives the timer + the
    *  durationSeconds field on submit. */
   elapsedSeconds: number;
@@ -23,6 +27,7 @@ type RunnerState = {
 type Action =
   | { type: "start" }
   | { type: "answer"; id: string; choice: number }
+  | { type: "toggle_flag"; id: string }
   | { type: "goto"; index: number }
   | { type: "tick" }
   | { type: "submit_pending" }
@@ -36,6 +41,14 @@ const reducer = (state: RunnerState, action: Action): RunnerState => {
       return {
         ...state,
         answers: { ...state.answers, [action.id]: action.choice },
+      };
+    case "toggle_flag":
+      return {
+        ...state,
+        flagged: {
+          ...state.flagged,
+          [action.id]: !state.flagged[action.id],
+        },
       };
     case "goto":
       return { ...state, currentIndex: action.index };
@@ -54,6 +67,7 @@ const initial: RunnerState = {
   phase: "idle",
   currentIndex: 0,
   answers: {},
+  flagged: {},
   elapsedSeconds: 0,
   result: null,
 };
@@ -80,6 +94,10 @@ export const ExamRunner = ({ exam }: Props) => {
         .length,
     [state.answers],
   );
+  const flaggedCount = useMemo(
+    () => Object.values(state.flagged).filter(Boolean).length,
+    [state.flagged],
+  );
   const remainingSeconds = Math.max(0, exam.totalSeconds - state.elapsedSeconds);
   const timedOut = remainingSeconds === 0 && state.phase === "running";
   const unansweredCount = total - answered;
@@ -96,13 +114,14 @@ export const ExamRunner = ({ exam }: Props) => {
   };
 
   /**
-   * Submit guard: if any questions are unanswered, surface a confirm
-   * dialog so a fast submit-click doesn't strand answers the user might
-   * have meant to fill. Auto-submit on timeout bypasses this — running
-   * out of time IS the implicit confirmation.
+   * Submit guard: surface a confirm dialog if the user has any unanswered
+   * OR any still-flagged questions. Both signals mean "I'm not done" —
+   * unanswered are blanks, flagged are deliberate come-back-to markers.
+   * Auto-submit on timeout bypasses this — running out of time IS the
+   * implicit confirmation.
    */
   const handleSubmit = () => {
-    if (unansweredCount > 0) {
+    if (unansweredCount > 0 || flaggedCount > 0) {
       setConfirmingSubmit(true);
       return;
     }
@@ -142,14 +161,32 @@ export const ExamRunner = ({ exam }: Props) => {
         currentIndex={state.currentIndex}
         total={total}
         answered={answered}
+        flaggedCount={flaggedCount}
         remainingSeconds={remainingSeconds}
       />
 
       <article className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 md:p-8">
-        <p className="mono-tag mb-4">
-          Question {state.currentIndex + 1} · drawn from Day{" "}
-          {String(currentQ.day).padStart(2, "0")}
-        </p>
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <p className="mono-tag">
+            Question {state.currentIndex + 1} · drawn from Day{" "}
+            {String(currentQ.day).padStart(2, "0")}
+          </p>
+          <button
+            type="button"
+            onClick={() =>
+              dispatch({ type: "toggle_flag", id: currentQ.id })
+            }
+            aria-pressed={Boolean(state.flagged[currentQ.id])}
+            className={[
+              "rounded-full border px-3 py-1 font-mono text-[11px] uppercase tracking-wider transition-colors",
+              state.flagged[currentQ.id]
+                ? "border-amber-400/60 bg-amber-500/10 text-amber-200"
+                : "border-[var(--color-line)] text-[var(--color-ink-dim)] hover:border-[var(--color-line-strong)] hover:text-[var(--color-ink)]",
+            ].join(" ")}
+          >
+            {state.flagged[currentQ.id] ? "⚑ Flagged" : "⚐ Flag for review"}
+          </button>
+        </div>
         <h2 className="display text-xl leading-snug text-[var(--color-ink)] md:text-2xl">
           {currentQ.q}
         </h2>
@@ -226,6 +263,7 @@ export const ExamRunner = ({ exam }: Props) => {
       {confirmingSubmit && (
         <ConfirmSubmitDialog
           unansweredCount={unansweredCount}
+          flaggedCount={flaggedCount}
           total={total}
           onCancel={() => setConfirmingSubmit(false)}
           onConfirm={performSubmit}
@@ -236,6 +274,7 @@ export const ExamRunner = ({ exam }: Props) => {
         total={total}
         currentIndex={state.currentIndex}
         answers={state.answers}
+        flagged={state.flagged}
         questionIds={exam.questions.map((q) => q.id)}
         onJump={(i) => dispatch({ type: "goto", index: i })}
       />
@@ -271,11 +310,13 @@ const ExamHeader = ({
   currentIndex,
   total,
   answered,
+  flaggedCount,
   remainingSeconds,
 }: {
   currentIndex: number;
   total: number;
   answered: number;
+  flaggedCount: number;
   remainingSeconds: number;
 }) => {
   const pct = Math.round(((currentIndex + 1) / total) * 100);
@@ -283,13 +324,18 @@ const ExamHeader = ({
   return (
     <header className="sticky top-0 z-30 -mx-2 border-b border-[var(--color-line)] bg-[var(--color-bg)]/95 px-2 py-3 backdrop-blur">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4">
           <p className="mono-tag">
             Q {currentIndex + 1} / {total}
           </p>
           <p className="font-mono text-[11px] uppercase tracking-wider text-[var(--color-ink-faint)]">
             {answered} answered
           </p>
+          {flaggedCount > 0 && (
+            <p className="font-mono text-[11px] uppercase tracking-wider text-amber-300">
+              ⚑ {flaggedCount} flagged
+            </p>
+          )}
         </div>
         <div
           className={[
@@ -333,12 +379,14 @@ const QuestionGrid = ({
   total,
   currentIndex,
   answers,
+  flagged,
   questionIds,
   onJump,
 }: {
   total: number;
   currentIndex: number;
   answers: Record<string, number | null>;
+  flagged: Record<string, boolean>;
   questionIds: string[];
   onJump: (i: number) => void;
 }) => (
@@ -346,27 +394,62 @@ const QuestionGrid = ({
     <summary className="cursor-pointer font-mono text-xs uppercase tracking-wider text-[var(--color-ink-dim)] hover:text-[var(--color-ink)]">
       Jump to question
     </summary>
-    <div className="mt-4 grid grid-cols-10 gap-1.5 md:grid-cols-15">
+    <div className="mt-2 mb-3 flex flex-wrap items-center gap-3 text-[10px] font-mono uppercase tracking-wider text-[var(--color-ink-faint)]">
+      <span className="inline-flex items-center gap-1.5">
+        <span className="h-3 w-3 rounded-sm border border-[var(--color-accent)]/40 bg-[rgba(190,242,100,0.08)]" />
+        answered
+      </span>
+      <span className="inline-flex items-center gap-1.5">
+        <span className="h-3 w-3 rounded-sm border border-amber-400/60 bg-amber-500/10" />
+        flagged
+      </span>
+      <span className="inline-flex items-center gap-1.5">
+        <span className="h-3 w-3 rounded-sm border border-[var(--color-line)] bg-[var(--color-bg)]" />
+        blank
+      </span>
+    </div>
+    <div className="grid grid-cols-10 gap-1.5 md:grid-cols-15">
       {Array.from({ length: total }, (_, i) => {
         const id = questionIds[i]!;
         const isAnswered = answers[id] !== undefined && answers[id] !== null;
+        const isFlagged = Boolean(flagged[id]);
         const isCurrent = i === currentIndex;
+
+        // Visual priority: current > flagged > answered > blank. Flagged
+        // beats answered because the user explicitly marked it as
+        // "come back here" — that's the signal they want surfaced.
+        let cls: string;
+        if (isCurrent) {
+          cls = "border border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-bg)]";
+        } else if (isFlagged) {
+          cls = "border border-amber-400/60 bg-amber-500/10 text-amber-200";
+        } else if (isAnswered) {
+          cls = "border border-[var(--color-accent)]/40 bg-[rgba(190,242,100,0.08)] text-[var(--color-accent)]";
+        } else {
+          cls = "border border-[var(--color-line)] bg-[var(--color-bg)] text-[var(--color-ink-dim)] hover:border-[var(--color-line-strong)]";
+        }
+
+        const stateLabel = [
+          isAnswered ? "answered" : null,
+          isFlagged ? "flagged" : null,
+        ]
+          .filter(Boolean)
+          .join(", ");
+
         return (
           <button
             key={i}
             type="button"
             onClick={() => onJump(i)}
-            aria-label={`Jump to question ${i + 1}${isAnswered ? " (answered)" : ""}`}
-            className={[
-              "aspect-square rounded text-[10px] font-mono transition-colors",
-              isCurrent
-                ? "border border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-bg)]"
-                : isAnswered
-                  ? "border border-[var(--color-accent)]/40 bg-[rgba(190,242,100,0.08)] text-[var(--color-accent)]"
-                  : "border border-[var(--color-line)] bg-[var(--color-bg)] text-[var(--color-ink-dim)] hover:border-[var(--color-line-strong)]",
-            ].join(" ")}
+            aria-label={`Jump to question ${i + 1}${stateLabel ? ` (${stateLabel})` : ""}`}
+            className={["aspect-square rounded text-[10px] font-mono transition-colors", cls].join(" ")}
           >
             {i + 1}
+            {isFlagged && !isCurrent && (
+              <span className="ml-0.5 text-[8px]" aria-hidden>
+                ⚑
+              </span>
+            )}
           </button>
         );
       })}
@@ -533,55 +616,80 @@ const ResultsScreen = ({
 
 const ConfirmSubmitDialog = ({
   unansweredCount,
+  flaggedCount,
   total,
   onCancel,
   onConfirm,
 }: {
   unansweredCount: number;
+  flaggedCount: number;
   total: number;
   onCancel: () => void;
   onConfirm: () => void;
-}) => (
-  <div
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="confirm-submit-title"
-    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm"
-  >
-    <div className="w-full max-w-[480px] rounded-2xl border border-amber-500/40 bg-[var(--color-bg)] p-6 md:p-8">
-      <p
-        id="confirm-submit-title"
-        className="mono-tag mb-3 text-amber-300"
-      >
-        Hold on
-      </p>
-      <h2 className="display text-2xl text-[var(--color-ink)]">
-        {unansweredCount} of {total} questions still blank.
-      </h2>
-      <p className="mt-3 text-sm text-[var(--color-ink-dim)]">
-        Blank answers grade as wrong — the real CEH penalizes them the same
-        way. If you meant to flag-and-return on some, hit cancel and use the
-        jump-grid to find them.
-      </p>
-      <div className="mt-6 flex flex-wrap items-center justify-end gap-3">
-        <button
-          type="button"
-          onClick={onCancel}
-          className="btn-ghost text-xs"
-        >
-          Cancel · keep going
-        </button>
-        <button
-          type="button"
-          onClick={onConfirm}
-          className="rounded-md border border-amber-500/40 bg-amber-500/10 px-4 py-2 font-mono text-xs uppercase tracking-wider text-amber-200 transition-opacity hover:bg-amber-500/20"
-        >
-          Submit anyway →
-        </button>
+}) => {
+  // Build the headline + body so both unanswered and flagged states are
+  // surfaced when present. Either state is enough to trip the dialog.
+  const headlineParts: string[] = [];
+  if (unansweredCount > 0) {
+    headlineParts.push(`${unansweredCount} blank`);
+  }
+  if (flaggedCount > 0) {
+    headlineParts.push(`${flaggedCount} still flagged`);
+  }
+  const headline =
+    headlineParts.length > 0
+      ? `${headlineParts.join(" · ")} (of ${total})`
+      : `Ready to submit (${total} questions)`;
+
+  const bodyLines: string[] = [];
+  if (unansweredCount > 0) {
+    bodyLines.push(
+      "Blank answers grade as wrong — the real CEH penalizes them the same way.",
+    );
+  }
+  if (flaggedCount > 0) {
+    bodyLines.push(
+      "Flagged questions were ones you marked to revisit. They'll grade with whatever choice (or blank) you left.",
+    );
+  }
+  bodyLines.push("Use the jump-grid below to find them, or submit anyway.");
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="confirm-submit-title"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm"
+    >
+      <div className="w-full max-w-[480px] rounded-2xl border border-amber-500/40 bg-[var(--color-bg)] p-6 md:p-8">
+        <p id="confirm-submit-title" className="mono-tag mb-3 text-amber-300">
+          Hold on
+        </p>
+        <h2 className="display text-2xl text-[var(--color-ink)]">{headline}</h2>
+        {bodyLines.map((line, i) => (
+          <p
+            key={i}
+            className={i === 0 ? "mt-3 text-sm text-[var(--color-ink-dim)]" : "mt-2 text-sm text-[var(--color-ink-dim)]"}
+          >
+            {line}
+          </p>
+        ))}
+        <div className="mt-6 flex flex-wrap items-center justify-end gap-3">
+          <button type="button" onClick={onCancel} className="btn-ghost text-xs">
+            Cancel · keep going
+          </button>
+          <button
+            type="button"
+            onClick={onConfirm}
+            className="rounded-md border border-amber-500/40 bg-amber-500/10 px-4 py-2 font-mono text-xs uppercase tracking-wider text-amber-200 transition-opacity hover:bg-amber-500/20"
+          >
+            Submit anyway →
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 /** Format seconds as H:MM:SS (or M:SS once under an hour). */
 const formatHMS = (s: number): string => {

