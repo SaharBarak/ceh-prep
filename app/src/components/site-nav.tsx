@@ -33,6 +33,7 @@ export function SiteNav() {
         <div className="flex items-center gap-1 md:gap-3">
           <NavLink href="/#curriculum">Curriculum</NavLink>
           <NavLink href="/#lab">Lab</NavLink>
+          <NavLink href="/wiki">Wiki</NavLink>
           <NavLink href="/bonus">Library</NavLink>
           <NavLink href="/pricing">Pricing</NavLink>
           <NavLink href="/about">About</NavLink>

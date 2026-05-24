@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { DAYS } from "@/lib/content";
 import { getBonusItems } from "@/lib/content/bonus";
+import { getWikiArticles, CATEGORY_LABELS } from "@/lib/content/wiki";
+import type { WikiCategory } from "@/lib/content/wiki";
 import { env } from "@/lib/env";
 
 /**
@@ -40,5 +42,39 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  return [...publicRoutes, ...dayRoutes, ...bonusRoutes];
+  // Wiki — the SEO/AEO surface. High priority on the index + each article,
+  // medium on category indexes. Wiki articles refresh ~weekly as the bank
+  // grows; individual articles change less often.
+  const wikiArticles = getWikiArticles();
+  const wikiIndexRoutes: MetadataRoute.Sitemap = [
+    {
+      url: `${base}/wiki`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+  ];
+  const wikiCategoryRoutes: MetadataRoute.Sitemap = (
+    Object.keys(CATEGORY_LABELS) as WikiCategory[]
+  ).map((c) => ({
+    url: `${base}/wiki/category/${c}`,
+    lastModified: now,
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }));
+  const wikiArticleRoutes: MetadataRoute.Sitemap = wikiArticles.map((a) => ({
+    url: `${base}/wiki/${a.slug}`,
+    lastModified: a.updated ? new Date(a.updated) : now,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
+
+  return [
+    ...publicRoutes,
+    ...dayRoutes,
+    ...bonusRoutes,
+    ...wikiIndexRoutes,
+    ...wikiCategoryRoutes,
+    ...wikiArticleRoutes,
+  ];
 }
