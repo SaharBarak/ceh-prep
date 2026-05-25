@@ -3,7 +3,7 @@ title: Burp Suite
 slug: burp-suite
 category: tools
 summary: Burp Suite is a web application security testing platform by PortSwigger. Its core component — an intercepting proxy — sits between the browser and the target server, letting the tester inspect and modify every HTTP request and response. It is the industry-standard tool for web application penetration testing.
-related: [sql-injection, cross-site-scripting, csrf, ssrf, jwt, owasp-top-10]
+related: [sql-injection, cross-site-scripting, csrf, ssrf, jwt, owasp-top-10, sqlmap, xxe, idor, http-request-smuggling]
 aliases: [Burp, BurpSuite, PortSwigger Burp]
 updated: 2026-05-24
 ---

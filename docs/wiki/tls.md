@@ -3,7 +3,7 @@ title: Transport Layer Security
 slug: tls
 category: protocols
 summary: Transport Layer Security (TLS) is the cryptographic protocol that secures most communication on the internet, including HTTPS. It authenticates servers (and optionally clients) and encrypts the channel between them, defending against eavesdropping and tampering.
-related: [jwt, tls-handshake]
+related: [jwt, oauth-2, saml, hsts]
 aliases: [TLS, SSL, HTTPS, SSL/TLS]
 updated: 2026-05-24
 ---

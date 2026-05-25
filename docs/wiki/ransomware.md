@@ -3,7 +3,7 @@ title: Ransomware
 slug: ransomware
 category: attacks
 summary: Ransomware is a class of malware that encrypts a victim's data and demands a payment in exchange for decryption. Modern ransomware operations also exfiltrate data before encryption and threaten public release ("double extortion"), making them one of the most consequential cybercrime business models of the 2020s.
-related: [phishing, active-directory, mitre-attck, pass-the-hash]
+related: [phishing, active-directory, mitre-attck, pass-the-hash, edr, siem]
 aliases: [Ransomware Attack, Crypto-Ransomware, Crypto-Locker, Double Extortion]
 updated: 2026-05-25
 ---

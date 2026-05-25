@@ -3,7 +3,7 @@ title: Cross-Site Request Forgery
 slug: csrf
 category: attacks
 summary: Cross-Site Request Forgery (CSRF) is a web vulnerability where an attacker tricks a logged-in user's browser into submitting a state-changing request to a target site, abusing the browser's automatic credential attachment.
-related: [cross-site-scripting, sql-injection, jwt, owasp-top-10]
+related: [cross-site-scripting, sql-injection, jwt, owasp-top-10, oauth-2, idor]
 aliases: [CSRF, XSRF, Cross-Site Request Forgery, Session Riding]
 updated: 2026-05-24
 ---

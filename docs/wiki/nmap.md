@@ -3,7 +3,7 @@ title: Nmap
 slug: nmap
 category: tools
 summary: Nmap (Network Mapper) is an open-source network scanning tool used to discover hosts and services on a computer network. It is the canonical reconnaissance and scanning tool in offensive security, used to enumerate open ports, identify running services, fingerprint operating systems, and run scripted vulnerability checks.
-related: [active-directory, cvss, burp-suite]
+related: [active-directory, cvss, burp-suite, wireshark]
 aliases: [Network Mapper, nmap.org]
 updated: 2026-05-24
 ---

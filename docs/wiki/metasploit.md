@@ -3,7 +3,7 @@ title: Metasploit
 slug: metasploit
 category: tools
 summary: Metasploit is an open-source penetration testing framework providing a standardized way to develop, test, and execute exploit code against remote targets. It is the most widely-used exploit framework in offensive security training and a common reference point in penetration test workflows.
-related: [nmap, active-directory, pass-the-hash]
+related: [nmap, active-directory, pass-the-hash, bloodhound]
 aliases: [msf, msfconsole, Metasploit Framework]
 updated: 2026-05-24
 ---

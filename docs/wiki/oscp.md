@@ -3,7 +3,7 @@ title: OSCP
 slug: oscp
 category: certifications
 summary: The Offensive Security Certified Professional (OSCP) is a hands-on penetration testing certification from OffSec. It requires passing a 24-hour practical exam against a live network — compromising multiple machines and writing a professional report — and is the most widely-required certification for technical penetration-testing roles.
-related: [ceh, pnpt, active-directory, bloodhound, metasploit]
+related: [ceh, pnpt, active-directory, bloodhound, metasploit, pentester, security-plus]
 aliases: [OSCP, PEN-200, OSCP+, Offensive Security Certified Professional]
 updated: 2026-05-25
 ---

@@ -3,7 +3,7 @@ title: BloodHound
 slug: bloodhound
 category: tools
 summary: BloodHound is an open-source tool that uses graph theory to find attack paths in Active Directory environments. It ingests AD object relationships into a Neo4j database and renders shortest-path queries between an attacker's current foothold and high-value targets like Domain Admin.
-related: [active-directory, kerberos, kerberoasting, mimikatz, pass-the-hash]
+related: [active-directory, kerberos, kerberoasting, mimikatz, pass-the-hash, ldap, laps]
 aliases: [BloodHound CE, BloodHound Community Edition, SharpHound]
 updated: 2026-05-25
 ---

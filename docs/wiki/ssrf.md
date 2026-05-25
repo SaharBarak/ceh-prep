@@ -3,7 +3,7 @@ title: Server-Side Request Forgery
 slug: ssrf
 category: attacks
 summary: Server-Side Request Forgery (SSRF) is a web vulnerability where an attacker causes a server to make HTTP requests to URLs the attacker controls, typically targeting internal services, cloud metadata endpoints, or otherwise unreachable hosts.
-related: [csrf, cross-site-scripting, owasp-top-10, cloud-imds]
+related: [csrf, cross-site-scripting, owasp-top-10, xxe]
 aliases: [SSRF, Server Side Request Forgery]
 updated: 2026-05-24
 ---

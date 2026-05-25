@@ -3,7 +3,7 @@ title: Mimikatz
 slug: mimikatz
 category: tools
 summary: Mimikatz is a Windows-credential extraction tool developed by Benjamin Delpy that recovers passwords, hashes, Kerberos tickets, and other secrets from memory and the registry. It is the canonical credential-access tool in Active Directory attacks and one of the most-detected pieces of software on Earth.
-related: [pass-the-hash, ntlm, kerberos, active-directory, bloodhound]
+related: [pass-the-hash, ntlm, kerberos, active-directory, bloodhound, laps, edr]
 aliases: [mimikatz, kiwi, sekurlsa]
 updated: 2026-05-25
 ---

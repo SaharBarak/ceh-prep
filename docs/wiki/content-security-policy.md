@@ -3,7 +3,7 @@ title: Content Security Policy
 slug: content-security-policy
 category: defenses
 summary: Content Security Policy (CSP) is an HTTP response header that lets a web application instruct the browser which content sources it should trust. Configured correctly, CSP is the most effective defense against Cross-Site Scripting attacks.
-related: [cross-site-scripting, csrf, tls, owasp-top-10]
+related: [cross-site-scripting, csrf, tls, owasp-top-10, hsts, waf]
 aliases: [CSP, Content-Security-Policy, HTTP CSP Header]
 updated: 2026-05-25
 ---

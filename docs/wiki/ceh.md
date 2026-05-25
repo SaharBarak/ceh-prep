@@ -3,7 +3,7 @@ title: Certified Ethical Hacker
 slug: ceh
 category: certifications
 summary: The Certified Ethical Hacker (CEH) is an entry-level cybersecurity certification awarded by EC-Council that covers offensive security fundamentals — reconnaissance, scanning, exploitation, system hacking, and post-exploitation techniques across web, network, wireless, mobile, and cloud surfaces.
-related: [owasp-top-10, mitre-attck, nmap, burp-suite, active-directory]
+related: [owasp-top-10, mitre-attck, nmap, burp-suite, active-directory, oscp, bloodhound, security-plus]
 aliases: [CEH, EC-Council CEH, CEH v13]
 updated: 2026-05-24
 ---

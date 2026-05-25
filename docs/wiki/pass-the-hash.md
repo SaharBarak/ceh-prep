@@ -3,7 +3,7 @@ title: Pass-the-Hash
 slug: pass-the-hash
 category: attacks
 summary: Pass-the-Hash (PtH) is an authentication-replay attack where an attacker uses a captured NTLM password hash to authenticate to a remote service without cracking the password — because the hash, not the plaintext, is what the NTLM protocol actually verifies.
-related: [ntlm, kerberos, active-directory]
+related: [ntlm, kerberos, active-directory, mimikatz, bloodhound, laps, smb]
 aliases: [PtH, Hash Replay]
 updated: 2026-05-24
 ---

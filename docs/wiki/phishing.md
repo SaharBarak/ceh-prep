@@ -3,7 +3,7 @@ title: Phishing
 slug: phishing
 category: attacks
 summary: Phishing is a social-engineering attack where an attacker impersonates a trusted entity to deceive a target into revealing credentials, clicking a malicious link, or executing attacker-controlled code. It remains the most common initial-access vector across nearly every public threat report.
-related: [ransomware, mitre-attck, owasp-top-10]
+related: [ransomware, mitre-attck, owasp-top-10, dns, soc-analyst]
 aliases: [Phishing, Phish, Spear Phishing, Whaling]
 updated: 2026-05-25
 ---

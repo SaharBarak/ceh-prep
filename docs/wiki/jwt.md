@@ -3,7 +3,7 @@ title: JSON Web Token
 slug: jwt
 category: protocols
 summary: A JSON Web Token (JWT) is a compact, URL-safe credential format consisting of a JSON header and payload, base64url-encoded and signed with a key. JWTs are the dominant token format for stateless authentication on modern web APIs.
-related: [tls, cross-site-scripting, csrf, owasp-top-10]
+related: [tls, cross-site-scripting, csrf, owasp-top-10, oauth-2, openid-connect, saml]
 aliases: [JWT, JSON Web Tokens, JWS]
 updated: 2026-05-24
 ---

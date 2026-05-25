@@ -3,7 +3,7 @@ title: NTLM
 slug: ntlm
 category: protocols
 summary: NTLM (NT LAN Manager) is Microsoft's legacy challenge-response authentication protocol. It pre-dates Kerberos in Windows networks and remains active for compatibility — making NTLM relay and pass-the-hash some of the most consequential attack primitives in Active Directory.
-related: [kerberos, active-directory, pass-the-hash]
+related: [kerberos, active-directory, pass-the-hash, mimikatz, bloodhound, smb, ldap]
 aliases: [NT LAN Manager, NTLMv1, NTLMv2]
 updated: 2026-05-24
 ---

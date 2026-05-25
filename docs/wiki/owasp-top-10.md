@@ -3,7 +3,7 @@ title: OWASP Top 10
 slug: owasp-top-10
 category: standards
 summary: The OWASP Top 10 is a periodically-updated awareness document by the Open Web Application Security Project listing the most critical web application security risks. It is the de-facto industry reference for application security and the framework most web pentest reports map findings against.
-related: [sql-injection, cross-site-scripting, csrf, ssrf, jwt]
+related: [sql-injection, cross-site-scripting, csrf, ssrf, jwt, idor, xxe, http-request-smuggling, sqlmap, waf, nist-csf]
 aliases: [OWASP Top Ten, OWASP T10]
 updated: 2026-05-24
 ---

@@ -3,7 +3,7 @@ title: Active Directory
 slug: active-directory
 category: protocols
 summary: Active Directory (AD) is Microsoft's directory service for Windows networks — a centralized database of users, groups, computers, and policies that authenticates and authorizes nearly every action on a Windows domain.
-related: [kerberos, ntlm, pass-the-hash, nmap]
+related: [kerberos, ntlm, pass-the-hash, nmap, bloodhound, mimikatz, kerberoasting, as-rep-roasting, laps, smb, ldap]
 aliases: [AD, Microsoft Active Directory]
 updated: 2026-05-24
 ---

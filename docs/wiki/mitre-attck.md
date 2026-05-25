@@ -3,7 +3,7 @@ title: MITRE ATT&CK
 slug: mitre-attck
 category: standards
 summary: MITRE ATT&CK is a publicly maintained knowledge base of adversary tactics, techniques, and procedures (TTPs) observed in real-world cyberattacks. It is the industry-standard framework for describing how attackers operate, and the vocabulary almost every modern threat-intelligence report uses.
-related: [owasp-top-10, cvss, active-directory]
+related: [owasp-top-10, cvss, active-directory, phishing, ransomware, siem, edr, nist-csf]
 aliases: [MITRE ATTACK, ATT&CK, ATTACK Framework]
 updated: 2026-05-24
 ---

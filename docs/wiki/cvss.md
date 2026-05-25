@@ -3,7 +3,7 @@ title: CVSS
 slug: cvss
 category: standards
 summary: CVSS (Common Vulnerability Scoring System) is an open framework for communicating the severity of software vulnerabilities on a 0-10 scale. It produces a numeric score and a structured vector string capturing how a vulnerability can be exploited, what privileges are needed, and what the impact is on confidentiality, integrity, and availability.
-related: [owasp-top-10, mitre-attck]
+related: [owasp-top-10, mitre-attck, cve, nist-csf]
 aliases: [Common Vulnerability Scoring System, CVSSv3, CVSSv3.1, CVSSv4]
 updated: 2026-05-24
 ---

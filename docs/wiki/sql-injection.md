@@ -3,7 +3,7 @@ title: SQL Injection
 slug: sql-injection
 category: attacks
 summary: SQL Injection (SQLi) is a code-injection vulnerability where attacker-controlled input is interpolated into a database query, letting the attacker change the query's intent — read other users' data, bypass authentication, or execute commands on the database host.
-related: [cross-site-scripting, owasp-top-10, burp-suite, nmap]
+related: [cross-site-scripting, owasp-top-10, burp-suite, nmap, sqlmap, idor]
 aliases: [SQLi, SQL Injection Attack, Database Injection]
 updated: 2026-05-24
 ---

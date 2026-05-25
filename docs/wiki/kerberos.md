@@ -3,7 +3,7 @@ title: Kerberos
 slug: kerberos
 category: protocols
 summary: Kerberos is a network authentication protocol that uses tickets — short-lived cryptographic tokens — to let users prove their identity to services without sending a password over the wire. It is the primary authentication protocol for Microsoft Active Directory.
-related: [active-directory, ntlm, pass-the-hash]
+related: [active-directory, ntlm, pass-the-hash, kerberoasting, as-rep-roasting, bloodhound, ldap, smb]
 aliases: [Kerberos Protocol, MIT Kerberos]
 updated: 2026-05-24
 ---
