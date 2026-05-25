@@ -1,186 +1,170 @@
 ---
 session_handoff: true
-last_session_ended: 2026-05-23
-git_head: 93c9b3a
+last_session_ended: 2026-05-25
+git_head: 356cf5c
 working_tree: clean
 build: green
 typecheck: green
-tests: 8/8 passing
+tests: 59/59 passing
 ---
 
 # Continue here — fresh session pickup
 
-Read `.planning/HANDOFF.json` for the structured state. This file is the
-narrative companion — what's done, what's next, where to start.
+This session shipped **10 commits across 4 major workstreams** since the
+last handoff (c82fea9). The product moved from "ready for production
+wiring" to "review-driven shipping cycle complete + cyber wiki launched."
 
-## Where we are
+## What's live now
 
-Phase 12 (Testing + LLM Quality Review) is **complete**. The product is
-ready for production wiring. Everything below the homepage marketing layer
-is built; what remains is mostly production go-live mechanics + credibility
-closure + SEO.
+### Account self-service (commit `47de507`)
+- `GET /api/account/export` — GDPR Article 15 JSON archive
+- `POST /api/account/delete` — Article 17 cascade with audit-log retention
+- `/account/settings` — display name, password change, revoke sessions, marketing flags, export, delete
 
-This session shipped 13 commits across five workstreams:
-1. **Phase 12 Track B complete** — ICP simulation harness + 3 QA reports +
-   nightly cron workflow. 6 persona-visits across runs: 1 `would_convert`
-   (Marcus), 5 `would_consider`, 0 bail. Two real product bugs caught and
-   fixed by the harness during run 3 (`/bonus` auth gate, placeholder titles).
-2. **Landing → Homepage transformation** — top nav, mature voice, motion
-   pass, all QA-validated load-bearing copy preserved.
-3. **GA4 + cookie consent + newsletter** — analytics gated by user grant,
-   double-opt-in marketing list separate from product drip, full
-   purpose-namespaced HMAC token discipline.
-4. **Phase 11 (winback + streak) + Phase 4 (Paddle billing)** — both shipped
-   end-to-end. Paddle config is all-or-none guarded; if half-set the page
-   falls back to honest "Phase 4" copy.
-5. **Legal pages (privacy + terms) + /about + Track A starter** — privacy
-   promises GDPR endpoints that **don't yet exist** (see open task #11).
+### SEO basics (commit `e446f20`)
+- OG images (homepage / day / bonus)
+- sitemap.xml + robots.txt + Schema.org JSON-LD
+- Per-page `generateMetadata`
+
+### Audit + Day-14 exam simulator (commits `76b656e` + `741db1d`)
+- Caught + fixed two silent regressions: `$addToSet: { $eq }` CastError on completion + saveAnswer never updating `User.completedDays`
+- Shipped real `/exam` route: Pro-gated, 4-hour timer, 64+ question full-bank, per-domain readiness chart
+
+### Reviewer agents + their fixes (commits `56c5986` + `7ce6c8b` + `2101bb4` + `5ce45d8`)
+- Two reviewer agents (red-teamer + CEH alumni) audited site/curriculum
+- Closed every finding: hashcat false claim, whisper artifact, EternalBlue CVSS, "125 q" lie, "strongest predictor" claim, "practitioner writeups" framing, +18 questions (bank 52 → 81), per-domain readiness, flag-for-review UX, pre-submit confirm, AD bonus article, LOLBins article, HTTP smuggling article, /exam/runs/[id] review-wrong-answers page, past-attempts list on /account/settings
+
+### Cyber Wiki — Wikipedia-style SEO/AEO knowledge base (commits `b586021` + `356cf5c`)
+- File-based content layer: `docs/wiki/*.md` with YAML frontmatter
+- Routes: `/wiki`, `/wiki/[slug]`, `/wiki/category/[name]`
+- All static-rendered (`force-static` + 1h revalidate)
+- Dual Schema.org JSON-LD: `DefinedTerm` (AEO surface) + `TechArticle` (Google Rich Results)
+- 37 seed articles across 7 categories (attacks/defenses/protocols/tools/concepts/standards/certifications)
+- Auto-included in sitemap; "Wiki" added to SiteNav
 
 ## What to do first in the next session
 
-**Highest priority — credibility gap:** the privacy policy at `/privacy`
-explicitly promises `GET /api/account/export` and `POST /api/account/delete`.
-Both currently return 404. Anyone reviewing the privacy policy (Paddle deep
-merchant review, GDPR auditor, careful user) will hit these.
+### Highest priority — wiki cross-link pass (~30 min)
+
+The 37 articles exist. The cross-link graph between them is **partially
+populated** — the 20 new articles in `356cf5c` reference each other, but
+the original 17 (in `b586021`) still have their original `related:` arrays
+that don't know about the new articles. Update each of these:
 
 ```
-Task #11 — Account self-service
-  Files to create:
-    app/src/app/api/account/export/route.ts
-    app/src/app/api/account/delete/route.ts
-    app/src/app/(app)/account/settings/page.tsx
-  Pattern to follow:
-    Use requireSession() at the top
-    Use existing models: UserModel, ProgressModel, EmailDispatchModel,
-      NewsletterSubscriberModel, AuditModel
-    Hard-delete cascade order matters — User last (it's the FK source)
-    Audit log: per /privacy spec, retain 12mo even after delete
-  Tests:
-    vitest test for delete-idempotency (running delete twice doesn't blow up)
-    vitest test for export shape stability (JSON contract)
-  Estimated effort: 2-3 hours
+Original article         Should now also reference
+─────────────────────    ──────────────────────────
+sql-injection            sqlmap, idor
+cross-site-scripting     content-security-policy
+csrf                     oauth-2 (state param), idor
+ssrf                     xxe (sibling fetch-bug class)
+active-directory         bloodhound, mimikatz, kerberoasting, as-rep-roasting
+kerberos                 kerberoasting, as-rep-roasting, bloodhound
+ntlm                     mimikatz, bloodhound
+pass-the-hash            mimikatz, bloodhound
+owasp-top-10             idor, xxe, http-request-smuggling, sqlmap
+mitre-attck              phishing, ransomware
+jwt                      oauth-2, openid-connect, saml
+nmap                     wireshark
+burp-suite               sqlmap, xxe, idor, http-request-smuggling
+tls                      oauth-2, saml
+ceh                      oscp, bloodhound
+metasploit               bloodhound
 ```
 
-After that, two more sprints from open_tasks:
-- **#12 — SEO basics** (OG images via Next 15 `ImageResponse`, sitemap.ts,
-  robots.ts, Schema.org Course + Article structured data). All small
-  mechanical files. ~1-2 hours.
-- **#13 — Verify marketing promises** (audit Day 14 simulator UI,
-  day-completion submission, WebVM drill-pass postMessage). Investigation
-  first; fix any regressions found. ~1-2 hours.
+Edit each article's frontmatter `related: [...]` line only — no body
+changes needed. The route auto-renders the "See also" footer from
+frontmatter.
 
-## Production go-live checklist
+### Second priority — bank growth to 50-60 articles
 
-Separate from open_tasks — these are real-world setup steps, not code:
+Specific gaps from the existing categories:
 
-1. **Vercel env vars** (production project):
-   - `NEXT_PUBLIC_GA4_MEASUREMENT_ID` — your GA4 property
-   - `RESEND_AUDIENCE_ID` — newsletter audience
-   - `PADDLE_API_KEY` + `PADDLE_WEBHOOK_SECRET` + `PADDLE_PRO_PRICE_ID` +
-     `NEXT_PUBLIC_PADDLE_CLIENT_TOKEN` (+ optionally
-     `NEXT_PUBLIC_PADDLE_ENV=production`)
-   - `SESSION_SECRET` / `CRON_SECRET` / `UNSUB_SECRET` — fresh 32+ char
-     randoms, NOT the dev defaults
-   - `MONGO_URI` — Atlas connection string
-   - `RESEND_API_KEY` + `RESEND_FROM_ADDRESS` — production sender domain
-2. **GitHub Actions secrets**:
-   - `ANTHROPIC_API_KEY` — unblocks the nightly QA cron
-3. **Paddle dashboard**:
-   - Configure webhook URL: `https://<deploy>/api/paddle/webhook`
-   - Submit `/privacy` + `/terms` URLs for merchant approval
-4. **Resend dashboard**:
-   - Verify sender domain (SPF/DKIM/DMARC DNS records)
-   - Create newsletter audience, copy ID into env
+- **Defenses bare:** HSTS, LAPS, Zero Trust, EDR, WAF, SIEM, Defense in Depth
+- **Concepts thin:** Defense in Depth, Principle of Least Privilege, Threat Model, Risk
+- **Protocols thin:** DNS, SMB, LDAP, HTTPS
+- **Standards thin:** NIST CSF, ISO 27001, GDPR, HIPAA, CVE
+- **Roles empty:** Pentester, Red Team Operator, SOC Analyst, Threat Hunter, Security Engineer
+- **Certifications thin:** PNPT, CISSP, Security+
 
-## How the codebase is shaped
+Article voice is set; reference any existing article (e.g. `sql-injection.md`)
+for the canonical pattern. Each article is ~400-700 words, opens with a
+bolded one-sentence definition, has structural H2 headings, links
+internally with `[Title](/wiki/slug)`.
 
-Patterns that future work should follow:
+### Third priority — editor UX (optional, larger)
 
-- **Purpose-namespaced HMAC tokens** — `app/src/lib/infra/resend/newsletter-token.ts`.
-  Purpose prefix inside the signed payload prevents cross-token reuse.
-- **Soft-optional env with isConfigured() gate** — Paddle quartet, GA4 ID,
-  Resend audience ID. App boots + renders honest copy when feature half-set.
-- **Consent-gated third-party scripts** — `GA4Script` reads `readConsent()`
-  reactively via `onConsentChange`. Pattern reusable for Hotjar, Intercom,
-  etc.
-- **Declarative event wrappers** — `TrackClick` / `TrackOnMount` in
-  `app/src/components/track.tsx`. Never pass raw strings to `track()`; add
-  to `EVENTS` enum in `app/src/lib/analytics/ga4.ts`.
-- **Memoized perpetual motion** — Every continuous animation
-  (`BreathingDot`, `BreathingIcon`, `BlinkCaret`, `ScrollProgress`) is
-  `React.memo`'d and CSS-keyframe-based where possible. Hardware-accelerated
-  only (transform + opacity). `prefers-reduced-motion` collapses all loops
-  to static.
-- **Stagger orchestration** — `StaggerGrid` / `StaggerList` wraps
-  server-rendered children that use `StaggerItem`. Parent + items in same
-  client tree per Framer's requirement.
-- **Idempotent dispatch ledger** — `EmailDispatch` unique-index on
-  `(userId, kind, day, articleSlug)`. Every send tries insert first;
-  duplicate-key means already-sent. Protects drip + winback + streak from
-  retry storms.
+The current author loop is "edit markdown on disk + Vercel redeploy." A
+`/admin/wiki` editor would speed publication. Requires auth-gated route,
+markdown editor component (Toast UI, Milkdown, or a stripped textarea),
+file-write API. Not urgent — markdown-on-disk is fine.
 
-## QA harness methodology rules (baked in)
+## Where the wiki content lives
 
-- **5-capture spec** for any screenshot-based QA: 4 viewport (hero / 0.33 /
-  0.66 / footer) + 1 fullpage. Run 1 found a 3-capture method missed an
-  entire mock-terminal section.
-- **Numeric findings need source cross-reference.** Vision misreads small
-  grey monospace numerals — across 3 runs we documented misreads of "4" as
-  "x"/"a", "80%" as "60%"/"80%", and "OSINT engines" as "33967 engines".
-  Any number an agent quotes should be grep-verified against the rendered
-  HTML before being promoted to a "copy bug" finding.
-- **Persona pool rotation** — 5 ICPs, 3 visit per nightly run.
-  `app/scripts/qa/personas.json` is the source. Sarah/Alex/Priya covered the
-  bonus-library auth bug catch in run 1+3; Marcus/Dave covered the funnel
-  conversion path in run 2+3.
-
-## Open files / state at session end
-
-Working tree is clean. All 13 session commits pushed to `origin/main`. No
-WIP. No half-committed work. CI is green (typecheck + vitest + build).
-
-If you want to verify, run:
 ```
-cd app
-npm run typecheck    # green
-npm test             # 8/8 passing
-npm run build        # green
-```
+docs/wiki/                                    37 articles (was 0 last session)
+├── attacks/                                  (no subfolder — flat layout)
+├── sql-injection.md  csrf.md  xxe.md  etc.
+├── ...
 
-The dev server may have been left running from the previous session — kill
-with `pkill -f "next dev"` if needed.
+app/src/lib/content/wiki.ts                   Parser + types
+app/src/app/wiki/page.tsx                     /wiki index
+app/src/app/wiki/[slug]/page.tsx              /wiki/<slug>
+app/src/app/wiki/category/[name]/page.tsx     /wiki/category/<name>
+app/src/components/site-nav.tsx               Nav now includes "Wiki"
+app/src/app/sitemap.ts                        Auto-includes wiki routes
+```
 
 ## What this session deliberately did NOT do
 
-- **Real production go-live** — codebase is ready; env vars + Paddle
-  submission + Resend domain verification are real-world steps not done
-  here.
-- **Full Track A coverage** — shipped a starter (Vitest + 8 HMAC tests + CI
-  workflow). Expansion (MSW + supertest + Playwright E2E + mongodb-memory-server
-  for cron tests) is deferred.
-- **Observability** — Sentry, cron heartbeat, bounce webhook handler all
-  deferred. Currently failures `console.warn`.
-- **Account self-service** — DEFERRED to next session because (a) it's the
-  highest-priority remaining task and (b) it needs full context to do right.
-  Privacy policy promises both endpoints. Half-broken implementation is
-  worse than current 404. See open_task #11.
+- **Wiki cross-link pass** — deferred (see above). Quick win for the
+  next session.
+- **Internal wiki search** — no search UI exists yet. With 37+ articles,
+  alphabetical category lists work; at 100+ articles a search box becomes
+  necessary.
+- **Wiki content imports from other locations** — the curriculum (`days.ts`)
+  and bonus articles (`docs/content/`) have wiki-relevant material that
+  could be cross-cited. No work done on this front.
+- **Production go-live** — same as last handoff. Env vars + Paddle
+  submission + Resend domain verification still pending.
+- **Bank growth to 125** — currently 81 questions; not all the way there.
+  Deferred per the alumni's "diminishing returns past quality threshold"
+  note.
 
 ## Quick orientation commands
 
 ```bash
-# Project structure
-ls app/src/                    # app/, components/, lib/, test/
-ls app/src/app/                # routes (auth, app, api, pricing, about, etc.)
-ls app/src/lib/                # actions, auth, billing, content, db, infra, etc.
-
 # Recent commits
 git log --oneline -15
 
-# Current QA reports
-ls .planning/qa-reports/
+# Build + test + lint
+cd app
+npm run typecheck       # green
+npm test                # 59/59 passing
+npm run build           # green; ~61 static pages
 
-# Open tasks
-cat .planning/HANDOFF.json | jq '.open_tasks[] | {id,priority,subject}'
+# Dev server
+npm run dev             # http://localhost:3000
+
+# Wiki content
+ls docs/wiki/           # 37 articles
+
+# QA reports + reviews from this session
+ls .planning/qa-reports/
+```
+
+## Key file locations (additions to prior handoff)
+
+```
+/wiki routes              app/src/app/wiki/
+ExamRun review            app/src/app/(app)/exam/runs/[id]/
+ExamRun model             app/src/lib/db/models/exam-run.ts
+Exam builder              app/src/lib/exam/builder.ts
+Exam server action        app/src/lib/actions/exam.ts
+Wiki parser               app/src/lib/content/wiki.ts
+Wiki content              docs/wiki/*.md
+Domain enum               app/src/lib/content/types.ts (CehDomain, DOMAIN_META)
+Account self-service      app/src/app/(app)/account/settings/ + api/account/{export,delete}
 ```
 
 Good luck.
