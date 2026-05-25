@@ -1,0 +1,36 @@
+name: Cron · engagement nudges (daily 09:00 UTC)
+
+# Hits /api/cron/engagement once per day. Drives the inactivity nudge
+# emails (e.g. "you missed Day 3 — pick back up?"). Route is idempotent
+# via EmailDispatch unique index.
+#
+# Required GitHub secrets:
+#   APP_URL       https://your-domain.com
+#   CRON_SECRET   matches Railway env var
+
+on:
+  schedule:
+    - cron: "0 9 * * *"     # 09:00 UTC daily — matches the original Vercel schedule
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  engagement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Call cron endpoint
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$APP_URL" ] || [ -z "$CRON_SECRET" ]; then
+            echo "::warning::APP_URL or CRON_SECRET not set; skipping."
+            exit 0
+          fi
+          RESPONSE=$(curl -fsS --max-time 60 \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            "$APP_URL/api/cron/engagement")
+          echo "Response: $RESPONSE"

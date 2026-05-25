@@ -1,0 +1,59 @@
+# ─────────────────────────────────────────────────
+# .dockerignore — keep the build context small.
+# ─────────────────────────────────────────────────
+
+# Version control / CI
+.git
+.github
+.gitignore
+.gitattributes
+
+# Local-only planning, history, screenshots
+.planning
+.claude
+src
+
+# Node / Next artifacts
+**/node_modules
+**/.next
+**/.next/cache
+**/coverage
+**/.turbo
+
+# Build tooling caches
+**/.eslintcache
+**/.tsbuildinfo
+**/tsconfig.tsbuildinfo
+
+# Env / secrets (must NEVER end up in the image)
+**/.env
+**/.env.*
+!**/.env.example
+
+# OS / editor cruft
+.DS_Store
+**/Thumbs.db
+.vscode
+.idea
+*.swp
+
+# Logs
+**/*.log
+**/npm-debug.log*
+**/pnpm-debug.log*
+
+# Test outputs
+**/test-results
+**/playwright-report
+**/.vitest
+
+# Docker artifacts (avoid recursion)
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# README + docs that aren't runtime content
+# (docs/wiki and docs/content ARE runtime content; keep them.)
+**/README.md
+CONTRIBUTING.md
+LICENSE

@@ -105,22 +105,32 @@ const EnvSchema = z.object({
 
 export type Env = z.infer<typeof EnvSchema>;
 
+// Empty string from a Docker build-arg or an unset Railway variable
+// must read as "not provided" — otherwise Zod's regex / refinement on
+// optional fields rejects "" instead of treating it as undefined.
+const blankToUndef = (v: string | undefined): string | undefined =>
+  v && v.length > 0 ? v : undefined;
+
 const parsed = EnvSchema.safeParse({
   NODE_ENV: process.env.NODE_ENV,
   MONGO_URI: process.env.MONGO_URI,
   SESSION_SECRET: process.env.SESSION_SECRET,
   SESSION_COOKIE_NAME: process.env.SESSION_COOKIE_NAME,
   NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
-  RESEND_API_KEY: process.env.RESEND_API_KEY,
+  RESEND_API_KEY: blankToUndef(process.env.RESEND_API_KEY),
   RESEND_FROM_ADDRESS: process.env.RESEND_FROM_ADDRESS,
   CRON_SECRET: process.env.CRON_SECRET,
   UNSUB_SECRET: process.env.UNSUB_SECRET,
-  NEXT_PUBLIC_GA4_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID,
-  RESEND_AUDIENCE_ID: process.env.RESEND_AUDIENCE_ID,
-  PADDLE_API_KEY: process.env.PADDLE_API_KEY,
-  PADDLE_WEBHOOK_SECRET: process.env.PADDLE_WEBHOOK_SECRET,
-  PADDLE_PRO_PRICE_ID: process.env.PADDLE_PRO_PRICE_ID,
-  NEXT_PUBLIC_PADDLE_CLIENT_TOKEN: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN,
+  NEXT_PUBLIC_GA4_MEASUREMENT_ID: blankToUndef(
+    process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID,
+  ),
+  RESEND_AUDIENCE_ID: blankToUndef(process.env.RESEND_AUDIENCE_ID),
+  PADDLE_API_KEY: blankToUndef(process.env.PADDLE_API_KEY),
+  PADDLE_WEBHOOK_SECRET: blankToUndef(process.env.PADDLE_WEBHOOK_SECRET),
+  PADDLE_PRO_PRICE_ID: blankToUndef(process.env.PADDLE_PRO_PRICE_ID),
+  NEXT_PUBLIC_PADDLE_CLIENT_TOKEN: blankToUndef(
+    process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN,
+  ),
   NEXT_PUBLIC_PADDLE_ENV: process.env.NEXT_PUBLIC_PADDLE_ENV,
 });
 
